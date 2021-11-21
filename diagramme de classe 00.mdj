@@ -187,7 +187,7 @@
 											"top": 342,
 											"width": 287,
 											"height": 13,
-											"text": "+estampe[]: Card",
+											"text": "+estampe: Card[]",
 											"horizontalAlignment": 0
 										},
 										{
@@ -204,7 +204,7 @@
 											"top": 357,
 											"width": 287,
 											"height": 13,
-											"text": "+workshop[]: Card",
+											"text": "+workshop: Card[]",
 											"horizontalAlignment": 0
 										}
 									],
@@ -632,11 +632,47 @@
 									"model": {
 										"$ref": "AAAAAAF9PX12noiGRrk="
 									},
+									"subViews": [
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF9QgTF7/aSBUo=",
+											"_parent": {
+												"$ref": "AAAAAAF9PX12n4iOHBM="
+											},
+											"model": {
+												"$ref": "AAAAAAF9QgTF5faPIWQ="
+											},
+											"font": "Arial;13;0",
+											"left": 805,
+											"top": 310,
+											"width": 215,
+											"height": 13,
+											"text": "-slots: Card[][]",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF9QgecuvhZTs8=",
+											"_parent": {
+												"$ref": "AAAAAAF9PX12n4iOHBM="
+											},
+											"model": {
+												"$ref": "AAAAAAF9QgecqPhWxtI="
+											},
+											"font": "Arial;13;0",
+											"left": 805,
+											"top": 325,
+											"width": 215,
+											"height": 13,
+											"text": "-hiddenCards: bool[][]",
+											"horizontalAlignment": 0
+										}
+									],
 									"font": "Arial;13;0",
 									"left": 800,
 									"top": 305,
 									"width": 225,
-									"height": 10
+									"height": 38
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -647,11 +683,64 @@
 									"model": {
 										"$ref": "AAAAAAF9PX12noiGRrk="
 									},
+									"subViews": [
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF9QgoNMvkWw2A=",
+											"_parent": {
+												"$ref": "AAAAAAF9PX12n4iPxuc="
+											},
+											"model": {
+												"$ref": "AAAAAAF9QgoNJPkTSVk="
+											},
+											"font": "Arial;13;0",
+											"left": 805,
+											"top": 348,
+											"width": 215,
+											"height": 13,
+											"text": "-checkIfHidden()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF9QgugCfmu6AE=",
+											"_parent": {
+												"$ref": "AAAAAAF9PX12n4iPxuc="
+											},
+											"model": {
+												"$ref": "AAAAAAF9Qguf9vmr9UI="
+											},
+											"font": "Arial;13;0",
+											"left": 805,
+											"top": 363,
+											"width": 215,
+											"height": 13,
+											"text": "+drawCards()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF9QgwwVfohhmE=",
+											"_parent": {
+												"$ref": "AAAAAAF9PX12n4iPxuc="
+											},
+											"model": {
+												"$ref": "AAAAAAF9QgwwTPoeg7w="
+											},
+											"font": "Arial;13;0",
+											"left": 805,
+											"top": 378,
+											"width": 215,
+											"height": 13,
+											"text": "+takeCardColumn()",
+											"horizontalAlignment": 0
+										}
+									],
 									"font": "Arial;13;0",
 									"left": 800,
-									"top": 315,
+									"top": 343,
 									"width": 225,
-									"height": 10
+									"height": 53
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -5522,10 +5611,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF9Ksv6ZbDWBnw="
 							},
-							"name": "estampe[]",
-							"type": {
-								"$ref": "AAAAAAF9PX4sUIjY/qw="
-							}
+							"name": "estampe",
+							"type": "Card[]"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5533,10 +5620,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF9Ksv6ZbDWBnw="
 							},
-							"name": "workshop[]",
-							"type": {
-								"$ref": "AAAAAAF9PX4sUIjY/qw="
-							}
+							"name": "workshop",
+							"type": "Card[]"
 						}
 					]
 				},
@@ -5695,6 +5780,55 @@
 									"$ref": "AAAAAAF9PXOcF3zz9sw="
 								}
 							}
+						}
+					],
+					"attributes": [
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF9QgTF5faPIWQ=",
+							"_parent": {
+								"$ref": "AAAAAAF9PX12noiGRrk="
+							},
+							"name": "slots",
+							"visibility": "private",
+							"type": "Card[][]"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF9QgecqPhWxtI=",
+							"_parent": {
+								"$ref": "AAAAAAF9PX12noiGRrk="
+							},
+							"name": "hiddenCards",
+							"visibility": "private",
+							"type": "bool[][]"
+						}
+					],
+					"operations": [
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF9QgoNJPkTSVk=",
+							"_parent": {
+								"$ref": "AAAAAAF9PX12noiGRrk="
+							},
+							"name": "checkIfHidden",
+							"visibility": "private"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF9Qguf9vmr9UI=",
+							"_parent": {
+								"$ref": "AAAAAAF9PX12noiGRrk="
+							},
+							"name": "drawCards"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF9QgwwTPoeg7w=",
+							"_parent": {
+								"$ref": "AAAAAAF9PX12noiGRrk="
+							},
+							"name": "takeCardColumn"
 						}
 					]
 				},
@@ -6244,6 +6378,24 @@
 							}
 						}
 					]
+				}
+			]
+		},
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAF9QgQvS/XmwYg=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model1",
+			"ownedElements": [
+				{
+					"_type": "UMLUseCaseDiagram",
+					"_id": "AAAAAAF9QgQvS/Xn0n4=",
+					"_parent": {
+						"$ref": "AAAAAAF9QgQvS/XmwYg="
+					},
+					"name": "UseCaseDiagram1"
 				}
 			]
 		}
