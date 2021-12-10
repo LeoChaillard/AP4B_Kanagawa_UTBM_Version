@@ -4,12 +4,19 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-public class Main {
+package play;
 
-  public static void main(String [] args)
+public abstract class Mention {
+  //Attributes
+
+  //Constructor
+  public Mention()
   {
-    Game game = new Game();
-    game.start();
-	}
+
+  }
+
+  //Methods
+
+
 
 }

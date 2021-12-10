@@ -4,12 +4,19 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-public class Main {
+package play;
 
-  public static void main(String [] args)
+public abstract class Card {
+  //Attributes
+
+
+  //Constructor
+  public Card()
   {
-    Game game = new Game();
-    game.start();
-	}
+
+  }
+
+  //Methods
+
 
 }

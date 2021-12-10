@@ -10399,6 +10399,22 @@
 							}
 						}
 					]
+				},
+				{
+					"_type": "UMLUseCaseSubject",
+					"_id": "AAAAAAF9XPrlIW0pBoc=",
+					"_parent": {
+						"$ref": "AAAAAAF9QgQvS/XmwYg="
+					},
+					"name": "UseCaseSubject1"
+				},
+				{
+					"_type": "UMLUseCaseSubject",
+					"_id": "AAAAAAF9XPsdxG21Hj4=",
+					"_parent": {
+						"$ref": "AAAAAAF9QgQvS/XmwYg="
+					},
+					"name": "UseCaseSubject2"
 				}
 			]
 		}
