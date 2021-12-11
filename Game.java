@@ -21,15 +21,27 @@ import java.awt.Color;
 
 public class Game implements ActionListener, MouseListener{
   //Attributes
+  private static final int MAX_PLAYERS = 4;
+
+  private static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
   private Window window;
   private Menu menu;
-  private static List<Player> players = new ArrayList<Player>(4);
+  private int [] availableMentions;
+  private int numberOfPlayers;
+  private int playerIndex;
 
   private enum Actions
   {
     MENU,
     NEWGAME,
     RESUME
+  }
+
+  private enum Choices
+  {
+    PASS,
+    PICKUP_COLUMN,
+    KEEP_CARD
   }
 
   //Constructor
@@ -43,6 +55,20 @@ public class Game implements ActionListener, MouseListener{
   @Override
   public void mouseClicked(MouseEvent evt)
   {
+    int x = evt.getX();
+    int y = evt.getY();
+    Player player = this.players.get(playerIndex);
+
+    if(true) /*Condition will depend on which column the player clicked*/
+    {
+      Card [][] boardSlots = new Card[4][3];
+      boardSlots = window.getBoard().getSlots();
+
+      /*To be implemented*/
+
+      playerIndex = (playerIndex+1)%4;
+    }
+
 
   }
 
@@ -59,6 +85,7 @@ public class Game implements ActionListener, MouseListener{
   @Override
   public void actionPerformed(ActionEvent evt)
   {
+    //Menu Actions
     if (evt.getActionCommand() == Actions.NEWGAME.name())
     {
         this.window.setVisible(true);
@@ -77,6 +104,22 @@ public class Game implements ActionListener, MouseListener{
         this.window.setVisible(false);
         this.menu.setVisible(true);
     }
+
+    //Players Choices
+    if (evt.getActionCommand() == Choices.PASS.name())
+    {
+
+    }
+
+    if (evt.getActionCommand() == Choices.PICKUP_COLUMN.name())
+    {
+
+    }
+
+    if (evt.getActionCommand() == Choices.KEEP_CARD.name())
+    {
+
+    }
   }
 
   /***************************************************/
@@ -94,18 +137,23 @@ public class Game implements ActionListener, MouseListener{
     this.window.initWindow();
     this.menu.initMenu();
 
-    //Adding action listeners
+    //Adding action listeners for menu interactions
     this.menu.getNewGame().addActionListener(this);
     this.menu.getResume().addActionListener(this);
     this.window.getMenuButton().addActionListener(this);
 
-    //Setting action commands
+    //Setting action commands for menu interactions
     this.menu.getNewGame().setActionCommand(Actions.NEWGAME.name());
     this.menu.getResume().setActionCommand(Actions.RESUME.name());
     this.window.getMenuButton().setActionCommand(Actions.MENU.name());
 
-    this.menu.getResume().setEnabled(false);
+    //Adding action listeners for player choices
 
+
+    //Setting action command for player choices
+
+
+    this.menu.getResume().setEnabled(false);
     this.menu.draw();
   }
 

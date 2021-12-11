@@ -17,12 +17,12 @@ import java.awt.EventQueue;
 
 public class Window extends JFrame{
   //Attributes
-  private Board boardPanel;
-  private RightPanel rightPanel;
-
   private static final int WINDOW_HEIGHT = 800;
   private static final int WINDOW_LENGTH = 1000;
   private static final int RIGHT_SIDE = WINDOW_LENGTH - WINDOW_HEIGHT;
+
+  private Board boardPanel;
+  private RightPanel rightPanel;
 
   //Constructor
   public Window()
@@ -43,6 +43,10 @@ public class Window extends JFrame{
     this.getContentPane().add(rightPanel,BorderLayout.EAST);
     this.getContentPane().add(boardPanel,BorderLayout.CENTER);
   }
+
+  /***************************************************/
+
+  public Board getBoard(){return this.boardPanel;}
 
   /***************************************************/
 

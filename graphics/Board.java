@@ -27,7 +27,7 @@ public class Board extends JPanel{
   private static final float ELEMENT_SIZE = 0.95f;
   private static final float CARD_SIZE = 0.80f;
   private static final Card [][] slots = new Card[X_ELEMENTS][Y_ELEMENTS]; //Origin (0,0) at the bottom left corner
-  private static final boolean [][] hiddenCards = new boolean[X_ELEMENTS][Y_ELEMENTS]; //Origin (0,0) at the bottom left corner
+  private static final boolean [][] hiddenCards = {{true,false,false}, {false,true,false}, {false,false,true}, {true,false,false}}; //Origin (0,0) at the bottom left corner
 
   //Constructor
   public Board()
@@ -39,6 +39,10 @@ public class Board extends JPanel{
   }
 
   //Methods
+  public static Card [][] getSlots(){return slots;}
+
+  /***************************************************/
+
   public boolean isHidden(int index1, int index2)
   {
     return hiddenCards[index1][index2];
@@ -86,46 +90,30 @@ public class Board extends JPanel{
     card.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
     card.setSide(CARD_SIZE);
 
-    //Drawing board
-    int hiddenCard = 0; //First hidden card is at index 0
+    //Drawing board and cards
     for(int k=0;k<X_ELEMENTS;++k)
     {
       for(int j=0;j<Y_ELEMENTS;++j)
     	{
-    		if(j==hiddenCard%3)
+    		if(hiddenCards[k][j])
         {
-          hiddenCards[k][j] = true;
     			g.setColor(Color.RED);
     			rec.fill(g);
-        }
-    		else
-        {
-          hiddenCards[k][j] = false;
-    			g.setColor(Color.YELLOW);
-    			rec.fill(g);
-        }
-    		d.up(1);
-    	}
-    	++hiddenCard;
-      d.resetMove();
-    	d.right(k+1); //Going to the right next column
-    }
 
-
-    //Drawing cards
-    d.resetMove();
-    for(int k=0;k<X_ELEMENTS;++k)
-    {
-      for(int j=0;j<Y_ELEMENTS;++j)
-    	{
-    		if(slots[k][j] != null)
-        {
-          if(hiddenCards[k][j])
+          //Hidden card
+          if(slots[k][j] != null)
           {
             g.setColor(Color.darkGray);
             card.fill(g);
           }
-      		else
+        }
+    		else
+        {
+    			g.setColor(Color.YELLOW);
+    			rec.fill(g);
+
+          //Visible card
+          if(slots[k][j] != null)
           {
             g.setColor(Color.lightGray);
             card.fill(g);
