@@ -1,10 +1,12 @@
 /************************************************************************
  * AP4B Project - Fall semester 2021 - Kanagawa, UTBM-like version
- * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr Léo CHAILLARD - leo.chaillard@utbm.fr
+ * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr and Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
 
 package graphics;
+import play.*;
+import java.util.*;
 
 import java.awt.Graphics;
 import java.awt.Color;
@@ -14,62 +16,126 @@ import java.awt.Polygon;
 
 import javax.swing.JPanel;
 
-import java.util.*;
+
 
 
 public class Board extends JPanel{
   //Attributes
-  private static final float X_ELEMENTS = 4;
-  private static final float Y_ELEMENTS = 3;
+  private static final long serialVersionUID = 1L;
+  private static final int X_ELEMENTS = 4;
+  private static final int Y_ELEMENTS = 3;
   private static final float ELEMENT_SIZE = 0.95f;
+  private static final float CARD_SIZE = 0.80f;
+  private static final Card [][] slots = new Card[X_ELEMENTS][Y_ELEMENTS]; //Origin (0,0) at the bottom left corner
+  private static final boolean [][] hiddenCards = new boolean[X_ELEMENTS][Y_ELEMENTS]; //Origin (0,0) at the bottom left corner
 
   //Constructor
-  public Board() {}
+  public Board()
+  {
+    //For testing purposes
+    addRow(1);
+    addRow(2);
+    removeColumn(2);
+  }
 
   //Methods
+  public boolean isHidden(int index1, int index2)
+  {
+    return hiddenCards[index1][index2];
+  }
+
+  /***************************************************/
+
+  public void removeColumn(int column)
+  {
+    for(int i=0;i<Y_ELEMENTS;++i) slots[column-1][i] = null;
+  }
+
+  /***************************************************/
+
+  public void addRow(int row)
+  {
+    for(int i=0;i<X_ELEMENTS;++i) slots[i][Y_ELEMENTS-row] = new Card();
+  }
+
+  /***************************************************/
+
   @Override
   public void paint(Graphics g)
   {
     super.paint(g);
-    	this.setBackground(Color.WHITE);
+    this.setBackground(Color.WHITE);
 
-    	//Getting size of the window
-    	float width = getWidth();
-    	float height = getHeight();
+    //Getting size of the window
+    float width = getWidth();
+    float height = getHeight();
 
-    	//Direction
-    	Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 2*ELEMENT_SIZE); //Origin position at the middle of the bottom left square
-    	d.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
+  	//Direction
+    Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 2*ELEMENT_SIZE + 0.1f); //Origin position at the middle of the bottom left square, adding 0.1 because of the window top bar
+    d.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
 
-    	//Rectangles
-    	Rectangle rec = new Rectangle();
-    	rec.setDirection(d);
-    	rec.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
-    	rec.setSide(ELEMENT_SIZE);
+    //Rectangles
+    Rectangle rec = new Rectangle();
+    rec.setDirection(d);
+    rec.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
+    rec.setSide(ELEMENT_SIZE);
 
-    	int hiddenCard = 0;
+    //Cards
+    DrawCard card = new DrawCard();
+    card.setDirection(d);
+    card.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
+    card.setSide(CARD_SIZE);
 
-    	for(int k=0;k<X_ELEMENTS;++k)
+    //Drawing board
+    int hiddenCard = 0; //First hidden card is at index 0
+    for(int k=0;k<X_ELEMENTS;++k)
+    {
+      for(int j=0;j<Y_ELEMENTS;++j)
     	{
-    	  	for(int j=0;j<Y_ELEMENTS;++j)
-    		{
-    			if(j==hiddenCard%3)
-          {
-    				g.setColor(Color.RED);
-    				rec.fill(g);
-          }
-    			else
-          {
-    				g.setColor(Color.YELLOW);
-    				rec.fill(g);
-          }
-    			d.up(1);
-    		}
-    		++hiddenCard;
-    		d.resetMove();
-    		d.right(k+1); //Going to the right next column
+    		if(j==hiddenCard%3)
+        {
+          hiddenCards[k][j] = true;
+    			g.setColor(Color.RED);
+    			rec.fill(g);
+        }
+    		else
+        {
+          hiddenCards[k][j] = false;
+    			g.setColor(Color.YELLOW);
+    			rec.fill(g);
+        }
+    		d.up(1);
     	}
+    	++hiddenCard;
+      d.resetMove();
+    	d.right(k+1); //Going to the right next column
+    }
 
+
+    //Drawing cards
+    d.resetMove();
+    for(int k=0;k<X_ELEMENTS;++k)
+    {
+      for(int j=0;j<Y_ELEMENTS;++j)
+    	{
+    		if(slots[k][j] != null)
+        {
+          if(hiddenCards[k][j])
+          {
+            g.setColor(Color.darkGray);
+            card.fill(g);
+          }
+      		else
+          {
+            g.setColor(Color.lightGray);
+            card.fill(g);
+          }
+        }
+    		d.up(1);
+    	}
+      d.resetMove();
+    	d.right(k+1); //Going to the right next column
+    }
 
     Toolkit.getDefaultToolkit().sync();
   }

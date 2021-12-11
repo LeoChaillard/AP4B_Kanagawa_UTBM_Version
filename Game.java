@@ -1,11 +1,12 @@
 /************************************************************************
  * AP4B Project - Fall semester 2021 - Kanagawa, UTBM-like version
- * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr Léo CHAILLARD - leo.chaillard@utbm.fr
+ * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr and Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
 
 import play.*;
 import graphics.*;
+import java.util.*;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,11 +23,13 @@ public class Game implements ActionListener, MouseListener{
   //Attributes
   private Window window;
   private Menu menu;
+  private static List<Player> players = new ArrayList<Player>(4);
 
   private enum Actions
   {
     MENU,
     NEWGAME,
+    RESUME
   }
 
   //Constructor
@@ -60,6 +63,13 @@ public class Game implements ActionListener, MouseListener{
     {
         this.window.setVisible(true);
         this.menu.setVisible(false);
+        resetGame();
+    }
+
+    if (evt.getActionCommand() == Actions.RESUME.name())
+    {
+        this.window.setVisible(true);
+        this.menu.setVisible(false);
     }
 
     if (evt.getActionCommand() == Actions.MENU.name())
@@ -67,7 +77,6 @@ public class Game implements ActionListener, MouseListener{
         this.window.setVisible(false);
         this.menu.setVisible(true);
     }
-
   }
 
   /***************************************************/
@@ -85,13 +94,17 @@ public class Game implements ActionListener, MouseListener{
     this.window.initWindow();
     this.menu.initMenu();
 
-    //Adding action li.steners
+    //Adding action listeners
     this.menu.getNewGame().addActionListener(this);
+    this.menu.getResume().addActionListener(this);
     this.window.getMenuButton().addActionListener(this);
 
     //Setting action commands
     this.menu.getNewGame().setActionCommand(Actions.NEWGAME.name());
+    this.menu.getResume().setActionCommand(Actions.RESUME.name());
     this.window.getMenuButton().setActionCommand(Actions.MENU.name());
+
+    this.menu.getResume().setEnabled(false);
 
     this.menu.draw();
   }
@@ -100,10 +113,7 @@ public class Game implements ActionListener, MouseListener{
 
   public void resetGame()
   {
-
+    this.menu.getResume().setEnabled(true);
   }
-
-
-
 
 }
