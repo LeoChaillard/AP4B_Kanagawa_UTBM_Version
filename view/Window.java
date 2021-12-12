@@ -1,6 +1,6 @@
 /************************************************************************
  * AP4B Project - Fall semester 2021 - Kanagawa, UTBM-like version
- * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr Léo CHAILLARD - leo.chaillard@utbm.fr
+ * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr and Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
 
@@ -17,12 +17,12 @@ import java.awt.EventQueue;
 
 public class Window extends JFrame{
   //Attributes
-  private Board boardPanel;
-  private RightPanel rightPanel;
-
   private static final int WINDOW_HEIGHT = 800;
   private static final int WINDOW_LENGTH = 1000;
   private static final int RIGHT_SIDE = WINDOW_LENGTH - WINDOW_HEIGHT;
+
+  private Board boardPanel;
+  private RightPanel rightPanel;
 
   //Constructor
   public Window()
@@ -43,6 +43,10 @@ public class Window extends JFrame{
     this.getContentPane().add(rightPanel,BorderLayout.EAST);
     this.getContentPane().add(boardPanel,BorderLayout.CENTER);
   }
+
+  /***************************************************/
+
+  public Board getBoard(){return this.boardPanel;}
 
   /***************************************************/
 

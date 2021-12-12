@@ -1,6 +1,6 @@
 /************************************************************************
  * AP4B Project - Fall semester 2021 - Kanagawa, UTBM-like version
- * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr Léo CHAILLARD - leo.chaillard@utbm.fr
+ * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr and Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
 package view;
@@ -24,24 +24,25 @@ import java.awt.EventQueue;
  */
 public class Menu extends JFrame{
   //Attributes
-  private static final int WINDOW_HEIGHT = 600;
-  private static final int WINDOW_LENGTH = 500;
-  //private JButton resume;
+  private JButton resume;
   private JButton newGame;
   private ImageIcon icon;
   private ImagePanel background;
 
+  private static final int WINDOW_HEIGHT = 600;
+  private static final int WINDOW_LENGTH = 500;
+
   //Constructor
   public Menu()
   {
-    this.icon = new ImageIcon("icon.jpg");
+    this.icon = new ImageIcon("graphics/icon.jpg");
     this.background = new ImagePanel(icon.getImage() );
-    //this.resume = new JButton("Resume");
+    this.resume = new JButton("Resume");
     this.newGame = new JButton("New game");
   }
 
   //Methods
-  //public JButton getResume(){return this.resume;}
+  public JButton getResume(){return this.resume;}
 
   /***************************************************/
 
@@ -63,12 +64,12 @@ public class Menu extends JFrame{
     //Buttons
     newGame.setBackground(Color.WHITE);
     newGame.setBounds(175,420,147,70);
-    /*resume.setBackground(Color.WHITE);
-    resume.setBounds(175,325,147,70);*/
+    resume.setBackground(Color.WHITE);
+    resume.setBounds(175,325,147,70);
 
     //Adding components to the JFrame
     this.setContentPane(background);
-    //this.add(resume);
+    this.add(resume);
     this.add(newGame);
   }
 
