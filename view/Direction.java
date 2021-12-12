@@ -4,9 +4,10 @@
  * Creation date : December, 2021
  ************************************************************************/
 
- package graphics;
+package view;
 
-  public class Direction{
+public class Direction{
+  
   //Attributes
   private final float originX;
   private final float originY;

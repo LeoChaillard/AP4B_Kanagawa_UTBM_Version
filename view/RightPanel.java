@@ -4,7 +4,7 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-package graphics;
+package view;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;

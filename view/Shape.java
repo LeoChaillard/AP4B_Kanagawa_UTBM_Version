@@ -4,7 +4,7 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-package graphics;
+package view;
 
 import java.awt.Graphics;
 import java.util.*;

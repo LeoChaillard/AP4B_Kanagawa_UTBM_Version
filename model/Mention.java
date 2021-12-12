@@ -4,14 +4,21 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-//import Game;
+package model;
 
-public class Main {
+public abstract class Mention {
+  //Attributes
+  private int id;
+  private int points;
+  private int numberOfElements;
+  private Bonus bonus;
+  
 
-  public static void main(String [] args)
-  {
-    Game game = new Game();
-    game.start();
-	}
+  //Methods
+  public abstract boolean checkCriteria(Player p);
+
+  //mettre des getters et setters
+
+
 
 }

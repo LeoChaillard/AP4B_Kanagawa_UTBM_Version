@@ -4,14 +4,19 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-//import Game;
+package model;
 
-public class Main {
+public class MentionHours extends Mention {
+    
+    //Methods
 
-  public static void main(String [] args)
-  {
-    Game game = new Game();
-    game.start();
-	}
+    //constructeur
+    public MentionHours(){
+        //code
+    }
 
+    public boolean checkCriteria(Player p){
+        //code 
+        return false;
+    }
 }

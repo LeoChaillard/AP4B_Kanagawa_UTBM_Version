@@ -3,15 +3,10 @@
  * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
+package model;
 
-//import Game;
+public enum Category{
 
-public class Main {
-
-  public static void main(String [] args)
-  {
-    Game game = new Game();
-    game.start();
-	}
+    CS, TM, EC, T2S, Joker;
 
 }

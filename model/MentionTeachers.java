@@ -4,19 +4,19 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-package play;
+package model;
 
-public abstract class Card {
-  //Attributes
+public class MentionTeachers extends Mention {
+    
+    //Methods
 
-
-  //Constructor
-  public Card()
-  {
-
-  }
-
-  //Methods
-
-
+    //constructeur
+    public MentionTeachers(){
+        //code
+    }
+    
+    public boolean checkCriteria(Player p){
+        //code 
+        return false;
+    }
 }

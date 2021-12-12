@@ -4,7 +4,7 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-package graphics;
+package view;
 
 import javax.swing.JComponent;
 import java.awt.Image;

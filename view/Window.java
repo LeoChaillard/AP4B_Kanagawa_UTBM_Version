@@ -4,7 +4,7 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-package graphics;
+package view;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;

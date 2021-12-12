@@ -3,21 +3,23 @@
  * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
+package model;
 
-package play;
+public class CardCertificates extends Card{
 
-public class Player {
-  //Attributes
-
-
-  //Constructor
-  public Player()
-  {
-
-  }
-
-  //Methods
+    //Attributs
+    private int certificates; 
 
 
+    //constructeur
+    public CardCertificates(int certificates){
+    this.certificates = certificates;
+    }
 
+
+    //redéfinir isUsed()
+    public boolean isUsed(){
+        //code
+        return false;
+    }
 }

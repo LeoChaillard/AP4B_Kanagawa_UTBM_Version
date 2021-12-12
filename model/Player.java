@@ -4,14 +4,32 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-//import Game;
+package model;
 
-public class Main {
+public class Player {
+  //Attributes
+  private Card hand[];
+  private Card project[];
+  private Card temporaryHand[];
+  private int deniedMentions[];
+  private int availableBonus[];
+  private int availableSkills[];
+  private int acceptedMentions[];
+  
 
-  public static void main(String [] args)
+
+
+  //Constructor
+  public Player()
   {
-    Game game = new Game();
-    game.start();
-	}
+
+  }
+
+  //Methods
+  public void moveHours(int a, Category b){
+    // code
+  }
+
+
 
 }
