@@ -4,6 +4,7 @@
  * Creation date : December, 2021
  ************************************************************************/
 
+package view;
 import java.awt.Color;
 
 public class Colors{

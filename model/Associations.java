@@ -3,10 +3,10 @@
  * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr and Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
+
 package model;
 
 public enum Associations{
-
-    AE, BDS, BDF, CLUBS, NULL;
-
+  //Attributes
+  AE, BDS, BDF, CLUBS, NULL;
 }

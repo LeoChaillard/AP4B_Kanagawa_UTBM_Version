@@ -5,7 +5,7 @@
  ************************************************************************/
 
 package view;
-import play.*;
+import model.*;
 import java.util.*;
 
 import java.awt.Graphics;
@@ -59,7 +59,8 @@ public class Board extends JPanel{
 
   public void addRow(int row)
   {
-    for(int i=0;i<X_ELEMENTS;++i) slots[i][Y_ELEMENTS-row] = new Card();
+    /* Temporary version for testing purposes */
+    for(int i=0;i<X_ELEMENTS;++i) slots[i][Y_ELEMENTS-row] = new CardTeachers();
   }
 
   /***************************************************/

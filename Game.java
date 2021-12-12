@@ -4,8 +4,8 @@
  * Creation date : December, 2021
  ************************************************************************/
 
-import play.*;
-import graphics.*;
+import model.*;
+import view.*;
 import java.util.*;
 
 import javax.swing.JLabel;

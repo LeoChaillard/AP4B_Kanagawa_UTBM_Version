@@ -1,6 +1,6 @@
 /************************************************************************
  * AP4B Project - Fall semester 2021 - Kanagawa, UTBM-like version
- * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr Léo CHAILLARD - leo.chaillard@utbm.fr
+ * Authors : Jules RAMOS - jules.ramos@utbm.fr, Malak FADILI - malak.fadili@utbm.fr, Alan GAUTHIER - alan.gauthier@utbm.fr and Léo CHAILLARD - leo.chaillard@utbm.fr
  * Creation date : December, 2021
  ************************************************************************/
 
@@ -12,13 +12,13 @@ public abstract class Card {
   private int Id;
   private int scoringPointsSkills;
   private int scoringPointsProjects;
-  private Bonus bonus;  
-  private Branch branch; 
-  private Category categorySkills; 
+  private Bonus bonus;
+  private Branch branch;
+  private Category categorySkills;
   private Category categoryProject;
 
 
-  //Methods 
+  //Methods
   public void setId(int id){
     this.Id = id;
   }
@@ -74,7 +74,7 @@ public abstract class Card {
   Category getcategoryProject(){
     return this.categoryProject;
   }
-  
+
   public abstract boolean isUsed();
 
 
