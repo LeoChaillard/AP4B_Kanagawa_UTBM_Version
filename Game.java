@@ -26,9 +26,12 @@ public class Game implements ActionListener, MouseListener{
   private static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
   private Window window;
   private Menu menu;
+  private Random nominatePlayer;
+  private Mention [] mentions;
   private int [] availableMentions;
   private int numberOfPlayers;
   private int playerIndex;
+
 
   private enum Actions
   {
@@ -49,6 +52,7 @@ public class Game implements ActionListener, MouseListener{
   {
     this.window = new Window();
     this.menu = new Menu();
+    this.nominatePlayer = new Random();
   }
 
   //Methods
@@ -59,15 +63,16 @@ public class Game implements ActionListener, MouseListener{
     int y = evt.getY();
     Player player = this.players.get(playerIndex);
 
-    if(true) /*Condition will depend on which column the player clicked*/
-    {
+
+    //if(true) /*Condition will depend on which column the player clicked*/
+    /*{
       Card [][] boardSlots = new Card[4][3];
       boardSlots = window.getBoard().getSlots();
 
       /*To be implemented*/
 
-      playerIndex = (playerIndex+1)%4;
-    }
+    /*  playerIndex = (playerIndex+1)%4;
+  }*/
 
 
   }
@@ -91,6 +96,10 @@ public class Game implements ActionListener, MouseListener{
         this.window.setVisible(true);
         this.menu.setVisible(false);
         resetGame();
+
+        createPlayers();
+        setPlayers();
+        this.window.getBoard().addRow(1);
     }
 
     if (evt.getActionCommand() == Actions.RESUME.name())
@@ -119,6 +128,37 @@ public class Game implements ActionListener, MouseListener{
     if (evt.getActionCommand() == Choices.KEEP_CARD.name())
     {
 
+    }
+  }
+
+  /***************************************************/
+
+  private void createPlayers()
+  {
+    //Creating players with default names
+    for(int i = 0;i<4;++i) this.players.add(new Player("Player" + (i+1)));
+  }
+
+  /***************************************************/
+
+  private void setPlayers()
+  {
+    //Asking for number of players
+    while(this.numberOfPlayers < 2 || this.numberOfPlayers > 4)
+    {
+      String tempNumberPlayers = JOptionPane.showInputDialog( "Number of player (2-4) :" );
+      if(tempNumberPlayers != null && !tempNumberPlayers.equals("")) this.numberOfPlayers = Integer.parseInt(tempNumberPlayers);
+    }
+      System.out.println("Number of players : " + this.numberOfPlayers);
+      this.playerIndex = nominatePlayer.nextInt(this.numberOfPlayers);
+      System.out.println("First player index : " + this.playerIndex);
+
+
+    //Asking for the player's name
+    for(int i = 0;i<this.numberOfPlayers;++i)
+    {
+      String name = JOptionPane.showInputDialog( "Player name:" );
+      if(name != null && !name.equals("")) this.players.get(i).setName(name);
     }
   }
 
@@ -161,7 +201,63 @@ public class Game implements ActionListener, MouseListener{
 
   public void resetGame()
   {
+    this.numberOfPlayers = 0;
     this.menu.getResume().setEnabled(true);
   }
 
+  /***************************************************/
+
+  public boolean checkSkills(Category c)
+  {
+    return true;
+  }
+
+  /***************************************************/
+
+  public boolean checkHoursAvailability(Category c)
+  {
+    return true;
+  }
+
+  /***************************************************/
+
+  public void checkMention()
+  {
+
+  }
+
+  /***************************************************/
+
+  /*public void setFirstPlayer(int index) //Probably not useful
+  {
+
+  }*/
+
+  /***************************************************/
+
+  public void nextTurn()
+  {
+
+  }
+
+  /***************************************************/
+
+  public boolean checkGameProgress()
+  {
+    return true;
+  }
+
+  /***************************************************/
+
+  public int countPlayersPoints()
+  {
+    return 0;
+  }
+
+  /***************************************************/
+
+  public void offerMention()
+  {
+
+  }
 }

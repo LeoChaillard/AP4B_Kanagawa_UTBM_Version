@@ -35,7 +35,7 @@ public class Menu extends JFrame{
   //Constructor
   public Menu()
   {
-    this.icon = new ImageIcon("graphics/icon.jpg");
+    this.icon = new ImageIcon("view/icon.jpg");
     this.background = new ImagePanel(icon.getImage() );
     this.resume = new JButton("Resume");
     this.newGame = new JButton("New game");
@@ -54,7 +54,7 @@ public class Menu extends JFrame{
   {
     //Set up of the JFrame
     this.setTitle("Kanagawa");
-    this.setIconImage(icon.getImage());
+    //this.setIconImage(icon.getImage());
     this.setBounds(10,10,WINDOW_LENGTH,WINDOW_HEIGHT);
     this.setResizable(false);
     this.setLocationRelativeTo(null);

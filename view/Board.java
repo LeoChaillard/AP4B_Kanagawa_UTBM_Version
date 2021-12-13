@@ -32,10 +32,7 @@ public class Board extends JPanel{
   //Constructor
   public Board()
   {
-    //For testing purposes
-    addRow(1);
-    addRow(2);
-    removeColumn(2);
+
   }
 
   //Methods
