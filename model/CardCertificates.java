@@ -8,7 +8,7 @@ package model;
 
 public class CardCertificates extends Card{
   //Attributs
-  private int certificates;
+  private int certificate;
 
   //Constructors
   public CardCertificates()
@@ -18,9 +18,10 @@ public class CardCertificates extends Card{
 
   /***************************************************/
 
-  public CardCertificates(int certificates)
+  public CardCertificates(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project, int certificate)
   {
-    this.certificates = certificates;
+    super(id,numberSkills, scoringPointsSkills, scoringPointsProjects, bonus,branch,skills,project);
+    this.certificate = certificate;
   }
 
   //Methods

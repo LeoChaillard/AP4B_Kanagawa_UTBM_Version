@@ -6,6 +6,7 @@
 
 package view;
 import model.*;
+import manager.*;
 import java.util.*;
 
 import java.awt.Graphics;
@@ -29,13 +30,23 @@ public class Board extends JPanel{
   private static final Card [][] slots = new Card[X_ELEMENTS][Y_ELEMENTS]; //Origin (0,0) at the bottom left corner
   private static final boolean [][] hiddenCards = {{true,false,false}, {false,true,false}, {false,false,true}, {true,false,false}}; //Origin (0,0) at the bottom left corner
 
+  private int addedRows;
+
   //Constructor
   public Board()
   {
-
+    addedRows = 0;
   }
 
   //Methods
+  public void removeAll()
+  {
+    for(int i=1;i<=4;++i) removeColumn(i);
+    this.addedRows = 0;
+  }
+
+  /***************************************************/
+
   public static Card [][] getSlots(){return slots;}
 
   /***************************************************/
@@ -54,10 +65,15 @@ public class Board extends JPanel{
 
   /***************************************************/
 
-  public void addRow(int row)
+  public void addRow(int players)
   {
-    /* Temporary version for testing purposes */
-    for(int i=0;i<X_ELEMENTS;++i) slots[i][Y_ELEMENTS-row] = new CardTeachers();
+    ++this.addedRows;
+
+    try
+    {
+      for(int i=0;i<players;++i) slots[i][Y_ELEMENTS-this.addedRows] = Game.cardFromDeck();
+    } catch() {}
+      
   }
 
   /***************************************************/

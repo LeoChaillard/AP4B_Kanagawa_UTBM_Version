@@ -54,6 +54,10 @@ public class Window extends JFrame{
 
   /***************************************************/
 
+  public RightPanel getRightPanel(){return this.rightPanel;}
+
+  /***************************************************/
+  
   public void draw () {
     EventQueue.invokeLater(() -> {
     setVisible(true);

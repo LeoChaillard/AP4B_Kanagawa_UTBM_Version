@@ -9,7 +9,8 @@ package model;
 public abstract class Card {
 
   //Attributs
-  private int Id;
+  private int id;
+  private int numberOfCategorySkills;
   private int scoringPointsSkills;
   private int scoringPointsProjects;
   private Bonus bonus;
@@ -17,14 +18,33 @@ public abstract class Card {
   private Category categorySkills;
   private Category categoryProject;
 
+  //Constructors
+  public Card()
+  {
 
-  //Methods
-  public void setId(int id){
-    this.Id = id;
   }
 
-  public int getId(){
-    return this.Id;
+  /***************************************************/
+
+  public Card(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project)
+  {
+    this.id = id;
+    this.numberOfCategorySkills = numberSkills;
+    this.scoringPointsSkills = scoringPointsSkills;
+    this.scoringPointsProjects = scoringPointsProjects;
+    this.bonus = bonus;
+    this.branch = branch;
+    this.categorySkills = skills;
+    this.categoryProject = project;
+  }
+
+  //Methods
+  public void setid(int id){
+    this.id = id;
+  }
+
+  public int getid(){
+    return this.id;
   }
 
   public void setscoringPointsSkills(int scs){
@@ -36,7 +56,7 @@ public abstract class Card {
   }
 
   public void setscoringPointsProjects(int scp){
-    this.Id = scp;
+    this.id = scp;
   }
 
   public int getscoringPointsProjects(){

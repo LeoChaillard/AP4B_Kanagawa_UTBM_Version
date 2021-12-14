@@ -9,9 +9,11 @@ import java.util.*;
 
 public class Player {
   //Attributes
-  private Card hand[];
-  private Card project[];
-  private Card temporaryHand[];
+  private static final int MAX_PROJECT_ELEMENTS = 13;
+
+  private List<Card> hand[];
+  private List<Card> project = new ArrayList<Card>(MAX_PROJECT_ELEMENTS);
+  private List<Card> temporaryHand[];
   private int availableBonus[];
   private int availableSkills[];
   private int acceptedMentions[];
@@ -35,6 +37,13 @@ public class Player {
   public void setName(String name)
   {
     this.name = name;
+  }
+
+  /***************************************************/
+
+  public String getName()
+  {
+      return this.name;
   }
 
   /***************************************************/

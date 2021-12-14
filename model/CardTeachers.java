@@ -8,8 +8,7 @@ package model;
 
 public class CardTeachers extends Card{
   //Attributes
-  private Teachers teachers; // étant donné qu'il y a 1 prof par carte il faut mettre teacher sans s en attribut
-                                // à modifier même dans diagramme de classes
+  private Teachers teacher;
 
   //Constructors
   public CardTeachers()
@@ -19,9 +18,10 @@ public class CardTeachers extends Card{
 
   /***************************************************/
 
-  public CardTeachers(Teachers teachers)
+  public CardTeachers(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project, Teachers teacher)
   {
-    this.teachers = teachers;
+    super(id, numberSkills, scoringPointsSkills, scoringPointsProjects,bonus,branch,skills,project);
+    this.teacher = teacher;
   }
 
   //Methods

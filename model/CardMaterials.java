@@ -8,8 +8,8 @@ package model;
 
 public class CardMaterials extends Card{
   //Attributs
-  private Materials materials; // étant donné qu'il y a 1 matériau par carte il faut mettre materials sans s en attribut
-                              // à modifier même dans diagramme de classes
+  private Materials material;
+
   //Constructors
   public CardMaterials()
   {
@@ -18,9 +18,10 @@ public class CardMaterials extends Card{
 
   /***************************************************/
 
-  public CardMaterials(Materials materials)
+  public CardMaterials(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project, Materials material)
   {
-    this.materials = materials;
+    super(id,numberSkills, scoringPointsSkills, scoringPointsProjects, bonus,branch,skills,project);
+    this.material = material;
   }
 
   //Methods
