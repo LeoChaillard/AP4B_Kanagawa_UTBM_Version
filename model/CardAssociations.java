@@ -19,9 +19,9 @@ public class CardAssociations extends Card{
 
   /***************************************************/
 
-  public CardAssociations(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project, Associations association)
+  public CardAssociations(int id, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, int projectCategoriesQuantity, Category project, Associations association)
   {
-    super(id,numberSkills, scoringPointsSkills, scoringPointsProjects, bonus,branch,skills,project);
+    super(id, scoringPointsSkills, scoringPointsProjects, bonus, branch, skills, projectCategoriesQuantity, project);
     this.association = association;
   }
 

@@ -72,8 +72,8 @@ public class Board extends JPanel{
     try
     {
       for(int i=0;i<players;++i) slots[i][Y_ELEMENTS-this.addedRows] = Game.cardFromDeck();
-    } catch() {}
-      
+    } catch(Exception e) {}
+
   }
 
   /***************************************************/

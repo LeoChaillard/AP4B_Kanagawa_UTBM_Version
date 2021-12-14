@@ -10,7 +10,6 @@ public abstract class Card {
 
   //Attributs
   private int id;
-  private int numberOfCategorySkills;
   private int scoringPointsSkills;
   private int scoringPointsProjects;
   private Bonus bonus;
@@ -26,16 +25,26 @@ public abstract class Card {
 
   /***************************************************/
 
-  public Card(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project)
+  public Card(int id, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, int projectCategoriesQuantity, Category project)
   {
     this.id = id;
-    this.numberOfCategorySkills = numberSkills;
     this.scoringPointsSkills = scoringPointsSkills;
     this.scoringPointsProjects = scoringPointsProjects;
     this.bonus = bonus;
     this.branch = branch;
     this.categorySkills = skills;
     this.categoryProject = project;
+    this.categoryProject.setQuantity(projectCategoriesQuantity);
+  }
+
+  /***************************************************/
+
+  public Card(int id, Category skills, Bonus bonus, Branch branch)
+  {
+    this.id = id;
+    this.categorySkills = skills;
+    this.bonus = bonus;
+    this.branch = branch;
   }
 
   //Methods

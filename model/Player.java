@@ -34,6 +34,13 @@ public class Player {
   }
 
   //Methods
+  public void addCardProject(Card card)
+  {
+    this.project.add(card);
+  }
+
+  /***************************************************/
+
   public void setName(String name)
   {
     this.name = name;

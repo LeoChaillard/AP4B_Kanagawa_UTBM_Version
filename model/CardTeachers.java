@@ -18,9 +18,9 @@ public class CardTeachers extends Card{
 
   /***************************************************/
 
-  public CardTeachers(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project, Teachers teacher)
+  public CardTeachers(int id, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, int projectCategoriesQuantity,Category project, Teachers teacher)
   {
-    super(id, numberSkills, scoringPointsSkills, scoringPointsProjects,bonus,branch,skills,project);
+    super(id, scoringPointsSkills, scoringPointsProjects,bonus, branch, skills, projectCategoriesQuantity, project);
     this.teacher = teacher;
   }
 

@@ -29,8 +29,10 @@ public class Game implements ActionListener, MouseListener{
   private static final int MAX_PLAYERS = 4;
   private static final int TOTAL_NUMBER_CARDS = 72;
 
-  private static Set pickedUpCards = new HashSet();
+
   private static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
+  private static Set pickedUpCards;
+  private Set starterCards;
   private Window window;
   private Menu menu;
   private Random nominatePlayer;
@@ -57,6 +59,8 @@ public class Game implements ActionListener, MouseListener{
   //Constructor
   public Game()
   {
+    this.pickedUpCards = new HashSet();
+    this.starterCards = new HashSet();
     this.window = new Window();
     this.menu = new Menu();
     this.nominatePlayer = new Random();
@@ -105,6 +109,8 @@ public class Game implements ActionListener, MouseListener{
         resetGame();
 
         createPlayers();
+        distributeStarterCards();
+
         this.window.getBoard().addRow(this.numberOfPlayers);
         this.window.getRightPanel().updateInfos(this.players,this.players.get(this.playerIndex).getName());
 
@@ -144,8 +150,37 @@ public class Game implements ActionListener, MouseListener{
 
   public void distributeStarterCards()
   {
+    for(int i=0; i<this.numberOfPlayers;++i)
+    {
+      try{
+        Card starterCard = cardFromStarters();
+        this.players.get(i).addCardProject(starterCard);
+      } catch(Exception e) {}
+    }
+  }
+
+  /***************************************************/
+
+  public Card cardFromStarters() throws IOException
+  {
+    //Getting random id card
     Random randId = new Random();
-    //Create another Card derivate class for starter cards?
+    int id = randId.nextInt(MAX_PLAYERS+1); //Not taking 0 into account
+    while(id == 0  || this.starterCards.contains(id)) id = randId.nextInt(MAX_PLAYERS+1); //Not taking 0 into account
+    this.starterCards.add(id);
+    //System.out.println(id);
+
+    //Looking into the database for the card attributes
+    String[] data = Files.readAllLines(Paths.get("dataBase/starter_cards.txt")).get(id).split("\t");
+    String[] d = data[2].split("\\*"); //d[0] : nb elements, d[1] : attribute
+
+    /*for(int i=0;i<4;++i)
+        System.out.println(i + ": " + data[i]);
+
+    System.out.println(d[0] + " " + d[1] + "\n");*/
+
+    /* CardType(cardId, skillsCategory, firstBonus, secondBonus, secondBonusQuantity, branch) */
+    return new CardStarter(id, Category.valueOf(data[0]), Bonus.valueOf(data[1]), Bonus.valueOf(d[1]), Integer.parseInt(d[0]), Branch.valueOf(data[3]));
   }
 
   /***************************************************/
@@ -154,22 +189,31 @@ public class Game implements ActionListener, MouseListener{
   {
     //Getting random id card
     Random randId = new Random();
-    int id = randId.nextInt(TOTAL_NUMBER_CARDS);
-    while(pickedUpCards.contains(id)) id = randId.nextInt(TOTAL_NUMBER_CARDS);
+    int id = randId.nextInt(TOTAL_NUMBER_CARDS+1); //Not taking 0 into account
+    while(id == 0  || pickedUpCards.contains(id)) id = randId.nextInt(TOTAL_NUMBER_CARDS+1); //Not taking 0 into account
     pickedUpCards.add(id);
+    //System.out.println(id);
 
     //Looking into the database for the card attributes
-    Card toReturn = null;
+    Card deckCard = null;
     String[] data = Files.readAllLines(Paths.get("dataBase/deck.txt")).get(id).split("\t");
     String[] d = data[6].split("\\*"); //d[0] : nb elements, d[1] : attribute
 
-    //Creating new cards from these attributes
-    if(data[0].equals("Association")) toReturn = new CardAssociations(id, Integer.parseInt(d[0]), Integer.parseInt(data[3]), Integer.parseInt(d[4]), Bonus.valueOf(data[2].toUpperCase()), Branch.valueOf(data[5].toUpperCase()), Category.valueOf(data[1].toUpperCase()), Category.valueOf(d[1].toUpperCase()), Associations.valueOf(data[7].toUpperCase()));
-    else if(data[0].equals("Materials")) toReturn = new CardMaterials(id, Integer.parseInt(d[0]), Integer.parseInt(data[3]), Integer.parseInt(d[4]), Bonus.valueOf(data[2].toUpperCase()), Branch.valueOf(data[5].toUpperCase()), Category.valueOf(data[1].toUpperCase()), Category.valueOf(d[1].toUpperCase()), Materials.valueOf(data[7].toUpperCase()));
-    else if(data[0].equals("Teachers")) toReturn = new CardTeachers(id, Integer.parseInt(d[0]), Integer.parseInt(data[3]), Integer.parseInt(d[4]), Bonus.valueOf(data[2].toUpperCase()), Branch.valueOf(data[5].toUpperCase()), Category.valueOf(data[1].toUpperCase()), Category.valueOf(d[1].toUpperCase()), Teachers.valueOf(data[7].toUpperCase()));
-    else if(data[0].equals("Certificates")) toReturn = new CardCertificates(id, Integer.parseInt(d[0]), Integer.parseInt(data[3]), Integer.parseInt(d[4]), Bonus.valueOf(data[2].toUpperCase()), Branch.valueOf(data[5].toUpperCase()), Category.valueOf(data[1].toUpperCase()), Category.valueOf(d[1].toUpperCase()), Integer.parseInt(data[7]));
+    /*for(int i=0;i<8;++i)
+        System.out.println(i + ": " + data[i]);
 
-    return toReturn;
+    System.out.println(d[0] + " " + d[1]);*/
+
+
+    //Creating new cards from these attributes
+
+    /* CardType(cardId, skillsPoints, projectPoints, bonus, branch, skillsCategory, projectCategoriesQuantity , projectCategory, cardTheme ) */
+    if(data[0].equals("Association")) deckCard = new CardAssociations(id,Integer.parseInt(data[3]), Integer.parseInt(data[4]), Bonus.valueOf(data[2]), Branch.valueOf(data[5]), Category.valueOf(data[1]), Integer.parseInt(d[0]), Category.valueOf(d[1]), Associations.valueOf(data[7]) );
+    else if(data[0].equals("Materials")) deckCard = new CardMaterials(id, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Bonus.valueOf(data[2]), Branch.valueOf(data[5]), Category.valueOf(data[1]), Integer.parseInt(d[0]), Category.valueOf(d[1]), Materials.valueOf(data[7]) );
+    else if(data[0].equals("Teachers")) deckCard = new CardTeachers(id, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Bonus.valueOf(data[2]), Branch.valueOf(data[5]), Category.valueOf(data[1]), Integer.parseInt(d[0]), Category.valueOf(d[1]), Teachers.valueOf(data[7]) );
+    else if(data[0].equals("Certificates")) deckCard = new CardCertificates(id, Integer.parseInt(data[3]), Integer.parseInt(data[4]), Bonus.valueOf(data[2]), Branch.valueOf(data[5]), Category.valueOf(data[1]), Integer.parseInt(d[0]), Category.valueOf(d[1]), Integer.parseInt(data[7]) );
+
+    return deckCard;
   }
 
   /***************************************************/
@@ -251,6 +295,8 @@ public class Game implements ActionListener, MouseListener{
     this.window.getBoard().removeAll();
     this.menu.getResume().setEnabled(true);
     this.numberOfPlayers = 0;
+    this.pickedUpCards.clear();
+    this.starterCards.clear();
   }
 
   /***************************************************/

@@ -6,22 +6,23 @@
 
 package model;
 
-public class CardMaterials extends Card{
-  //Attributs
-  private Materials material;
+public class CardStarter extends Card{
+  //Attributes
+  private Bonus secondBonus;
 
   //Constructors
-  public CardMaterials()
+  public CardStarter()
   {
 
   }
 
   /***************************************************/
 
-  public CardMaterials(int id, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, int projectCategoriesQuantity, Category project, Materials material)
+  public CardStarter(int id, Category skills, Bonus bonus, Bonus secondBonus, int secondBonusQuantity, Branch branch)
   {
-    super(id, scoringPointsSkills, scoringPointsProjects, bonus, branch, skills, projectCategoriesQuantity, project);
-    this.material = material;
+    super(id, skills, bonus, branch);
+    this.secondBonus = secondBonus;
+    this.secondBonus.setQuantity(secondBonusQuantity);
   }
 
   //Methods

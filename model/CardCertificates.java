@@ -18,9 +18,9 @@ public class CardCertificates extends Card{
 
   /***************************************************/
 
-  public CardCertificates(int id, int numberSkills, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, Category project, int certificate)
+  public CardCertificates(int id, int scoringPointsSkills, int scoringPointsProjects, Bonus bonus,Branch branch, Category skills, int projectCategoriesQuantity, Category project, int certificate)
   {
-    super(id,numberSkills, scoringPointsSkills, scoringPointsProjects, bonus,branch,skills,project);
+    super(id, scoringPointsSkills, scoringPointsProjects, bonus, branch, skills, projectCategoriesQuantity, project);
     this.certificate = certificate;
   }
 
