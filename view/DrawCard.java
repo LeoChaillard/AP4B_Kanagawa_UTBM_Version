@@ -16,4 +16,9 @@ import java.awt.Graphics;
      super.fill(g);
    }
 
+   public void draw(Graphics g)
+   {
+     super.draw(g);
+   }
+
  }

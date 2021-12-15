@@ -11,9 +11,9 @@ public class Player {
   //Attributes
   private static final int MAX_PROJECT_ELEMENTS = 13;
 
-  private List<Card> hand[];
+  private List<Card> hand = new ArrayList<Card>(3);
   private List<Card> project = new ArrayList<Card>(MAX_PROJECT_ELEMENTS);
-  private List<Card> temporaryHand[];
+  private List<Card> temporaryHand = new ArrayList<Card>(3);
   private int availableBonus[];
   private int availableSkills[];
   private int acceptedMentions[];
@@ -34,6 +34,29 @@ public class Player {
   }
 
   //Methods
+  public void reset()
+  {
+    hand.clear();
+    temporaryHand.clear();
+    project.clear();
+  }
+
+  /***************************************************/
+
+  public void addCardHand(Card card)
+  {
+    this.hand.add(card);
+  }
+
+  /***************************************************/
+
+  public void addCardTemporaryHand(Card card)
+  {
+    this.temporaryHand.add(card);
+  }
+
+  /***************************************************/
+
   public void addCardProject(Card card)
   {
     this.project.add(card);

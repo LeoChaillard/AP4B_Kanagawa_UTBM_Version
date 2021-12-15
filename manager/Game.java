@@ -17,17 +17,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.Color;
+import java.awt.Cursor;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 
-public class Game implements ActionListener, MouseListener{
+public class Game implements ActionListener, MouseListener, MouseMotionListener{
   //Attributes
   private static final int MAX_PLAYERS = 4;
   private static final int TOTAL_NUMBER_CARDS = 72;
+  private static final int X_ELEMENTS = 4;
+  private static final int Y_ELEMENTS = 3;
 
 
   private static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
@@ -40,7 +44,7 @@ public class Game implements ActionListener, MouseListener{
   private int [] availableMentions;
   private int numberOfPlayers;
   private int playerIndex;
-
+  private boolean isPickingUpColumn;
 
   private enum Actions
   {
@@ -64,36 +68,91 @@ public class Game implements ActionListener, MouseListener{
     this.window = new Window();
     this.menu = new Menu();
     this.nominatePlayer = new Random();
+    this.isPickingUpColumn = true; /*For testing purposes, should be false*/
   }
 
   //Methods
   @Override
   public void mouseClicked(MouseEvent evt)
   {
-    int x = evt.getX();
-    int y = evt.getY();
-    Player player = this.players.get(playerIndex);
+    if(this.isPickingUpColumn)
+    {
+      //System.out.println("x : " + x + " y : " + y);
+      //System.out.println("columnWidth : " + Board.columnWidth + " columnHeight : " + Board.columnHeight);
 
+      Player player = this.players.get(playerIndex);
 
-    //if(true) /*Condition will depend on which column the player clicked*/
-    /*{
-      Card [][] boardSlots = new Card[4][3];
-      boardSlots = window.getBoard().getSlots();
+      for(int i=0;i<this.numberOfPlayers;++i)
+      {
+          int x = evt.getX();
+          int y = evt.getY();
+          //Checking if the player clicked on one of the columns
+          if( (Board.columnsXCoordinate[i] - Board.columnWidth/2 <=x) && (Board.columnsXCoordinate[i] + Board.columnWidth/2 >=x) && (Board.columnsYCoordinate[i] - Board.columnHeight <=y) && (Board.columnsYCoordinate[i] + Board.columnHeight >=y) )
+          {
+            //Add chosen card to player's hand
+            System.out.println("adding cards to temporary hand");
+            Card [][] boardSlots = window.getBoard().getSlots();
+            for(int j=0;j<Y_ELEMENTS;++j) if(boardSlots[i][j] != null) player.addCardTemporaryHand(boardSlots[i][j]);
+            this.window.getBoard().removeColumn(i+1);
 
-      /*To be implemented*/
+            //Next player set up
+            setCurrentPlayer((playerIndex+1)%MAX_PLAYERS);
+            this.isPickingUpColumn = false;
 
-    /*  setCurrentPlayer((playerIndex+1)%4);
-  }*/
-
-
+            //Updating window
+            this.window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            this.window.getBoard().resetHighlight();
+            this.window.getRightPanel().updateInfos(this.players,this.players.get(this.playerIndex).getName());
+            this.window.repaint();
+          }
+      }
+    }
   }
 
   /***************************************************/
 
   @Override
-  public void mousePressed(MouseEvent evt){}
+  public void mouseExited(MouseEvent evt)
+  {
+    this.window.getBoard().resetHighlight();
+    this.window.repaint();
+  }
+
+  /***************************************************/
+
+  @Override
+  public void mouseMoved(MouseEvent e)
+  {
+    if(this.isPickingUpColumn)
+    {
+      for(int i=0;i<this.numberOfPlayers;++i)
+      {
+        int x = e.getX();
+        int y = e.getY();
+
+          //Highlighting a column when the mouse goes over it
+          if( (Board.columnsXCoordinate[i] - Board.columnWidth/2 <=x) && (Board.columnsXCoordinate[i] + Board.columnWidth/2 >=x) && (Board.columnsYCoordinate[i] - Board.columnHeight <=y) && (Board.columnsYCoordinate[i] + Board.columnHeight >=y) )
+          {
+            this.window.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            this.window.getBoard().setHighlight(i, true);
+            this.window.repaint();
+          }
+          else if(this.window.getBoard().isHighlighted(i)) //Going back to the default state
+          {
+            this.window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            this.window.getBoard().setHighlight(i, false);
+            this.window.repaint();
+          }
+      }
+    }
+  }
+
+  /***************************************************/
+
+  @Override
+  public void mouseDragged(MouseEvent e) {}
   public void mouseEntered(MouseEvent evt){}
-  public void mouseExited(MouseEvent evt){}
+  public void mousePressed(MouseEvent evt){}
   public void mouseReleased(MouseEvent evt){}
 
   /***************************************************/
@@ -106,11 +165,13 @@ public class Game implements ActionListener, MouseListener{
     {
         this.window.setVisible(true);
         this.menu.setVisible(false);
+        this.menu.pauseMusic();
         resetGame();
 
         createPlayers();
         distributeStarterCards();
 
+        this.window.getBoard().addRow(this.numberOfPlayers);
         this.window.getBoard().addRow(this.numberOfPlayers);
         this.window.getRightPanel().updateInfos(this.players,this.players.get(this.playerIndex).getName());
 
@@ -121,12 +182,14 @@ public class Game implements ActionListener, MouseListener{
     {
         this.window.setVisible(true);
         this.menu.setVisible(false);
+        this.menu.pauseMusic();
     }
 
     if (evt.getActionCommand() == Actions.MENU.name())
     {
         this.window.setVisible(false);
         this.menu.setVisible(true);
+        this.menu.resumeMusic();
     }
 
     //Players Choices
@@ -137,7 +200,7 @@ public class Game implements ActionListener, MouseListener{
 
     if (evt.getActionCommand() == Choices.PICKUP_COLUMN.name())
     {
-
+      this.isPickingUpColumn = true;
     }
 
     if (evt.getActionCommand() == Choices.KEEP_CARD.name())
@@ -204,7 +267,6 @@ public class Game implements ActionListener, MouseListener{
 
     System.out.println(d[0] + " " + d[1]);*/
 
-
     //Creating new cards from these attributes
 
     /* CardType(cardId, skillsPoints, projectPoints, bonus, branch, skillsCategory, projectCategoriesQuantity , projectCategory, cardTheme ) */
@@ -241,7 +303,7 @@ public class Game implements ActionListener, MouseListener{
     while(this.numberOfPlayers < 2 || this.numberOfPlayers > 4)
     {
       String tempNumberPlayers = JOptionPane.showInputDialog( "Number of players (2-4) :" );
-      if(isNumeric(tempNumberPlayers) && !isEmpty(tempNumberPlayers)) setNumberPlayers(Integer.parseInt(tempNumberPlayers));
+      if(!isEmpty(tempNumberPlayers) && isNumeric(tempNumberPlayers)) setNumberPlayers(Integer.parseInt(tempNumberPlayers));
     }
     setCurrentPlayer(nominatePlayer.nextInt(this.numberOfPlayers));
 
@@ -267,6 +329,10 @@ public class Game implements ActionListener, MouseListener{
     //Initializing windows
     this.window.initWindow();
     this.menu.initMenu();
+
+    //Mouse listeners
+    this.window.getBoard().addMouseListener(this);
+    this.window.getBoard().addMouseMotionListener(this);
 
     //Adding action listeners for menu interactions
     this.menu.getNewGame().addActionListener(this);
@@ -297,6 +363,7 @@ public class Game implements ActionListener, MouseListener{
     this.numberOfPlayers = 0;
     this.pickedUpCards.clear();
     this.starterCards.clear();
+    for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
   }
 
   /***************************************************/

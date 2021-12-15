@@ -22,4 +22,15 @@ import java.awt.Graphics;
 
      g.fillRect(x-width/2,y-height/2,width,height);
    }
+
+   public void draw(Graphics g)
+   {
+     int width = getWidth();
+     int height = getHeight();
+
+     int x = getX();
+     int y = getY();
+
+     g.drawRect(x-width/2,y-height/2,width,height);
+   }
  }

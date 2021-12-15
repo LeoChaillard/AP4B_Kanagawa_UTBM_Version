@@ -17,6 +17,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.EventQueue;
 
+import java.io.*;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.LineUnavailableException;
+
+
 /**
  * Class defining the game's menu.
  * It contains an ImagePanel object in order to
@@ -28,9 +33,11 @@ public class Menu extends JFrame{
   private JButton newGame;
   private ImageIcon icon;
   private ImagePanel background;
+  private SoundPlayer music;
 
   private static final int WINDOW_HEIGHT = 600;
   private static final int WINDOW_LENGTH = 500;
+  private static String MUSIC_PATH = "music/POL-ocean-floor-short.wav";
 
   //Constructor
   public Menu()
@@ -39,6 +46,12 @@ public class Menu extends JFrame{
     this.background = new ImagePanel(icon.getImage() );
     this.resume = new JButton("Resume");
     this.newGame = new JButton("New game");
+
+    try{
+    this.music = new SoundPlayer(MUSIC_PATH);
+    } catch(IOException ioe) {}
+    catch(UnsupportedAudioFileException unsupported) {}
+    catch(LineUnavailableException line) {}
   }
 
   //Methods
@@ -71,6 +84,40 @@ public class Menu extends JFrame{
     this.setContentPane(background);
     this.add(resume);
     this.add(newGame);
+
+    //Play music
+    this.playMusic();
+  }
+
+  /***************************************************/
+
+  public void playMusic()
+  {
+    try{
+    this.music.play();
+    } catch(Exception e) {}
+  }
+
+  /***************************************************/
+
+  public void resumeMusic()
+  {
+    try{
+      this.music.resume();
+    } catch(IOException ioe) {}
+    catch(UnsupportedAudioFileException unsupported) {}
+    catch(LineUnavailableException line) {}
+  }
+
+  /***************************************************/
+
+  public void pauseMusic()
+  {
+    try{
+      this.music.pause();
+    } catch(IOException ioe) {}
+    catch(UnsupportedAudioFileException unsupported) {}
+    catch(LineUnavailableException line) {}
   }
 
   /***************************************************/
