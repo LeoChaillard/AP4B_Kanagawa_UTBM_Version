@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 
 import java.awt.Dimension;
 import java.awt.BorderLayout;
@@ -23,6 +24,7 @@ public class Window extends JFrame{
 
   private Board boardPanel;
   private RightPanel rightPanel;
+  private JButton menuButton;
 
   //Constructor
   public Window()
@@ -33,6 +35,7 @@ public class Window extends JFrame{
 
   public void initWindow()
   {
+    //Setting windows' parameters
     this.setTitle("Kanagawa");
     this.setBounds(10,10,WINDOW_LENGTH,WINDOW_HEIGHT);
     this.setResizable(false);
@@ -40,8 +43,19 @@ public class Window extends JFrame{
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLayout(new BorderLayout());
 
-    this.getContentPane().add(rightPanel,BorderLayout.EAST);
-    this.getContentPane().add(boardPanel,BorderLayout.CENTER);
+    //Menu Button
+    ImageIcon gear = new ImageIcon("view/menu_gear.png");
+    this.menuButton = new JButton(gear);
+    this.menuButton.setBorder(BorderFactory.createEmptyBorder());
+    this.menuButton.setBorderPainted(false);
+    this.menuButton.setOpaque(false);
+    this.menuButton.setContentAreaFilled(false);
+    this.menuButton.setBounds(940, 720, 40, 40);
+
+    //Adding elements to frame
+    this.getContentPane().add(this.menuButton);
+    this.getContentPane().add(this.rightPanel,BorderLayout.EAST);
+    this.getContentPane().add(this.boardPanel,BorderLayout.CENTER);
   }
 
   /***************************************************/
@@ -50,14 +64,14 @@ public class Window extends JFrame{
 
   /***************************************************/
 
-  public JButton getMenuButton(){return this.rightPanel.getMenuButton();}
+  public JButton getMenuButton(){return this.menuButton;}
 
   /***************************************************/
 
   public RightPanel getRightPanel(){return this.rightPanel;}
 
   /***************************************************/
-  
+
   public void draw () {
     EventQueue.invokeLater(() -> {
     setVisible(true);

@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.Color;
 import java.awt.Cursor;
 
@@ -34,7 +35,7 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
   private static final int Y_ELEMENTS = 3;
 
 
-  private static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
+  public static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
   private static Set pickedUpCards;
   private Set starterCards;
   private Window window;
@@ -53,13 +54,6 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
     RESUME
   }
 
-  private enum Choices
-  {
-    PASS,
-    PICKUP_COLUMN,
-    KEEP_CARD
-  }
-
   //Constructor
   public Game()
   {
@@ -68,7 +62,7 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
     this.window = new Window();
     this.menu = new Menu();
     this.nominatePlayer = new Random();
-    this.isPickingUpColumn = true; /*For testing purposes, should be false*/
+    this.isPickingUpColumn = false;
   }
 
   //Methods
@@ -95,14 +89,9 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
             for(int j=0;j<Y_ELEMENTS;++j) if(boardSlots[i][j] != null) player.addCardTemporaryHand(boardSlots[i][j]);
             this.window.getBoard().removeColumn(i+1);
 
-            //Next player set up
-            setCurrentPlayer((playerIndex+1)%MAX_PLAYERS);
-            this.isPickingUpColumn = false;
-
             //Updating window
             this.window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             this.window.getBoard().resetHighlight();
-            this.window.getRightPanel().updateInfos(this.players,this.players.get(this.playerIndex).getName());
             this.window.repaint();
           }
       }
@@ -173,7 +162,7 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
 
         this.window.getBoard().addRow(this.numberOfPlayers);
         this.window.getBoard().addRow(this.numberOfPlayers);
-        this.window.getRightPanel().updateInfos(this.players,this.players.get(this.playerIndex).getName());
+        this.window.getRightPanel().updateInfos(this.players.get(this.playerIndex).getName());
 
         this.window.repaint();
     }
@@ -190,22 +179,6 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
         this.window.setVisible(false);
         this.menu.setVisible(true);
         this.menu.resumeMusic();
-    }
-
-    //Players Choices
-    if (evt.getActionCommand() == Choices.PASS.name())
-    {
-
-    }
-
-    if (evt.getActionCommand() == Choices.PICKUP_COLUMN.name())
-    {
-      this.isPickingUpColumn = true;
-    }
-
-    if (evt.getActionCommand() == Choices.KEEP_CARD.name())
-    {
-
     }
   }
 
@@ -296,9 +269,6 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
 
   private void createPlayers()
   {
-    //Creating players with default names
-    for(int i = 0;i<4;++i) this.players.add(new Player("Player " + (i+1)));
-
     //Asking for number of players
     while(this.numberOfPlayers < 2 || this.numberOfPlayers > 4)
     {
@@ -306,6 +276,9 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
       if(!isEmpty(tempNumberPlayers) && isNumeric(tempNumberPlayers)) setNumberPlayers(Integer.parseInt(tempNumberPlayers));
     }
     setCurrentPlayer(nominatePlayer.nextInt(this.numberOfPlayers));
+
+    //Creating players with default names
+    for(int i = 0;i<this.numberOfPlayers;++i) this.players.add(new Player("Player " + (i+1)));
 
     //Asking for the player's name
     for(int i = 0;i<this.numberOfPlayers;++i)
@@ -334,20 +307,55 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
     this.window.getBoard().addMouseListener(this);
     this.window.getBoard().addMouseMotionListener(this);
 
-    //Adding action listeners for menu interactions
+    //Adding listeners for menu interactions
     this.menu.getNewGame().addActionListener(this);
+    this.menu.getNewGame().addMouseListener(new PointingCursorListener(this.menu));
     this.menu.getResume().addActionListener(this);
+    this.menu.getResume().addMouseListener(new PointingCursorListener(this.menu));
+    this.window.getMenuButton().addMouseListener(new PointingCursorListener(this.window));
     this.window.getMenuButton().addActionListener(this);
 
-    //Setting action commands for menu interactions
+    //Setting action commands for menu buttons
     this.menu.getNewGame().setActionCommand(Actions.NEWGAME.name());
     this.menu.getResume().setActionCommand(Actions.RESUME.name());
     this.window.getMenuButton().setActionCommand(Actions.MENU.name());
 
     //Adding action listeners for player choices
+    this.window.getRightPanel().getPassLabel().addMouseListener(new PointingCursorListener(this.window));
+    this.window.getRightPanel().getPassLabel().addMouseListener(new MouseAdapter(){
+      @Override
+      public void mouseClicked(MouseEvent evt)
+      {
+        if(!isPickingUpColumn && players.get(playerIndex).getTemporaryHand().isEmpty())
+        {
+          nextTurn();
+        }
+        else
+        {
+          JOptionPane msg = new JOptionPane();
+          msg.showMessageDialog( window, "Can't pass while picking up a column!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+        }
+      }
+    });
 
-
-    //Setting action command for player choices
+    this.window.getRightPanel().getPickColumnLabel().addMouseListener(new PointingCursorListener(this.window));
+    this.window.getRightPanel().getPickColumnLabel().addMouseListener(new MouseAdapter(){
+      @Override
+      public void mouseClicked(MouseEvent evt)
+      {
+        if(!isPickingUpColumn)
+        {
+          JOptionPane msg = new JOptionPane();
+          msg.showMessageDialog( window, "Please click on one available column that you wish", "Pick one column!", JOptionPane.INFORMATION_MESSAGE);
+          isPickingUpColumn = true;
+        }
+        else
+        {
+          JOptionPane msg = new JOptionPane();
+          msg.showMessageDialog( window, "Can't pick another column during same turn!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+        }
+      }
+    });
 
 
     this.menu.getResume().setEnabled(false);
@@ -358,13 +366,15 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
 
   public void resetGame()
   {
+    for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
     this.window.getBoard().removeAll();
     this.menu.getResume().setEnabled(true);
-    this.numberOfPlayers = 0;
     this.pickedUpCards.clear();
     this.starterCards.clear();
-    for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
+    this.numberOfPlayers = 0;
+    this.isPickingUpColumn = false;
   }
+
 
   /***************************************************/
 
@@ -406,7 +416,8 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
 
   public void nextTurn()
   {
-
+    setCurrentPlayer((playerIndex+1)%numberOfPlayers);
+    window.getRightPanel().updateInfos(players.get(playerIndex).getName());
   }
 
   /***************************************************/

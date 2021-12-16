@@ -75,10 +75,11 @@ public class Menu extends JFrame{
     this.setLayout(null);
 
     //Buttons
-    newGame.setBackground(Color.WHITE);
-    newGame.setBounds(175,420,147,70);
-    resume.setBackground(Color.WHITE);
-    resume.setBounds(175,325,147,70);
+    this.newGame.setBackground(Color.WHITE);
+    this.newGame.setBounds(175,420,147,70);
+
+    this.resume.setBackground(Color.WHITE);
+    this.resume.setBounds(175,325,147,70);
 
     //Adding components to the JFrame
     this.setContentPane(background);

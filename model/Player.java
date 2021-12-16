@@ -64,6 +64,10 @@ public class Player {
 
   /***************************************************/
 
+  public List<Card> getTemporaryHand(){return this.temporaryHand;}
+
+  /***************************************************/
+
   public void setName(String name)
   {
     this.name = name;
