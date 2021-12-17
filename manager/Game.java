@@ -69,7 +69,7 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
   @Override
   public void mouseClicked(MouseEvent evt)
   {
-    if(this.isPickingUpColumn)
+    if(this.isPickingUpColumn && this.players.get(this.playerIndex).getTemporaryHand().isEmpty())
     {
       //System.out.println("x : " + x + " y : " + y);
       //System.out.println("columnWidth : " + Board.columnWidth + " columnHeight : " + Board.columnHeight);
@@ -112,7 +112,7 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
   @Override
   public void mouseMoved(MouseEvent e)
   {
-    if(this.isPickingUpColumn)
+    if(this.isPickingUpColumn && this.players.get(this.playerIndex).getTemporaryHand().isEmpty())
     {
       for(int i=0;i<this.numberOfPlayers;++i)
       {
@@ -160,7 +160,6 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
         createPlayers();
         distributeStarterCards();
 
-        this.window.getBoard().addRow(this.numberOfPlayers);
         this.window.getBoard().addRow(this.numberOfPlayers);
         this.window.getRightPanel().updateInfos(this.players.get(this.playerIndex).getName());
 
@@ -367,6 +366,7 @@ public class Game implements ActionListener, MouseListener, MouseMotionListener{
   public void resetGame()
   {
     for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
+    this.players.clear();
     this.window.getBoard().removeAll();
     this.menu.getResume().setEnabled(true);
     this.pickedUpCards.clear();

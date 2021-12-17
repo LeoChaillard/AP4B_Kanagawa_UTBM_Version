@@ -36,9 +36,9 @@ public class Player {
   //Methods
   public void reset()
   {
-    hand.clear();
-    temporaryHand.clear();
-    project.clear();
+    this.hand.clear();
+    this.temporaryHand.clear();
+    this.project.clear();
   }
 
   /***************************************************/
@@ -84,14 +84,7 @@ public class Player {
 
   public void moveHours(int a, Category b)
   {
-    // code
-  }
-
-  /***************************************************/
-
-  public void pickUpCards(int index)
-  {
-
+  
   }
 
   /***************************************************/

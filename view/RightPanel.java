@@ -71,7 +71,6 @@ public class RightPanel extends JPanel{
     this.pickUpColumn.setVerticalAlignment(SwingConstants.TOP);
 
 
-
     //Adding the components to the panel
     this.add(this.gameInfos);
     this.add(this.passTurn);
