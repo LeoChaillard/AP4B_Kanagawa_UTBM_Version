@@ -5,7 +5,10 @@
  ************************************************************************/
 
 package view;
+import listeners.PointingCursorListener;
 
+import javax.swing.JInternalFrame;
+import javax.swing.KeyStroke;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,12 +16,18 @@ import javax.swing.JLayeredPane;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
+import javax.swing.AbstractAction;
 
+import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class Window extends JFrame{
   //Attributes
@@ -31,6 +40,8 @@ public class Window extends JFrame{
   private TreatCardsPane treatCardsPanel;
   private JLayeredPane layeredPane;
   private JButton menuButton;
+  private JButton inventoryButton;
+  private Inventory inventory;
 
   //Constructor
   public Window()
@@ -39,6 +50,7 @@ public class Window extends JFrame{
     this.rightPanel = new RightPanel(RIGHT_SIDE);
     this.treatCardsPanel = new TreatCardsPane();
     this.layeredPane = new JLayeredPane();
+    this.inventory = new Inventory();
   }
 
   public void initWindow()
@@ -60,12 +72,41 @@ public class Window extends JFrame{
     this.menuButton.setContentAreaFilled(false);
     this.menuButton.setBounds(940, 720, 40, 40);
 
+    //Inventory button
+    this.inventoryButton = new JButton("Inventory (E)");
+    this.inventoryButton.setBorder(BorderFactory.createEmptyBorder());
+    this.inventoryButton.setBorderPainted(false);
+    this.inventoryButton.setOpaque(false);
+    this.inventoryButton.setContentAreaFilled(false);
+    this.inventoryButton.setBounds(730, 720, 200, 40);
+
+    //Mapping 'E' key to Inventory opening/closing
+    this.inventoryButton.getInputMap(this.inventoryButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "Inventory");
+    this.inventoryButton.getActionMap().put("Inventory", new AbstractAction(){
+      @Override
+      public void actionPerformed(ActionEvent evt)
+      {
+        openCloseInventory();
+      }
+    });
+    //Action listener for clicking the inventoryButton
+    this.inventoryButton.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent evt)
+      {
+        openCloseInventory();
+      }
+    });
+    this.inventoryButton.addMouseListener(new PointingCursorListener(this));
+
     //Adding elements to frame
     this.getContentPane().add(this.menuButton);
+    this.getContentPane().add(this.inventoryButton);
     this.getContentPane().add(this.rightPanel,BorderLayout.EAST);
     this.getContentPane().add(this.layeredPane, BorderLayout.CENTER);
 
     this.layeredPane.setPreferredSize(new Dimension(WINDOW_HEIGHT,WINDOW_LENGTH-RIGHT_SIDE));
+
+    this.layeredPane.add(inventory, 2);
 
     this.boardPanel.setSize(this.layeredPane.getPreferredSize());
     this.boardPanel.setLocation(0,0);
@@ -73,10 +114,15 @@ public class Window extends JFrame{
 
     this.treatCardsPanel.setSize(this.layeredPane.getPreferredSize());
     this.treatCardsPanel.setLocation(0,0);
-
     this.layeredPane.add(this.treatCardsPanel, 0);
+  }
 
+  /***************************************************/
 
+  public void openCloseInventory()
+  {
+    if(!this.inventory.isVisible()) this.inventory.setVisible(true);
+    else this.inventory.setVisible(false);
   }
 
   /***************************************************/

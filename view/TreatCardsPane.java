@@ -32,26 +32,27 @@ import java.awt.Dimension;
      this.setMinimumSize(new Dimension(800,0));
      this.setPreferredSize(new Dimension(800,0));
      this.setVisible(false);
+     this.setOpaque(false);
 
      //Work on project JLabel
      Font font = new Font("Arial",Font.BOLD,25);
      this.workProject = new JLabel("Work on project");
      this.workProject.setFont(font);
-     this.workProject.setForeground(Color.WHITE);
+     this.workProject.setForeground(Color.BLACK);
      this.workProject.setHorizontalAlignment(SwingConstants.CENTER);
      //this.workProject.setVerticalAlignment(SwingConstants.LEFT);
 
      //Learn new skills JLabel
      this.learnSkills = new JLabel("Learn new skills");
      this.learnSkills.setFont(font);
-     this.learnSkills.setForeground(Color.WHITE);
+     this.learnSkills.setForeground(Color.BLACK);
      this.learnSkills.setHorizontalAlignment(SwingConstants.CENTER);
 
 
      //Keep card in hand JLabel
      this.keepCard = new JLabel("Keep card in hand");
      this.keepCard.setFont(font);
-     this.keepCard.setForeground(Color.WHITE);
+     this.keepCard.setForeground(Color.BLACK);
      this.keepCard.setHorizontalAlignment(SwingConstants.CENTER);
 
      this.add(this.workProject);
@@ -68,9 +69,11 @@ import java.awt.Dimension;
    /***************************************************/
 
    @Override
-   public void paint(Graphics g)
+   protected void paintComponent(Graphics g) //Painting the background to get the transparency effect
    {
-     super.paint(g);
+     g.setColor( getBackground() );
+     g.fillRect(0,0,getWidth(),getHeight());
+     super.paintComponent(g);
    }
 
 
