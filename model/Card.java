@@ -48,59 +48,58 @@ public abstract class Card {
   }
 
   //Methods
-  public void setid(int id){
+  public void setId(int id){
     this.id = id;
   }
 
-  public int getid(){
+  public int getId(){
     return this.id;
   }
 
-  public void setscoringPointsSkills(int scs){
+  public void setScoringPointsSkills(int scs){
     this.scoringPointsSkills = scs;
   }
 
-  public int getscoringPointsSkills(){
+  public int getScoringPointsSkills(){
     return this.scoringPointsSkills;
   }
 
-  public void setscoringPointsProjects(int scp){
+  public void setScoringPointsProjects(int scp){
     this.id = scp;
   }
 
-  public int getscoringPointsProjects(){
+  public int getScoringPointsProjects(){
     return this.scoringPointsProjects;
   }
 
-  public void setbonus(Bonus bonus){
+  public void setBonus(Bonus bonus){
     this.bonus = bonus;
   }
 
-  public Bonus getbonus(){
+  public Bonus getBonus(){
     return this.bonus;
   }
 
-  public void setbranch(Branch branch){
+  public void setBranch(Branch branch){
     this.branch = branch;
   }
 
-  public Branch getbranch(){
+  public Branch getBranch(){
     return this.branch;
   }
 
-  public void setcategorySkills(Category cs){
+  public void setCategorySkills(Category cs){
     this.categorySkills = cs;
   }
-
-  Category getcategorySkills(){
+  public Category getCategorySkills(){
     return this.categorySkills;
   }
 
-  public void setcategoryProject(Category cp){
+  public void setCategoryProject(Category cp){
     this.categoryProject = cp;
   }
 
-  Category getcategoryProject(){
+  public Category getCategoryProject(){
     return this.categoryProject;
   }
 

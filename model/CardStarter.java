@@ -26,11 +26,10 @@ public class CardStarter extends Card{
   }
 
   //Methods
-
-  //redéfinir isUsed()
   public boolean isUsed()
   {
-    //code
     return false;
   }
+
+  public Bonus getSecondBonus(){return this.secondBonus;}
  }

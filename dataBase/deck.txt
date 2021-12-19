@@ -1,7 +1,7 @@
-Back	A_Landscape	A_Bonus	A_Points	E_Points	E_Season	E_Landscape	E_Subject
+Back	A_Landscape	A_Bonus	A_Points	E_Points  E_Branch  E_Landscape	E_Subject
 Association	T2S	NULL	0	0	ENERGIE	1*T2S	AE
 Association	TM	NULL	0	1	EDIM	2*EC	BDS
-Association	NULL	NULL	1	0	IMSI	1*T2S	NULL	
+Association	NULL	NULL	1	0	IMSI	1*T2S	NULL
 Association	JOKER	NULL	-2	0	ENERGIE	1*TM	NULL
 Association	TM	NULL	0	0	EDIM	1*T2S	BDS
 Association	EC	NULL	0	1	GMC	2*CS	BDF

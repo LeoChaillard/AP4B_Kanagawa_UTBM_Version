@@ -8,6 +8,8 @@ package view;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
@@ -15,6 +17,8 @@ import javax.swing.BorderFactory;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Color;
 
 public class Window extends JFrame{
   //Attributes
@@ -24,6 +28,8 @@ public class Window extends JFrame{
 
   private Board boardPanel;
   private RightPanel rightPanel;
+  private TreatCardsPane treatCardsPanel;
+  private JLayeredPane layeredPane;
   private JButton menuButton;
 
   //Constructor
@@ -31,6 +37,8 @@ public class Window extends JFrame{
   {
     this.boardPanel = new Board();
     this.rightPanel = new RightPanel(RIGHT_SIDE);
+    this.treatCardsPanel = new TreatCardsPane();
+    this.layeredPane = new JLayeredPane();
   }
 
   public void initWindow()
@@ -55,8 +63,25 @@ public class Window extends JFrame{
     //Adding elements to frame
     this.getContentPane().add(this.menuButton);
     this.getContentPane().add(this.rightPanel,BorderLayout.EAST);
-    this.getContentPane().add(this.boardPanel,BorderLayout.CENTER);
+    this.getContentPane().add(this.layeredPane, BorderLayout.CENTER);
+
+    this.layeredPane.setPreferredSize(new Dimension(WINDOW_HEIGHT,WINDOW_LENGTH-RIGHT_SIDE));
+
+    this.boardPanel.setSize(this.layeredPane.getPreferredSize());
+    this.boardPanel.setLocation(0,0);
+    this.layeredPane.add(this.boardPanel, 1);
+
+    this.treatCardsPanel.setSize(this.layeredPane.getPreferredSize());
+    this.treatCardsPanel.setLocation(0,0);
+
+    this.layeredPane.add(this.treatCardsPanel, 0);
+
+
   }
+
+  /***************************************************/
+
+  public TreatCardsPane getTreatCardsPane(){return this.treatCardsPanel;}
 
   /***************************************************/
 

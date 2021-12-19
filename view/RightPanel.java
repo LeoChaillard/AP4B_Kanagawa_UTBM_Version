@@ -33,6 +33,10 @@ public class RightPanel extends JPanel{
   //Attributes
   private static final float ELEMENT_SIZE = 0.8f;
   private static final float Y_ELEMENTS = 3;
+  public static float temporaryCardXCoordinate; //At the middle
+  public static float temporaryCardYCoordinate; //At the middle
+  public static float temporaryCardWidth;
+  public static float temporaryCardHeight;
 
   private JLabel gameInfos;
   private JLabel passTurn;
@@ -99,9 +103,10 @@ public class RightPanel extends JPanel{
   {
     super.paint(g);
 
-    //Getting size of the window
+    //Getting size of the panel
     float width = getWidth();
     float height = getHeight();
+
 
     //Direction
     Direction d = new Direction(ELEMENT_SIZE/2 + 0.09f, ELEMENT_SIZE/2 + 0.1f);
@@ -122,6 +127,8 @@ public class RightPanel extends JPanel{
     card.setDirection(d);
     card.setScale(width, height/3);
     card.setSide(ELEMENT_SIZE);
+    this.temporaryCardWidth = card.getWidth();
+    this.temporaryCardHeight = card.getHeight();
 
     //Strings
     DrawString string = new DrawString();
@@ -136,20 +143,20 @@ public class RightPanel extends JPanel{
     string.draw(g,"Temporary Hand");
 
     d.resetMove();
-
     d.down(0.5f);
-    temporary.draw(g2);
 
     //Temporary Cards
+    temporary.draw(g2);
     g.setColor(Color.lightGray);
+    this.temporaryCardXCoordinate = card.getX();
+    this.temporaryCardYCoordinate = card.getY();
     for(Player p : Game.players)
     {
       for(Card c : p.getTemporaryHand())
-        {
-          if(c != null) card.fill(g);
-        }
+      {
+        if(c != null) card.fill(g);
+      }
     }
-
 
   }
 }

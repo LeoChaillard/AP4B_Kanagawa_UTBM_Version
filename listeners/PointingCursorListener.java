@@ -1,4 +1,4 @@
-package view;
+package listeners;
 
 import javax.swing.JFrame;
 
@@ -30,7 +30,7 @@ public class PointingCursorListener implements MouseListener{
   }
 
   /***************************************************/
-  
+
   public void mouseExited(MouseEvent evt)
   {
     this.window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

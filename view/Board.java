@@ -31,8 +31,8 @@ public class Board extends JPanel{
   private static final float CARD_SIZE = 0.80f;
   private static final Card [][] slots = new Card[X_ELEMENTS][Y_ELEMENTS]; //Origin (0,0) at the bottom left corner
   private static final boolean [][] hiddenCards = {{true,false,false}, {false,true,false}, {false,false,true}, {true,false,false}}; //Origin (0,0) at the bottom left corner
-  public static final float [] columnsXCoordinate = new float[X_ELEMENTS];
-  public static final float [] columnsYCoordinate = new float[X_ELEMENTS];
+  public static final float [] columnsXCoordinate = new float[X_ELEMENTS]; //At the middle
+  public static final float [] columnsYCoordinate = new float[X_ELEMENTS]; //At the middle
   public static float columnWidth;
   public static float columnHeight;
 
@@ -42,6 +42,7 @@ public class Board extends JPanel{
   //Constructor
   public Board()
   {
+    this.setOpaque(false);
     this.addedRows = 0;
     this.highlightColumns = new boolean[X_ELEMENTS];
     resetHighlight();
@@ -69,6 +70,13 @@ public class Board extends JPanel{
   /***************************************************/
 
   public boolean isHighlighted(int col){return this.highlightColumns[col];}
+
+  /***************************************************/
+
+  public boolean isColumnEmpty(int col)
+  {
+    return slots[col][0] == null && slots[col][1] == null && slots[col][2] == null;
+  }
 
   /***************************************************/
 
@@ -143,16 +151,7 @@ public class Board extends JPanel{
     //Drawing Columns
     for(int i =0;i<X_ELEMENTS;++i)
     {
-      if(this.highlightColumns[i])
-      {
-        /*Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(10));
-        col.draw(g2);*/
-
-        //g.setColor(new Color(253,241,184,100));
-        g.setColor(new Color(153,153,153,50));
-      }
+      if(this.highlightColumns[i]) g.setColor(new Color(153,153,153,50));
       else g.setColor(new Color(0xfdf1b8));
 
       col.fill(g);
@@ -160,8 +159,6 @@ public class Board extends JPanel{
       this.columnsYCoordinate[i] = col.getY();
       colDir.right(1);
     }
-
-
 
 
     //Drawing board and cards
