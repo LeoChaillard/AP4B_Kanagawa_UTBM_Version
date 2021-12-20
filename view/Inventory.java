@@ -8,6 +8,7 @@ package view;
 import model.*;
 import manager.*;
 
+import javax.swing.JTabbedPane;
 import javax.swing.JInternalFrame;
 import javax.swing.KeyStroke;
 import javax.swing.JPanel;
@@ -36,9 +37,13 @@ public class Inventory extends JInternalFrame{
   private static final int Y_ELEMENTS = 4;
   private static final float ELEMENT_SIZE = 0.96f;
   private static final float CARD_SIZE = 0.90f;
+  private static final int LINE_ELEMENTS = X_ELEMENTS - 2;
 
   private ImageIcon icon;
   private ImagePanel background;
+  private JTabbedPane tabbedPane;
+  private InventoryCardsTab firstTab;
+  private InventoryItemsTab secondTab;
 
   //Constructor
   public Inventory()
@@ -52,93 +57,14 @@ public class Inventory extends JInternalFrame{
     setLocation(0,260);
     setOpaque(false);
 
-    this.icon = new ImageIcon("view/icon.jpg");
-    this.background = new ImagePanel(icon.getImage());
-    this.setContentPane(background);
+    this.firstTab = new InventoryCardsTab();
+    this.secondTab = new InventoryItemsTab();
+
+    this.tabbedPane = new JTabbedPane();
+    this.tabbedPane.addTab("Cards", new ImageIcon(), firstTab);
+    this.tabbedPane.addTab("Items", new ImageIcon(), secondTab);
+
+    this.add(this.tabbedPane);
   }
 
-  //Methods
-  @Override
-  public void paint(Graphics g)
-  {
-    super.paint(g);
-    this.setBackground(Color.WHITE);
-
-    //Getting size of the window
-    float width = getWidth();
-    float height = getHeight();
-
-    //Direction
-    Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 0.25f);
-    d.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
-
-    //Rectangles
-    Rectangle rec = new Rectangle();
-    rec.setDirection(d);
-    rec.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
-    rec.setSide(ELEMENT_SIZE);
-
-    //Cards
-    DrawCard card = new DrawCard();
-    card.setDirection(d);
-    card.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
-    card.setSide(CARD_SIZE);
-
-    //Strings
-    DrawString string = new DrawString();
-    string.setDirection(d);
-    string.setScale(width/X_ELEMENTS, height/Y_ELEMENTS);
-    string.setSide(1.0f);
-
-    //Drawing project cards
-    Graphics2D g2 = (Graphics2D) g;
-    g2.setStroke(new BasicStroke(2));
-    for(int j=0;j<2;++j)
-    {
-      d.right(1);
-      for(int i=0;i<X_ELEMENTS-2;++i)
-      {
-        g2.setColor(new Color(0x484339));
-        rec.draw(g2);
-
-        g.setColor(Color.lightGray);
-        card.fill(g);
-        d.right(1);
-      }
-      d.resetMove();
-      d.down(1);
-    }
-
-    //Drawing cards in hand
-    d.resetMove();
-    d.down(2.50f);
-    d.right(1);
-
-    for(int i=0;i<X_ELEMENTS-2;++i)
-    {
-      g2.setColor(new Color(0x605A4D));
-      rec.draw(g2);
-
-      g.setColor(Color.lightGray);
-      card.fill(g);
-      d.right(1);
-    }
-
-    //Drawing Strings
-    d.resetMove();
-    d.up(0.5f);
-    d.right(0.5f);
-
-    g.setFont(new Font("Baskerville Old Face", Font.BOLD, 30));
-    g.setColor(new Color(0x484339));
-    string.draw(g,"Project");
-
-    g.setColor(new Color(0x605A4D));
-    d.down(2.50f);
-    string.draw(g,"Hand");
-
-
-
-
-  }
 }

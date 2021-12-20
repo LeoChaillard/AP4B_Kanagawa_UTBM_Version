@@ -13,11 +13,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
@@ -47,7 +52,7 @@ public class RightPanel extends JPanel{
   {
     //Set up of the panel
     this.setBackground(new Color(0xF2E1C1));
-    this.setLayout(new GridLayout(3,1));
+    this.setLayout(new GridBagLayout());
     this.setMinimumSize(new Dimension(size,0));
     this.setPreferredSize(new Dimension(size,0));
 
@@ -55,30 +60,42 @@ public class RightPanel extends JPanel{
     this.gameInfos = new JLabel();
     Font font1 = new Font("Arial", Font.BOLD,20);
     this.gameInfos.setFont(font1);
-    this.gameInfos.setForeground(Color.BLACK);
-    this.gameInfos.setHorizontalAlignment(SwingConstants.CENTER);
-    this.gameInfos.setVerticalAlignment(SwingConstants.TOP);
 
     //JLabels for the available actions
     Font font2 = new Font("Arial", Font.BOLD,25);
     this.passTurn = new JLabel("PASS TURN");
     this.passTurn.setFont(font2);
-    this.passTurn.setForeground(Color.BLACK);
-    this.passTurn.setHorizontalAlignment(SwingConstants.CENTER);
-    this.passTurn.setVerticalAlignment(SwingConstants.BOTTOM);
 
     Font font3 = new Font("Arial", Font.BOLD,20);
     this.pickUpColumn = new JLabel("PICK UP COLUMN");
     this.pickUpColumn.setFont(font3);
-    this.pickUpColumn.setForeground(Color.BLACK);
-    this.pickUpColumn.setHorizontalAlignment(SwingConstants.CENTER);
-    this.pickUpColumn.setVerticalAlignment(SwingConstants.TOP);
+
+    //GridBagConstraints and adding components
+    GridBagConstraints c = new GridBagConstraints();
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.anchor = GridBagConstraints.PAGE_START;
+    c.gridx = 0;
+    c.gridy = 0;
+    c.weighty = 0.5;
+    c.insets = new Insets(0,0,0,0);
+    this.add(this.gameInfos,c);
+
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.anchor = GridBagConstraints.PAGE_END;
+    c.gridx = 0;
+    c.gridy = 1;
+    c.weighty = 0.5;
+    c.insets = new Insets(0,0,5,0);
+    this.add(this.passTurn,c);
 
 
-    //Adding the components to the panel
-    this.add(this.gameInfos);
-    this.add(this.passTurn);
-    this.add(this.pickUpColumn);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.anchor = GridBagConstraints.PAGE_START;
+    c.gridx = 0;
+    c.gridy = 2;
+    c.weighty = 0.5;
+    c.insets = new Insets(0,0,0,0);
+    this.add(this.pickUpColumn,c);
   }
 
   //Methods

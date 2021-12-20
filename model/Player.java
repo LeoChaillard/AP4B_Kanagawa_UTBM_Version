@@ -96,6 +96,14 @@ public class Player {
 
   /***************************************************/
 
+  public List<Card> getHand(){return this.hand;}
+
+  /***************************************************/
+
+  public List<Card> getProject(){return this.project;}
+
+  /***************************************************/
+
   public List<Card> getTemporaryHand(){return this.temporaryHand;}
 
   /***************************************************/

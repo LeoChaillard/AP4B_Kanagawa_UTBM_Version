@@ -43,7 +43,7 @@ public class Game implements ActionListener{
   private Mention [] mentions;
   private int [] availableMentions;
   private int numberOfPlayers;
-  private int playerIndex;
+  public static int playerIndex;
   private boolean isPickingUpColumn;
 
   private enum Actions

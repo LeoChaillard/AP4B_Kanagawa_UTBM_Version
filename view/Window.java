@@ -7,6 +7,7 @@
 package view;
 import listeners.PointingCursorListener;
 
+import javax.swing.JTabbedPane;
 import javax.swing.JInternalFrame;
 import javax.swing.KeyStroke;
 import javax.swing.JFrame;
@@ -114,7 +115,7 @@ public class Window extends JFrame{
 
     this.treatCardsPanel.setSize(this.layeredPane.getPreferredSize());
     this.treatCardsPanel.setLocation(0,0);
-    this.layeredPane.add(this.treatCardsPanel, 0);
+    this.layeredPane.add(this.treatCardsPanel, 2);
   }
 
   /***************************************************/

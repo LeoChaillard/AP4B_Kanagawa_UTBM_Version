@@ -14,6 +14,10 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 
@@ -28,7 +32,7 @@ import java.awt.Dimension;
    {
      //Set up of the panel
      this.setBackground(new Color(0,0,0,100));
-     this.setLayout(new GridLayout(1,3,0,0));
+     this.setLayout(new GridBagLayout());
      this.setMinimumSize(new Dimension(800,0));
      this.setPreferredSize(new Dimension(800,0));
      this.setVisible(false);
@@ -40,7 +44,6 @@ import java.awt.Dimension;
      this.workProject.setFont(font);
      this.workProject.setForeground(Color.BLACK);
      this.workProject.setHorizontalAlignment(SwingConstants.CENTER);
-     //this.workProject.setVerticalAlignment(SwingConstants.LEFT);
 
      //Learn new skills JLabel
      this.learnSkills = new JLabel("Learn new skills");
@@ -48,17 +51,31 @@ import java.awt.Dimension;
      this.learnSkills.setForeground(Color.BLACK);
      this.learnSkills.setHorizontalAlignment(SwingConstants.CENTER);
 
-
      //Keep card in hand JLabel
      this.keepCard = new JLabel("Keep card in hand");
      this.keepCard.setFont(font);
      this.keepCard.setForeground(Color.BLACK);
      this.keepCard.setHorizontalAlignment(SwingConstants.CENTER);
 
-     this.add(this.workProject);
-     this.add(this.learnSkills);
-     this.add(this.keepCard);
+     //GridBagConstraints and adding components
+     GridBagConstraints c = new GridBagConstraints();
+     c.fill = GridBagConstraints.HORIZONTAL;
+     c.gridx = 0;
+     c.gridy = 1;
+     c.insets = new Insets(0,0,0,50);
+     this.add(workProject, c);
 
+     c.fill = GridBagConstraints.HORIZONTAL;
+     c.gridx = 1;
+     c.gridy = 1;
+     c.insets = new Insets(0,0,0,50);
+     this.add(learnSkills, c);
+
+     c.fill = GridBagConstraints.HORIZONTAL;
+     c.gridx = 2;
+     c.gridy = 1;
+     c.insets = new Insets(0,0,0,0);
+     this.add(keepCard, c);
    }
 
    //Methods
