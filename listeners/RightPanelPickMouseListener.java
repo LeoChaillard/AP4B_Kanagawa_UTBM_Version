@@ -20,7 +20,6 @@ public class RightPanelPickMouseListener implements MouseListener{
   }
 
   //Methods
-  //Methods
   @Override
   public void mouseExited(MouseEvent evt) {}
   public void mouseEntered(MouseEvent evt){}

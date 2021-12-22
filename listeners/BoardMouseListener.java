@@ -24,7 +24,7 @@ public class BoardMouseListener implements MouseListener{
   public void mouseEntered(MouseEvent evt){}
   public void mousePressed(MouseEvent evt){}
   public void mouseReleased(MouseEvent evt){}
-
+    
   @Override
   public void mouseClicked(MouseEvent evt)
   {
@@ -44,6 +44,7 @@ public class BoardMouseListener implements MouseListener{
           System.out.println("adding cards to temporary hand");
           Card [][] boardSlots = this.game.getWindow().getBoard().getSlots();
           for(int j=0;j<3;++j) if(boardSlots[i][j] != null) player.addCardTemporaryHand(boardSlots[i][j]);
+          this.game.players.get(Game.playerIndex).transferHandToTemporaryHand();
           this.game.getWindow().getBoard().removeColumn(i+1);
 
           //Updating window

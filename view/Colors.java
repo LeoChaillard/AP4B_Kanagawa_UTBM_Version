@@ -37,7 +37,19 @@ public class Colors{
           new Color(0x990000)
   };
 
+  public static final Color[] skillColors = {
+          Color.BLUE,
+          Color.YELLOW,
+          Color.lightGray,
+          Color.GREEN,
+          Color.MAGENTA
+  };
+
   //Methods
+  public static final Color[] getSkillColors(){return skillColors;}
+
+  /***************************************************/
+
   public static final Color[] getBoardLightColors(){return boardLightColors;}
 
   /***************************************************/

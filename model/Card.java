@@ -16,6 +16,7 @@ public abstract class Card {
   private Branch branch;
   private Category categorySkills;
   private Category categoryProject;
+  private int projectCategoriesQuantity;
 
   //Constructors
   public Card()
@@ -34,7 +35,7 @@ public abstract class Card {
     this.branch = branch;
     this.categorySkills = skills;
     this.categoryProject = project;
-    this.categoryProject.setQuantity(projectCategoriesQuantity);
+    this.projectCategoriesQuantity = projectCategoriesQuantity;
   }
 
   /***************************************************/
@@ -103,6 +104,8 @@ public abstract class Card {
     return this.categoryProject;
   }
 
+  public int getProjectCategoriesQuantity(){return this.projectCategoriesQuantity;}
+  
   public abstract boolean isUsed();
 
 

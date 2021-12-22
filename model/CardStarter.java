@@ -9,6 +9,7 @@ package model;
 public class CardStarter extends Card{
   //Attributes
   private Bonus secondBonus;
+  private int secondBonusQuantity;
 
   //Constructors
   public CardStarter()
@@ -22,7 +23,7 @@ public class CardStarter extends Card{
   {
     super(id, skills, bonus, branch);
     this.secondBonus = secondBonus;
-    this.secondBonus.setQuantity(secondBonusQuantity);
+    this.secondBonusQuantity = secondBonusQuantity;
   }
 
   //Methods
@@ -32,4 +33,6 @@ public class CardStarter extends Card{
   }
 
   public Bonus getSecondBonus(){return this.secondBonus;}
+
+  public int getSecondBonusQuantity(){return this.secondBonusQuantity;}
  }

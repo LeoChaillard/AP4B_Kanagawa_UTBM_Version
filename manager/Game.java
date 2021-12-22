@@ -29,12 +29,13 @@ import java.nio.file.Paths;
 public class Game implements ActionListener{
   //Attributes
   private static final int MAX_PLAYERS = 4;
-  private static final int TOTAL_NUMBER_CARDS = 72;
+  public static final int TOTAL_NUMBER_CARDS = 72;
+  private static final int CARDS_FOR_WIN = 2; //Should be 11
   private static final int X_ELEMENTS = 4;
   private static final int Y_ELEMENTS = 3;
 
 
-  public static final List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
+  public static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
   private static Set pickedUpCards;
   private Set starterCards;
   private Window window;
@@ -42,9 +43,14 @@ public class Game implements ActionListener{
   private Random nominatePlayer;
   private Mention [] mentions;
   private int [] availableMentions;
-  private int numberOfPlayers;
+  public static int numberOfPlayers;
+  public static int firstPlayer;
+  public static int lastPlayer;
+  public static int passedTurns;
   public static int playerIndex;
   private boolean isPickingUpColumn;
+  public static boolean newTurn;
+  public static int pickedCards;
 
   private enum Actions
   {
@@ -62,6 +68,8 @@ public class Game implements ActionListener{
     this.menu = new Menu();
     this.nominatePlayer = new Random();
     this.isPickingUpColumn = false;
+    this.newTurn = true;
+    this.pickedCards = 0;
   }
 
   //Methods
@@ -78,7 +86,6 @@ public class Game implements ActionListener{
 
         createPlayers();
         distributeStarterCards();
-
         this.window.getBoard().addRow(this.numberOfPlayers);
         this.window.getRightPanel().updateInfos(this.players.get(this.playerIndex).getName());
 
@@ -104,6 +111,7 @@ public class Game implements ActionListener{
 
   public void distributeStarterCards()
   {
+
     for(int i=0; i<this.numberOfPlayers;++i)
     {
       try{
@@ -136,6 +144,7 @@ public class Game implements ActionListener{
 
   public static Card cardFromDeck() throws IOException
   {
+    ++pickedCards;
     //Getting random id card
     Random randId = new Random();
     int id = randId.nextInt(TOTAL_NUMBER_CARDS+1); //Not taking 0 into account
@@ -182,6 +191,8 @@ public class Game implements ActionListener{
       if(!isEmpty(tempNumberPlayers) && isNumeric(tempNumberPlayers)) setNumberPlayers(Integer.parseInt(tempNumberPlayers));
     }
     setCurrentPlayer(nominatePlayer.nextInt(this.numberOfPlayers));
+    setFirstPlayer(this.playerIndex);
+    setLastPlayer( (this.firstPlayer + this.numberOfPlayers - 1)%this.numberOfPlayers);
 
     //Creating players with default names
     for(int i = 0;i<this.numberOfPlayers;++i) this.players.add(new Player("Player " + (i+1)));
@@ -254,15 +265,20 @@ public class Game implements ActionListener{
 
   public void resetGame()
   {
-    for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
-    this.players.clear();
+    //for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
+    this.players = null;
+    this.players = new ArrayList<Player>(4);
+    
     this.window.getBoard().removeAll();
     this.window.getTreatCardsPane().setVisible(false);
     this.menu.getResume().setEnabled(true);
     this.pickedUpCards.clear();
     this.starterCards.clear();
     this.numberOfPlayers = 0;
+    this.passedTurns = 0;
+    this.firstPlayer = 0;
     this.isPickingUpColumn = false;
+    this.newTurn = true;
   }
 
   /***************************************************/
@@ -281,10 +297,61 @@ public class Game implements ActionListener{
 
   /***************************************************/
 
+  public void setFirstPlayer(int index)
+  {
+    this.firstPlayer = index;
+  }
+
+  /***************************************************/
+
+  public void setLastPlayer(int index)
+  {
+    this.lastPlayer = index;
+  }
+
+  /***************************************************/
+
+  public void passTurn()
+  {
+    ++this.passedTurns;
+  }
+
+  /***************************************************/
+
   public void nextTurn()
   {
+    this.players.get(this.playerIndex).resetHours();
+
     setCurrentPlayer((playerIndex+1)%numberOfPlayers);
     window.getRightPanel().updateInfos(players.get(playerIndex).getName());
+
+    //New turn mid game
+    if(this.passedTurns > 0 && this.playerIndex == this.firstPlayer)
+    {
+      System.out.println("new turn");
+      this.passedTurns = 0;
+      this.window.getBoard().addRow(this.numberOfPlayers);
+      this.window.repaint();
+    }
+
+    //New "big" turn
+    if(this.checkGameProgress() && this.window.getBoard().areAllColumnsEmpty())
+    {
+      System.out.println("new big turn");
+      this.window.getBoard().removeAll();
+      this.passedTurns = 0;
+      this.newTurn = true;
+      this.window.getBoard().addRow(this.numberOfPlayers);
+      this.newTurn = false;
+      this.window.repaint();
+    }
+
+    if(!checkGameProgress() && this.window.getBoard().areAllColumnsEmpty())
+    {
+      System.out.println("stopping game");
+      countPlayersPoints();
+
+    }
   }
 
   /***************************************************/
@@ -298,6 +365,13 @@ public class Game implements ActionListener{
 
   public boolean checkGameProgress()
   {
+    if(this.pickedCards >= TOTAL_NUMBER_CARDS) return false;
+
+    for(int i=0;i<this.numberOfPlayers;++i)
+    {
+      if(this.players.get(i).getProject().size() >= CARDS_FOR_WIN) return false;
+    }
+
     return true;
   }
 

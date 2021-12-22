@@ -31,8 +31,6 @@ import java.util.*;
 
 public class InventoryCardsTab extends JPanel{
   //Attributes
-  private static final int INVENTORY_HEIGHT = 503;
-  private static final int INVENTORY_LENGTH = 790;
   private static final int X_ELEMENTS = 8;
   private static final int Y_ELEMENTS = 4;
   private static final float ELEMENT_SIZE = 0.96f;
@@ -40,7 +38,6 @@ public class InventoryCardsTab extends JPanel{
   private static final int LINE_ELEMENTS = X_ELEMENTS - 2;
 
   private ImageIcon icon;
-  private ImagePanel background;
 
   //Constructor
   public InventoryCardsTab()

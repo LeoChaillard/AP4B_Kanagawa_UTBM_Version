@@ -37,13 +37,13 @@ public class Board extends JPanel{
   public static float columnHeight;
 
   private boolean [] highlightColumns;
-  private int addedRows;
+  public static int addedRows;
 
   //Constructor
   public Board()
   {
     this.setOpaque(false);
-    this.addedRows = 0;
+    addedRows = 0;
     this.highlightColumns = new boolean[X_ELEMENTS];
     resetHighlight();
   }
@@ -52,7 +52,7 @@ public class Board extends JPanel{
   public void removeAll()
   {
     for(int i=1;i<=4;++i) removeColumn(i);
-    this.addedRows = 0;
+    addedRows = 0;
     resetHighlight();
   }
 
@@ -80,6 +80,17 @@ public class Board extends JPanel{
 
   /***************************************************/
 
+  public boolean areAllColumnsEmpty()
+  {
+    for(int i=0;i<Game.numberOfPlayers;++i)
+    {
+      if(!isColumnEmpty(i)) return false;
+    }
+    return true;
+  }
+
+  /***************************************************/
+
   public static Card [][] getSlots(){return slots;}
 
   /***************************************************/
@@ -98,14 +109,31 @@ public class Board extends JPanel{
 
   /***************************************************/
 
+  public int getRemainingColumns()
+  {
+    int remaining = 0;
+    for(int i=0;i<Game.numberOfPlayers;++i) if(isColumnEmpty(i)) ++remaining;
+    return remaining;
+  }
+
+  /***************************************************/
+
   public void addRow(int players)
   {
-    ++this.addedRows;
-
-    try
+    if(Game.pickedCards < Game.TOTAL_NUMBER_CARDS)
     {
-      for(int i=0;i<players;++i) slots[i][Y_ELEMENTS-this.addedRows] = Game.cardFromDeck();
-    } catch(Exception e) {}
+      ++addedRows;
+      try
+      {
+        for(int i=0;i<players;++i)
+        {
+          if(!isColumnEmpty(i) || Game.newTurn )
+          {
+            slots[i][Y_ELEMENTS-addedRows] = Game.cardFromDeck();
+          }
+        }
+      } catch(Exception e) {}
+    }
 
   }
 

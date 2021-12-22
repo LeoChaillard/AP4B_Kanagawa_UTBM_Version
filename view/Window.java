@@ -115,7 +115,7 @@ public class Window extends JFrame{
 
     this.treatCardsPanel.setSize(this.layeredPane.getPreferredSize());
     this.treatCardsPanel.setLocation(0,0);
-    this.layeredPane.add(this.treatCardsPanel, 2);
+    this.layeredPane.add(this.treatCardsPanel, 0);
   }
 
   /***************************************************/
