@@ -30,7 +30,7 @@ public class Game implements ActionListener{
   //Attributes
   private static final int MAX_PLAYERS = 4;
   public static final int TOTAL_NUMBER_CARDS = 72;
-  private static final int CARDS_FOR_WIN = 2; //Should be 11
+  private static final int CARDS_FOR_WIN = 11; //Should be 11
   private static final int X_ELEMENTS = 4;
   private static final int Y_ELEMENTS = 3;
 
@@ -41,8 +41,8 @@ public class Game implements ActionListener{
   private Window window;
   private Menu menu;
   private Random nominatePlayer;
-  private Mention [] mentions;
-  private int [] availableMentions;
+  private List<Mention> mentions;
+  private Set<Integer> availableMentions;
   public static int numberOfPlayers;
   public static int firstPlayer;
   public static int lastPlayer;
@@ -70,6 +70,8 @@ public class Game implements ActionListener{
     this.isPickingUpColumn = false;
     this.newTurn = true;
     this.pickedCards = 0;
+    this.mentions = new ArrayList<Mention>(19);
+    this.availableMentions = new HashSet<Integer>(19);
   }
 
   //Methods
@@ -210,6 +212,78 @@ public class Game implements ActionListener{
   public void start()
   {
     initialize();
+    initializeMentions();
+  }
+
+  /***************************************************/
+
+  public void initializeMentions()
+  {
+    for(int i=0;i<19;++i) this.availableMentions.add(i);
+    int i = 0;
+    //Certificates
+    MentionCertificates certificates = new MentionCertificates(i, 3, 3, Bonus.NULL, "Certificates mention");
+    this.mentions.add(certificates);
+    certificates = new MentionCertificates(++i, 4, 4, Bonus.IMSI_TOKEN, "Certificates mention");
+    this.mentions.add(certificates);
+    certificates = new MentionCertificates(++i, 9, 5, Bonus.NULL, "Certificates mention");
+    this.mentions.add(certificates);
+
+    //Associations
+    List<Associations> associationsList = new ArrayList<Associations>(3);
+    associationsList.add(Associations.AE);
+    associationsList.add(Associations.BDS);
+    MentionAssociations association = new MentionAssociations(++i, 3, 2, Bonus.EARN_HOURS, associationsList, "Associations mention");
+    this.mentions.add(association);
+
+    associationsList.clear();
+    associationsList.add(Associations.BDF);
+    associationsList.add(Associations.CLUBS);
+    association = new MentionAssociations(++i, 4, 2, Bonus.EARN_HOURS, associationsList, "Associations mention");
+    this.mentions.add(association);
+
+    associationsList.clear();
+    associationsList.add(Associations.CLUBS);
+    associationsList.add(Associations.AE);
+    associationsList.add(Associations.BDS);
+    association = new MentionAssociations(++i, 9, 3, Bonus.NULL, associationsList, "Associations mention");
+    this.mentions.add(association);
+
+    //Teachers
+    MentionTeachers teachers = new MentionTeachers(++i, 3, 2, Bonus.NULL, false, "Teachers mention");
+    this.mentions.add(teachers);
+    teachers = new MentionTeachers(++i, 4, 3, Bonus.IMSI_TOKEN, false, "Teachers mention");
+    this.mentions.add(teachers);
+    teachers = new MentionTeachers(++i, 9, 3, Bonus.NULL, true, "Teachers mention");
+    this.mentions.add(teachers);
+
+    //Arrow
+    MentionArrow arrows = new MentionArrow(++i, 1, 2, Bonus.EARN_HOURS, "Arrow mention");
+    this.mentions.add(arrows);
+    arrows = new MentionArrow(++i, 3, 3, Bonus.EARN_HOURS, "Arrow mention");
+    this.mentions.add(arrows);
+
+    //Hours
+    MentionHours hours = new MentionHours(++i, 2, 3, Bonus.NULL, "Hours mention");
+    this.mentions.add(hours);
+    hours = new MentionHours(++i, 4, 3, Bonus.NULL, "Hours mention");
+    this.mentions.add(hours);
+
+    //Materials
+    MentionMaterials materials = new MentionMaterials(++i, 3, 2, Bonus.NULL, "Materials mention");
+    this.mentions.add(materials);
+    materials = new MentionMaterials(++i, 4, 3, Bonus.IMSI_TOKEN, "Materials mention");
+    this.mentions.add(materials);
+    materials = new MentionMaterials(++i, 9, 4, Bonus.NULL, "Materials mention");
+    this.mentions.add(materials);
+
+    //Skills
+    MentionSkills skills = new MentionSkills(++i, 2, 2, Bonus.NULL, "Skills mention");
+    this.mentions.add(skills);
+    skills = new MentionSkills(++i, 3, 3, Bonus.EARN_HOURS, "Skills mention");
+    this.mentions.add(skills);
+    skills = new MentionSkills(++i, 7, 4, Bonus.NULL, "Skills mention");
+    this.mentions.add(skills);
   }
 
   /***************************************************/
@@ -268,7 +342,7 @@ public class Game implements ActionListener{
     //for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
     this.players = null;
     this.players = new ArrayList<Player>(4);
-    
+
     this.window.getBoard().removeAll();
     this.window.getTreatCardsPane().setVisible(false);
     this.menu.getResume().setEnabled(true);
@@ -320,9 +394,11 @@ public class Game implements ActionListener{
 
   public void nextTurn()
   {
+    this.checkMention();
     this.players.get(this.playerIndex).resetHours();
+    this.players.get(this.playerIndex).resetKeepInHand();
 
-    setCurrentPlayer((playerIndex+1)%numberOfPlayers);
+    setCurrentPlayer((playerIndex+1)%numberOfPlayers); /*skipp players that picked up*/
     window.getRightPanel().updateInfos(players.get(playerIndex).getName());
 
     //New turn mid game
@@ -358,6 +434,78 @@ public class Game implements ActionListener{
 
   public void checkMention()
   {
+    for(int mention=0;mention<19;++mention)
+    {
+      if(this.availableMentions.contains(mention))
+      {
+        if(!this.players.get(this.playerIndex).getDeniedMentions().contains(mention) && mentions.get(mention).checkCriteria(this.players.get(this.playerIndex)))
+          this.offerMention(mentions.get(mention));
+      }
+    }
+  }
+
+  /***************************************************/
+
+  public void offerMention(Mention mention)
+  {
+    String [] options = {"accept", "deny"};
+    int x = JOptionPane.showOptionDialog(null, mention.getName() + ". Points to earn: " + mention.getPoints() + ". Bonus to earn: " + mention.getBonus(), "Mention offer : accept or deny", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+    if(x == 0) //Accept
+    {
+      if(mention.getBonus() != Bonus.NULL)
+      {
+        this.players.get(this.playerIndex).getAvailableBonus().replace(mention.getBonus(), this.players.get(this.playerIndex).getAvailableBonus().get(mention.getBonus()) + 1);
+      }
+      this.players.get(this.playerIndex).getAcceptedMentions().add(mention.getId());
+      this.availableMentions.remove(mention.getId());
+
+      if(mention.getId() <= 2)
+      {
+        this.players.get(this.playerIndex).getDeniedMentions().add(0);
+        this.players.get(this.playerIndex).getDeniedMentions().add(1);
+        this.players.get(this.playerIndex).getDeniedMentions().add(2);
+      }
+      if(3 <= mention.getId() && mention.getId() <= 5)
+      {
+        this.players.get(this.playerIndex).getDeniedMentions().add(3);
+        this.players.get(this.playerIndex).getDeniedMentions().add(4);
+        this.players.get(this.playerIndex).getDeniedMentions().add(5);
+      }
+      if(6 <= mention.getId() && mention.getId() <= 8)
+      {
+        this.players.get(this.playerIndex).getDeniedMentions().add(6);
+        this.players.get(this.playerIndex).getDeniedMentions().add(7);
+        this.players.get(this.playerIndex).getDeniedMentions().add(8);
+      }
+      if(9 <= mention.getId() && mention.getId() <= 10)
+      {
+        this.players.get(this.playerIndex).getDeniedMentions().add(9);
+        this.players.get(this.playerIndex).getDeniedMentions().add(10);
+      }
+      if(11 <= mention.getId() && mention.getId() <= 12)
+      {
+        this.players.get(this.playerIndex).getDeniedMentions().add(11);
+        this.players.get(this.playerIndex).getDeniedMentions().add(12);
+      }
+      if(13 <= mention.getId() && mention.getId() <= 15)
+      {
+        this.players.get(this.playerIndex).getDeniedMentions().add(13);
+        this.players.get(this.playerIndex).getDeniedMentions().add(14);
+        this.players.get(this.playerIndex).getDeniedMentions().add(15);
+      }
+      if(16 <= mention.getId())
+      {
+        this.players.get(this.playerIndex).getDeniedMentions().add(16);
+        this.players.get(this.playerIndex).getDeniedMentions().add(17);
+        this.players.get(this.playerIndex).getDeniedMentions().add(18);
+      }
+
+    }
+    if(x == 1) //Deny
+    {
+      this.players.get(this.playerIndex).getDeniedMentions().add(mention.getId());
+    }
 
   }
 
@@ -380,13 +528,6 @@ public class Game implements ActionListener{
   public int countPlayersPoints()
   {
     return 0;
-  }
-
-  /***************************************************/
-
-  public void offerMention()
-  {
-
   }
 
   /***************************************************/

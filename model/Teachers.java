@@ -7,5 +7,15 @@ package model;
 
 public enum Teachers{
   //Attributes
-  GECHTER, PAIRE, BAUME, ROTH, NULL;
+  GECHTER(0), PAIRE(1), BAUME(2), ROTH(3), NULL(4);
+
+  Teachers(int pos)
+  {
+    this.pos = pos;
+  }
+
+  private int pos;
+
+  public int getPos(){return this.pos;}
+
 }

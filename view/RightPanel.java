@@ -36,7 +36,8 @@ import java.util.*;
  */
 public class RightPanel extends JPanel{
   //Attributes
-  private static final float ELEMENT_SIZE = 0.8f;
+  private static final float CARD_SIZE = 0.8f;
+  private static final float X_ELEMENTS = 4;
   private static final float Y_ELEMENTS = 3;
   public static float temporaryCardXCoordinate; //At the middle
   public static float temporaryCardYCoordinate; //At the middle
@@ -126,8 +127,10 @@ public class RightPanel extends JPanel{
 
 
     //Direction
-    Direction d = new Direction(ELEMENT_SIZE/2 + 0.09f, ELEMENT_SIZE/2 + 0.1f);
+    Direction d = new Direction(CARD_SIZE/2 + 0.09f, CARD_SIZE/2 + 0.1f);
     d.setScale(width, height/Y_ELEMENTS);
+
+    Direction cardDir = new Direction( 0.10f + 0.5f, 0.5f + 0.15f);
 
     //Temporary hand zone
     Rectangle temporary = new Rectangle();
@@ -140,12 +143,14 @@ public class RightPanel extends JPanel{
     g2.setStroke(new BasicStroke(3));
 
     //Card
-    DrawCard card = new DrawCard();
-    card.setDirection(d);
+    DrawCard card = new DrawCard(CARD_SIZE * width, CARD_SIZE * height/3);
+    card.setDirection(cardDir);
     card.setScale(width, height/3);
-    card.setSide(ELEMENT_SIZE);
-    this.temporaryCardWidth = card.getWidth();
-    this.temporaryCardHeight = card.getHeight();
+    card.setSide(CARD_SIZE);
+    card.setDrawBack(false);
+    card.setInInventory(false);
+    this.temporaryCardWidth = temporary.getWidth();
+    this.temporaryCardHeight = temporary.getHeight();
 
     //Strings
     DrawString string = new DrawString();
@@ -165,13 +170,20 @@ public class RightPanel extends JPanel{
     //Temporary Cards
     temporary.draw(g2);
     g.setColor(Color.lightGray);
-    this.temporaryCardXCoordinate = card.getX();
-    this.temporaryCardYCoordinate = card.getY();
+    this.temporaryCardXCoordinate = temporary.getX();
+    this.temporaryCardYCoordinate = temporary.getY();
+    cardDir.down(4.25f);
     for(Player p : Game.players)
     {
       for(Card c : p.getTemporaryHand())
       {
-        if(c != null) card.fill(g);
+        if(c != null)
+        {
+
+
+          card.setToDraw(c);
+          card.fill(g);
+        }
       }
     }
 

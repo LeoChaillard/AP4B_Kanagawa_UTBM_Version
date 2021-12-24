@@ -9,15 +9,19 @@ package model;
 public class MentionCertificates extends Mention {
 
   //Constructor
-  public MentionCertificates()
+  public MentionCertificates(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
-    //code
+    super(id, points, numberOfElements, bonus, name);
   }
 
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //code
-    return false;
+    //check number of certificates overall in project
+    //sum
+    int sum = 0;
+    for(Card c : p.getProject()) if(c instanceof CardCertificates) sum += c.getElement();
+
+    return getNumberOfElements() <= sum;
   }
 }

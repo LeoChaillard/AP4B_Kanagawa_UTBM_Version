@@ -106,42 +106,97 @@ public class InventoryItemsTab extends JPanel{
       cir.draw(g2);
       g.setColor(Colors.getSkillColors()[i]);
       cir.fill(g);
+
       d.right(1);
     }
 
     d.resetMove();
-    d.down(0.5f);
-    d.right(2);
+    d.right(1.8f);
 
     for(Category skill : Game.players.get(Game.playerIndex).getAvailableSkills().keySet())
     {
       int quantity = Game.players.get(Game.playerIndex).getAvailableSkills().get(skill);
-      g.setColor(new Color(0x484339));
+
       //Drawing its each skill at its correct place
       switch(skill)
       {
-        case CS:
+        case T2S:
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 19));
+          g.setColor(Color.BLACK);
+          string.draw(g, "T2S");
+
+          d.down(0.5f);
+
+          d.right(0.2f);
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
-        break;
-        case TM:
-          d.right(1);
-          string.draw(g, "x" + quantity);
-          d.left(1);
+          d.left(0.2f);
+
+          d.up(0.5f);
         break;
         case EC:
-          d.right(2);
+          d.right(1f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 19));
+          g.setColor(Color.BLACK);
+          string.draw(g, "EC");
+
+          d.down(0.5f);
+
+          d.right(0.2f);
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
-          d.left(2);
+          d.left(0.2f);
+
+          d.up(0.5f);
+          d.left(1f);
         break;
-        case T2S:
-          d.right(3);
+        case TM:
+          d.right(2f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 19));
+          g.setColor(Color.BLACK);
+          string.draw(g, "TM");
+
+          d.down(0.5f);
+
+          d.right(0.2f);
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
-          d.left(3);
+          d.left(0.2f);
+
+          d.up(0.5f);
+          d.left(2f);
+        break;
+        case CS:
+          d.right(3f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 19));
+          g.setColor(Color.BLACK);
+          string.draw(g, "CS");
+
+          d.down(0.5f);
+
+          d.right(0.2f);
+          g.setColor(new Color(0x484339));
+          string.draw(g, "x" + quantity);
+          d.left(0.2f);
+
+          d.up(0.5f);
+          d.left(3f);
         break;
         case JOKER:
-          d.right(4);
+          d.right(4f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 19));
+          g.setColor(Color.BLACK);
+          string.draw(g, "JOKER");
+
+          d.down(0.5f);
+
+          d.right(0.2f);
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
-          d.left(4);
+          d.left(0.2f);
+
+          d.up(0.5f);
+          d.left(4f);
         break;
       }
     }

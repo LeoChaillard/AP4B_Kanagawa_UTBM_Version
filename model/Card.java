@@ -6,6 +6,7 @@
 
 package model;
 
+
 public abstract class Card {
 
   //Attributs
@@ -49,6 +50,8 @@ public abstract class Card {
   }
 
   //Methods
+  public int getElement(){return -1;}
+
   public void setId(int id){
     this.id = id;
   }
@@ -105,7 +108,7 @@ public abstract class Card {
   }
 
   public int getProjectCategoriesQuantity(){return this.projectCategoriesQuantity;}
-  
+
   public abstract boolean isUsed();
 
 

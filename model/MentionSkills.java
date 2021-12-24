@@ -9,15 +9,15 @@ package model;
 public class MentionSkills extends Mention {
 
   //Constructor
-  public MentionSkills()
+  public MentionSkills(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
-    //code
+    super(id, points, numberOfElements, bonus, name);
   }
 
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //code
-    return false;
+    //Nombre identique => code identique de Teacher
+    return (getNumberOfElements() <= p.getAvailableSkills().get(Category.CS) || getNumberOfElements() <= p.getAvailableSkills().get(Category.TM) || getNumberOfElements() <= p.getAvailableSkills().get(Category.EC) || getNumberOfElements() <= p.getAvailableSkills().get(Category.T2S));
   }
 }

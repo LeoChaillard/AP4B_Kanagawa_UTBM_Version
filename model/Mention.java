@@ -12,11 +12,30 @@ public abstract class Mention {
   private int points;
   private int numberOfElements;
   private Bonus bonus;
+  private String name;
+
+  //Constructor
+  public Mention(int id, int points, int numberOfElements, Bonus bonus, String name)
+  {
+    this.id = id;
+    this.points = points;
+    this.numberOfElements = numberOfElements;
+    this.bonus = bonus;
+    this.name = name;
+  }
 
   //Methods
   public abstract boolean checkCriteria(Player p);
 
-  //mettre des getters et setters
+  public Bonus getBonus(){return this.bonus;}
+
+  public int getId(){return this.id;}
+
+  public int getNumberOfElements(){return this.numberOfElements;}
+
+  public int getPoints(){return this.points;}
+
+  public String getName(){return this.name;}
 
 
 

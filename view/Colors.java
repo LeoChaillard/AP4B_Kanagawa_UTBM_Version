@@ -38,30 +38,39 @@ public class Colors{
   };
 
   public static final Color[] skillColors = {
-          Color.BLUE,
-          Color.YELLOW,
-          Color.lightGray,
-          Color.GREEN,
-          Color.MAGENTA
+          Color.BLUE, //T2S
+          Color.YELLOW, //EC
+          Color.lightGray, //TM
+          Color.GREEN, //CS
+          Color.MAGENTA //JOKER
   };
+
+  public static final Color[] cardThemeColors = {
+          new Color(0x208000), //Certificates
+          new Color(0x001133), //Associations
+          new Color(0x990000), //Teachers
+          new Color(0xCC7A00) //Materials
+  };
+
+  public static final Color[] branchColors = {
+          new Color(0x208000), //INFO
+          new Color(0x95e5e5), //GMC
+          new Color(0xff896a), //EDIM
+          new Color(0xffe783), //ENERGIE
+          new Color(0x800080) //IMSI
+  };
+
 
   //Methods
   public static final Color[] getSkillColors(){return skillColors;}
-
-  /***************************************************/
-
   public static final Color[] getBoardLightColors(){return boardLightColors;}
-
-  /***************************************************/
-
   public static final Color[] getBoardDarkColors(){return boardDarkColors;}
-
-  /***************************************************/
-
   public static final Color[] getCardLightColors(){return cardLightColors;}
-
-  /***************************************************/
-
   public static final Color[] getCardDarkColors(){return cardDarkColors;}
+  public static final Color[] getCardThemeColors(){return cardThemeColors;}
+  public static final Color[] getBranchColors(){return branchColors;}
+
+
+
 
 }

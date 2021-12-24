@@ -26,6 +26,10 @@ import java.util.*;
 
    /***************************************************/
 
+   public Direction getDirection(){return this.dir;}
+   
+   /***************************************************/
+
    public void setSize(float w,float h)
    {
      this.width = w;

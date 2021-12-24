@@ -5,19 +5,34 @@
  ************************************************************************/
 
 package model;
+import java.util.*;
 
 public class MentionAssociations extends Mention {
+  //Attributs
+  private List<Associations> associations;
 
   //Constructor
-  public MentionAssociations()
+  public MentionAssociations(int id, int points, int numberOfElements, Bonus bonus, List<Associations>  associations, String name)
   {
-    //code
+    super(id, points, numberOfElements, bonus, name);
+    this.associations = associations;
   }
 
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //code
-    return false;
+    //for each element, check if element is in associations list
+    for(Associations a : this.associations)
+    {
+      int value = a.getPos();
+      boolean isIn = false;
+
+      for(Card c : p.getProject())
+        if( (c instanceof CardAssociations) &&  c.getElement() == value) isIn = true;
+
+      if(!isIn) return false;
+    }
+
+    return true;
   }
 }

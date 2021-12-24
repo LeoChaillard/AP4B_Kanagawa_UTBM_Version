@@ -32,4 +32,6 @@ public class CardCertificates extends Card{
     //code
     return false;
   }
+
+  public int getElement(){return certificate;}
 }

@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Polygon;
+import java.awt.Font;
 
 import javax.swing.JPanel;
 
@@ -112,7 +113,7 @@ public class Board extends JPanel{
   public int getRemainingColumns()
   {
     int remaining = 0;
-    for(int i=0;i<Game.numberOfPlayers;++i) if(isColumnEmpty(i)) ++remaining;
+    for(int i=0;i<Game.numberOfPlayers;++i) if(!isColumnEmpty(i)) ++remaining;
     return remaining;
   }
 
@@ -134,6 +135,7 @@ public class Board extends JPanel{
         }
       } catch(Exception e) {}
     }
+    Game.newTurn = false;
 
   }
 
@@ -150,8 +152,11 @@ public class Board extends JPanel{
     float height = getHeight();
 
   	//Direction
-    Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 2*ELEMENT_SIZE + 0.12f); //Origin position at the middle of the bottom left square, adding 0.1 because of the window top bar
+    Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 2*ELEMENT_SIZE + 0.05f); //Origin position at the middle of the bottom left square, adding 0.1 because of the window top bar
     d.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
+
+    //Drawing card direction
+    Direction cardDir = new Direction( 0.10f + 0.5f, (5.0f + 2.5f) * 2.0f + 0.5f + 0.15f);
 
     //Columns
     Rectangle col = new Rectangle();
@@ -171,10 +176,13 @@ public class Board extends JPanel{
     rec.setSide(ELEMENT_SIZE);
 
     //Cards
-    DrawCard card = new DrawCard();
-    card.setDirection(d);
-    card.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
-    card.setSide(CARD_SIZE);
+    DrawCard card = new DrawCard(CARD_SIZE * (width/X_ELEMENTS), CARD_SIZE * (height/Y_ELEMENTS));
+
+    //Strings
+    DrawString string = new DrawString();
+    string.setDirection(d);
+    string.setScale(width/X_ELEMENTS, height/Y_ELEMENTS);
+    string.setSide(1.0f);
 
     //Drawing Columns
     for(int i =0;i<X_ELEMENTS;++i)
@@ -198,11 +206,17 @@ public class Board extends JPanel{
         {
     			g.setColor(new Color(0xc4342d));
     			rec.fill(g);
+          Graphics2D g2 = (Graphics2D) g;
+          g2.setStroke(new BasicStroke(2));
 
           //Hidden card
           if(slots[k][j] != null)
           {
-            g.setColor(Color.darkGray);
+            card.setDrawBack(true);
+            card.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
+            card.setDirection(d);
+            card.setToDraw(slots[k][j]);
+            card.setInInventory(false);
             card.fill(g);
           }
         }
@@ -218,14 +232,19 @@ public class Board extends JPanel{
           //Visible card
           if(slots[k][j] != null)
           {
-            g.setColor(Color.lightGray);
+            card.setDrawBack(false);
+            card.setDirection(cardDir);
+            card.setToDraw(slots[k][j]);
             card.fill(g);
           }
         }
     		d.up(1);
+        cardDir.up(5.0f + 2.5f);
     	}
       d.resetMove();
     	d.right(k+1); //Going to the right next column
+      cardDir.resetMove();
+      cardDir.right(k + 1 + (k+1) * 0.24f );
     }
 
     Toolkit.getDefaultToolkit().sync();

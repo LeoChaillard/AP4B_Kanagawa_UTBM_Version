@@ -16,11 +16,13 @@ public class Player {
   private List<Card> temporaryHand;
   private Map<Bonus, Integer> availableBonus;
   private Map<Category, Integer> availableSkills;
+  private Map<Category, Integer> hoursOnCategories;
   private int usedHours;
   private int movedHours;
-  private List<Mention> acceptedMentions;
-  private List<Mention> deniedMentions;
+  private Set<Integer> acceptedMentions;
+  private Set<Integer> deniedMentions;
   private String name;
+  private int inHand;
 
   //Constructors
   public Player()
@@ -30,10 +32,12 @@ public class Player {
     this.temporaryHand = new ArrayList<Card>(3);
     this.availableBonus = new HashMap<Bonus, Integer>(4);
     this.availableSkills = new HashMap<Category, Integer>(5);
+    this.hoursOnCategories = new HashMap<Category, Integer>(5);
     this.usedHours = 0;
     this.movedHours = 0;
-    this.acceptedMentions = new ArrayList<Mention>(20);
-    this.deniedMentions = new ArrayList<Mention>(20);
+    this.inHand = 0;
+    this.acceptedMentions = new HashSet<Integer>(19);
+    this.deniedMentions = new HashSet<Integer>(19);
 
     this.initializeBonus();
     this.initializeSkills();
@@ -44,14 +48,16 @@ public class Player {
   public Player(String name)
   {
     this.project = new ArrayList<Card>(MAX_PROJECT_ELEMENTS);
-    this.hand = new ArrayList<Card>(3);
-    this.temporaryHand = new ArrayList<Card>(3);
+    this.hand = new ArrayList<Card>(4);
+    this.temporaryHand = new ArrayList<Card>(4);
     this.availableBonus = new HashMap<Bonus, Integer>(4);
     this.availableSkills = new HashMap<Category, Integer>(5);
+    this.hoursOnCategories = new HashMap<Category, Integer>(5);
     this.usedHours = 0;
     this.movedHours = 0;
-    this.acceptedMentions = new ArrayList<Mention>(10);
-    this.deniedMentions = new ArrayList<Mention>(10);
+    this.inHand = 0;
+    this.acceptedMentions = new HashSet<Integer>(19);
+    this.deniedMentions = new HashSet<Integer>(19);
     this.name = name;
 
     this.initializeBonus();
@@ -118,8 +124,6 @@ public class Player {
 
   public void addCardProject(Card card)
   {
-    this.addBonus(card.getBonus());
-    for(int i =0;i<card.getProjectCategoriesQuantity();++i) this.addSkill(card.getCategorySkills());
     this.project.add(card);
   }
 
@@ -192,7 +196,7 @@ public class Player {
   public boolean workOnProject()
   {
     Card card = this.temporaryHand.get(this.temporaryHand.size()-1);
-    if(checkSkills(card.getCategorySkills(), card.getProjectCategoriesQuantity()) && checkHoursAvailability())
+    if(checkSkills(card.getCategoryProject(), card.getProjectCategoriesQuantity()) && checkHoursAvailability())
     {
       this.moveHours();
       this.addCardProject(this.temporaryHand.get(this.temporaryHand.size()-1));
@@ -207,6 +211,7 @@ public class Player {
   public void learnNewSkills()
   {
     this.addSkill(this.temporaryHand.get(this.temporaryHand.size()-1).getCategorySkills());
+    this.addBonus(this.temporaryHand.get(this.temporaryHand.size()-1).getBonus());
     this.removeCardTemporaryHand();
   }
 
@@ -216,6 +221,7 @@ public class Player {
   {
     if(this.availableBonus.get(Bonus.KEEP_IN_HAND) > 0) //If at least one KEEP_IN_HAND bonus
     {
+      this.useKeepInHand();
       this.addCardHand(this.temporaryHand.get(this.temporaryHand.size()-1));
       this.removeCardTemporaryHand();
       return true;
@@ -225,9 +231,25 @@ public class Player {
 
   /***************************************************/
 
+  public void resetKeepInHand()
+  {
+    this.availableBonus.replace(Bonus.KEEP_IN_HAND, this.availableBonus.get(Bonus.KEEP_IN_HAND) + this.inHand);
+    this.inHand = 0;
+  }
+
+  /***************************************************/
+
+  public void useKeepInHand()
+  {
+    ++this.inHand;
+    this.availableBonus.replace(Bonus.KEEP_IN_HAND, this.availableBonus.get(Bonus.KEEP_IN_HAND) - 1);
+  }
+
+  /***************************************************/
+
   public boolean checkSkills(Category c, int quantity)
   {
-    return c != Category.NULL && this.availableSkills.get(c) > (quantity - 1);
+    return c != Category.NULL && (this.availableSkills.get(c) + this.availableSkills.get(Category.JOKER)) > (quantity - 1);
   }
 
   /***************************************************/
@@ -254,9 +276,10 @@ public class Player {
   /***************************************************/
 
   public Map<Bonus, Integer> getAvailableBonus(){return this.availableBonus;}
-
-  /***************************************************/
-
   public Map<Category, Integer> getAvailableSkills(){return this.availableSkills;}
+  public Set<Integer> getAcceptedMentions(){return this.acceptedMentions;}
+  public Set<Integer> getDeniedMentions(){return this.deniedMentions;}
+  public int getNumberMovedHours(){return this.movedHours;}
+  public int getNumberUsedHours(){return this.usedHours;}
 
 }

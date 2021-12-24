@@ -33,4 +33,6 @@ public class CardAssociations extends Card{
     //code
     return false;
   }
+
+  public int getElement(){return this.association.getPos();}
  }

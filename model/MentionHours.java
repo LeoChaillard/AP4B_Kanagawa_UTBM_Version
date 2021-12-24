@@ -9,15 +9,15 @@ package model;
 public class MentionHours extends Mention {
 
   //Constructor
-  public MentionHours()
+  public MentionHours(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
-    //code
+    super(id, points, numberOfElements, bonus, name);
   }
 
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //code
-    return false;
+    //checking number of bonus that player has (+ used bonus)
+    return (getNumberOfElements() <= (p.getAvailableBonus().get(Bonus.EARN_HOURS) + p.getNumberUsedHours()));
   }
 }

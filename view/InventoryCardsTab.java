@@ -33,8 +33,8 @@ public class InventoryCardsTab extends JPanel{
   //Attributes
   private static final int X_ELEMENTS = 8;
   private static final int Y_ELEMENTS = 4;
-  private static final float ELEMENT_SIZE = 0.96f;
-  private static final float CARD_SIZE = 0.90f;
+  private static final float ELEMENT_SIZE = 0.95f;
+  private static final float CARD_SIZE = 0.80f;
   private static final int LINE_ELEMENTS = X_ELEMENTS - 2;
 
   private ImageIcon icon;
@@ -70,6 +70,9 @@ public class InventoryCardsTab extends JPanel{
     Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 0.25f);
     d.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
 
+    //Drawing card direction
+    Direction cardDir = new Direction( 0.10f + 0.5f, 0.5f + 2.5f);
+
     //Rectangles
     Rectangle rec = new Rectangle();
     rec.setDirection(d);
@@ -77,10 +80,7 @@ public class InventoryCardsTab extends JPanel{
     rec.setSide(ELEMENT_SIZE);
 
     //Cards
-    DrawCard card = new DrawCard();
-    card.setDirection(d);
-    card.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
-    card.setSide(CARD_SIZE);
+    DrawCard card = new DrawCard(CARD_SIZE * (width/X_ELEMENTS), CARD_SIZE * (height/Y_ELEMENTS));
 
     //Strings
     DrawString string = new DrawString();
@@ -108,21 +108,30 @@ public class InventoryCardsTab extends JPanel{
     //Drawing project cards
     d.resetMove();
     d.right(1);
+    cardDir.resetMove();
+    cardDir.right(1.0f + 0.24f);
     int projectCards = 0;
     for( Card c : Game.players.get(Game.playerIndex).getProject())
     {
       if(projectCards == 6)
       {
-        d.resetMove();
-        d.down(1);
+        cardDir.resetMove();
+        cardDir.down(5.0f + 2.5f);
+        cardDir.right(1.0f + 0.24f);
       }
 
       if(c != null)
       {
         ++projectCards;
         g.setColor(Color.lightGray);
+
+        card.setDrawBack(false);
+        card.setDirection(cardDir);
+        card.setToDraw(c);
+        card.setInInventory(true);
         card.fill(g);
-        d.right(1);
+
+        cardDir.right(1.0f + 0.24f);
       }
     }
 
@@ -139,18 +148,21 @@ public class InventoryCardsTab extends JPanel{
     }
 
     //Drawing hand cards
-    d.resetMove();
-    d.down(2.50f);
-    d.right(1);
-
+    cardDir.resetMove();
+    cardDir.right(1.0f + 0.24f);
+    cardDir.down(18.75f);
     for(Card c : Game.players.get(Game.playerIndex).getHand())
     {
       if(c != null)
       {
        g.setColor(Color.lightGray);
+       card.setDrawBack(false);
+       card.setDirection(cardDir);
+       card.setToDraw(c);
        card.fill(g);
-       d.right(1);
-     }
+
+       cardDir.right(1.0f + 0.24f);
+      }
     }
 
     //Drawing Strings

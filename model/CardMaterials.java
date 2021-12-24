@@ -32,4 +32,6 @@ public class CardMaterials extends Card{
     //code
     return false;
   }
+
+  public int getElement(){return this.material.getPos();}
  }

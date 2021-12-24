@@ -32,4 +32,6 @@ public class CardTeachers extends Card{
     //code
     return false;
   }
+
+  public int getElement(){return this.teacher.getPos();}
  }

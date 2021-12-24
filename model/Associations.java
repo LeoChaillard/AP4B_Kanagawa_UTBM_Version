@@ -8,5 +8,15 @@ package model;
 
 public enum Associations{
   //Attributes
-  AE, BDS, BDF, CLUBS, NULL;
+  AE(0), BDS(1), BDF(2), CLUBS(3), NULL(4);
+
+  Associations(int pos)
+  {
+    this.pos = pos;
+  }
+
+
+  private int pos;
+
+  public int getPos(){return this.pos;}
 }

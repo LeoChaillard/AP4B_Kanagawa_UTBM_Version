@@ -9,16 +9,16 @@ package model;
 public class MentionArrow extends Mention {
 
   //Constructor
-  public MentionArrow()
+  public MentionArrow(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
-    //code
+    super(id, points, numberOfElements, bonus, name);
   }
 
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //code
-    return false;
+    //counting used and remaining bonus
+    return (getNumberOfElements() <= (p.getAvailableBonus().get(Bonus.MOVE_HOURS) + p.getNumberMovedHours()));
   }
 
 }
