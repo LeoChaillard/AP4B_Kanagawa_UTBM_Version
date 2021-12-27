@@ -62,4 +62,7 @@ public class Inventory extends JInternalFrame{
     this.add(this.tabbedPane);
   }
 
+  //Methods
+  public InventoryItemsTab getInventoryItemsTab(){return this.secondTab;}
+
 }

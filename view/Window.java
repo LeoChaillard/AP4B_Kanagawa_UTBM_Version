@@ -79,7 +79,7 @@ public class Window extends JFrame{
     this.inventoryButton.setBorderPainted(false);
     this.inventoryButton.setOpaque(false);
     this.inventoryButton.setContentAreaFilled(false);
-    this.inventoryButton.setBounds(730, 720, 200, 40);
+    this.inventoryButton.setBounds(790, 720, 90, 40);
 
     //Mapping 'E' key to Inventory opening/closing
     this.inventoryButton.getInputMap(this.inventoryButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "Inventory");
@@ -141,6 +141,10 @@ public class Window extends JFrame{
   /***************************************************/
 
   public RightPanel getRightPanel(){return this.rightPanel;}
+
+  /***************************************************/
+
+  public Inventory getInventory(){return this.inventory;}
 
   /***************************************************/
 

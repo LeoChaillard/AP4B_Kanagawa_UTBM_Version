@@ -42,7 +42,7 @@ public class InventoryCardsTab extends JPanel{
   //Constructor
   public InventoryCardsTab()
   {
-    this.icon = new ImageIcon("view/icon.jpg");
+    this.icon = new ImageIcon("assets/icon.jpg");
   }
 
   //Methods

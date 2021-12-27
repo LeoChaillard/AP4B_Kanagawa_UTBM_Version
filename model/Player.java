@@ -7,6 +7,13 @@
 package model;
 import java.util.*;
 
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+import java.awt.image.BufferedImage;
+import java.awt.Point;
+
 public class Player {
   //Attributes
   private static final int MAX_PROJECT_ELEMENTS = 13;
@@ -16,13 +23,18 @@ public class Player {
   private List<Card> temporaryHand;
   private Map<Bonus, Integer> availableBonus;
   private Map<Category, Integer> availableSkills;
-  private Map<Category, Integer> hoursOnCategories;
+  private Map<Category, List<Hour>> hoursOnCategories;
+  private List<Hour> hours;
   private int usedHours;
   private int movedHours;
   private Set<Integer> acceptedMentions;
   private Set<Integer> deniedMentions;
   private String name;
   private int inHand;
+
+  private List<BufferedImage> img;
+  private List<Point> imgPoint;
+  private Set<Integer> blockedImages;
 
   //Constructors
   public Player()
@@ -32,15 +44,34 @@ public class Player {
     this.temporaryHand = new ArrayList<Card>(3);
     this.availableBonus = new HashMap<Bonus, Integer>(4);
     this.availableSkills = new HashMap<Category, Integer>(5);
-    this.hoursOnCategories = new HashMap<Category, Integer>(5);
+    this.hoursOnCategories = new HashMap<Category, List<Hour>>(5);
+    this.hours = new ArrayList<Hour>();
     this.usedHours = 0;
     this.movedHours = 0;
     this.inHand = 0;
     this.acceptedMentions = new HashSet<Integer>(19);
     this.deniedMentions = new HashSet<Integer>(19);
 
+    this.img = new ArrayList<BufferedImage>(10);
+    this.imgPoint = new ArrayList<Point>(10);
+    this.blockedImages = new HashSet<Integer>();
+
+    for(int i=0;i<10;++i)
+    {
+      this.imgPoint.add(new Point());
+      BufferedImage b;
+      try {
+          b = ImageIO.read(new File("assets/hour.png"));
+          this.img.add(b);
+      } catch (IOException ex) {
+          ex.printStackTrace();
+        }
+    }
+
+
     this.initializeBonus();
     this.initializeSkills();
+    this.initializeHoursOnCategories();
   }
 
   /***************************************************/
@@ -52,7 +83,8 @@ public class Player {
     this.temporaryHand = new ArrayList<Card>(4);
     this.availableBonus = new HashMap<Bonus, Integer>(4);
     this.availableSkills = new HashMap<Category, Integer>(5);
-    this.hoursOnCategories = new HashMap<Category, Integer>(5);
+    this.hoursOnCategories = new HashMap<Category, List<Hour>>(5);
+    this.hours = new ArrayList<Hour>();
     this.usedHours = 0;
     this.movedHours = 0;
     this.inHand = 0;
@@ -60,8 +92,25 @@ public class Player {
     this.deniedMentions = new HashSet<Integer>(19);
     this.name = name;
 
+    this.img = new ArrayList<BufferedImage>(10);
+    this.imgPoint = new ArrayList<Point>(10);
+    this.blockedImages = new HashSet<Integer>();
+
+    for(int i=0;i<10;++i)
+    {
+      this.imgPoint.add(new Point(0, 0));
+      BufferedImage b;
+      try {
+          b = ImageIO.read(new File("assets/hour.png"));
+          this.img.add(b);
+      } catch (IOException ex) {
+          ex.printStackTrace();
+        }
+    }
+
     this.initializeBonus();
     this.initializeSkills();
+    this.initializeHoursOnCategories();
   }
 
   //Methods
@@ -74,6 +123,7 @@ public class Player {
     this.availableSkills.clear();
     this.initializeBonus();
     this.initializeSkills();
+    this.initializeHoursOnCategories();
   }*/
 
 
@@ -96,6 +146,17 @@ public class Player {
     this.availableSkills.put(Category.EC,0);
     this.availableSkills.put(Category.T2S,0);
     this.availableSkills.put(Category.JOKER,0);
+  }
+
+  /***************************************************/
+
+  public void initializeHoursOnCategories()
+  {
+    this.hoursOnCategories.put(Category.CS,new ArrayList<Hour>());
+    this.hoursOnCategories.put(Category.TM,new ArrayList<Hour>());
+    this.hoursOnCategories.put(Category.EC,new ArrayList<Hour>());
+    this.hoursOnCategories.put(Category.T2S,new ArrayList<Hour>());
+    this.hoursOnCategories.put(Category.JOKER,new ArrayList<Hour>());
   }
 
   /***************************************************/
@@ -142,6 +203,7 @@ public class Player {
   public void removeCardTemporaryHand()
   {
     if(this.temporaryHand.get(this.temporaryHand.size()-1) != null) this.temporaryHand.remove(this.temporaryHand.size()-1);
+    //this.resetBlockedImages();
   }
 
   /***************************************************/
@@ -184,11 +246,12 @@ public class Player {
 
   public void moveHours()
   {
-    ++usedHours;
-    ++movedHours;
-    this.availableBonus.replace(Bonus.EARN_HOURS, this.availableBonus.get(Bonus.EARN_HOURS) - 1);
-    this.availableBonus.replace(Bonus.MOVE_HOURS, this.availableBonus.get(Bonus.MOVE_HOURS) - 1);
-    /* taking in account first time MOVE_HOURS is used */
+    if(this.availableBonus.get(Bonus.MOVE_HOURS) > 0)
+    {
+      System.out.println("removing moving hour");
+      ++movedHours;
+      this.availableBonus.replace(Bonus.MOVE_HOURS, this.availableBonus.get(Bonus.MOVE_HOURS) - 1);
+    }
   }
 
   /***************************************************/
@@ -196,9 +259,30 @@ public class Player {
   public boolean workOnProject()
   {
     Card card = this.temporaryHand.get(this.temporaryHand.size()-1);
-    if(checkSkills(card.getCategoryProject(), card.getProjectCategoriesQuantity()) && checkHoursAvailability())
+    if(this.availableBonus.get(Bonus.EARN_HOURS) >= card.getProjectCategoriesQuantity() && checkSkills(card.getCategoryProject(), card.getProjectCategoriesQuantity()) && checkHoursAvailability(card.getCategoryProject(), card.getProjectCategoriesQuantity()))
     {
-      this.moveHours();
+      ++usedHours;
+      this.availableBonus.replace(Bonus.EARN_HOURS, this.availableBonus.get(Bonus.EARN_HOURS) - 1);
+
+      //Setting already used hours
+      int used= 0;
+      for(Hour h: this.hoursOnCategories.get(card.getCategoryProject()))
+      {
+        h.setUsedInTurn(true);
+        ++used;
+        if(used >= card.getProjectCategoriesQuantity()) break;
+      }
+
+      if(used < card.getProjectCategoriesQuantity() ) //If jokers should be used
+      {
+        for(Hour h: this.hoursOnCategories.get(Category.JOKER))
+        {
+          h.setUsedInTurn(true);
+          ++used;
+          if(used >= card.getProjectCategoriesQuantity()) break;
+        }
+      }
+
       this.addCardProject(this.temporaryHand.get(this.temporaryHand.size()-1));
       this.removeCardTemporaryHand();
       return true;
@@ -254,9 +338,27 @@ public class Player {
 
   /***************************************************/
 
-  public boolean checkHoursAvailability()
+  public boolean checkHoursAvailability(Category skill, int quantity)
   {
-    return this.availableBonus.get(Bonus.EARN_HOURS) > 0 && this.availableBonus.get(Bonus.MOVE_HOURS) > 0;
+    System.out.println("hours on skill : " + this.hoursOnCategories.get(skill).size());
+    //Checking if all hours are usable
+    int needed = 0;
+    for(Hour h: this.hoursOnCategories.get(skill))
+    {
+      if(!h.wasUsedInTurn()) ++needed;
+      if(needed >= quantity) break;
+    }
+
+    if(needed < quantity ) //If jokers should be used
+    {
+      for(Hour h: this.hoursOnCategories.get(Category.JOKER))
+      {
+        if(!h.wasUsedInTurn()) ++needed;
+        if(needed >= quantity) break;
+      }
+    }
+
+    return (needed == quantity) && (this.hoursOnCategories.get(skill).size() + this.hoursOnCategories.get(Category.JOKER).size()) >= quantity; //Checking if hours are well positionned
   }
 
   /***************************************************/
@@ -270,10 +372,13 @@ public class Player {
 
   public void addBonus(Bonus bonus)
   {
+    if(bonus == Bonus.EARN_HOURS) this.hours.add(new Hour());
+
     if(bonus != Bonus.NULL) this.availableBonus.replace(bonus, this.availableBonus.get(bonus) + 1);
   }
 
   /***************************************************/
+  public void resetBlockedImages(){this.blockedImages.clear();}
 
   public Map<Bonus, Integer> getAvailableBonus(){return this.availableBonus;}
   public Map<Category, Integer> getAvailableSkills(){return this.availableSkills;}
@@ -281,5 +386,22 @@ public class Player {
   public Set<Integer> getDeniedMentions(){return this.deniedMentions;}
   public int getNumberMovedHours(){return this.movedHours;}
   public int getNumberUsedHours(){return this.usedHours;}
+  public List<Hour> getHoursOnCategories(Category cat){return this.hoursOnCategories.get(cat);}
+  public List<BufferedImage> getImages(){return this.img;}
+  public List<Point> getPoints(){return this.imgPoint;}
+  public Set<Integer> getBlockedImages(){return this.blockedImages;}
+  public List<Hour> getHours(){return this.hours;}
+/*  public void resetHoursOnCategories()
+  {
+    this.hoursOnCategories.replace(Category.CS,0);
+    this.hoursOnCategories.replace(Category.TM,0);
+    this.hoursOnCategories.replace(Category.EC,0);
+    this.hoursOnCategories.replace(Category.T2S,0);
+    this.hoursOnCategories.replace(Category.JOKER,0);
+  }*/
+  public void resetHoursUsedInTurn()
+  {
+    for(Hour h : this.hours) h.setUsedInTurn(false);
+  }
 
 }

@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Polygon;
 import java.awt.Font;
+import javax.swing.ImageIcon;
+
 
  public class DrawCard extends Rectangle{
    //Attributes
@@ -22,6 +24,7 @@ import java.awt.Font;
    private Card toDraw;
    private boolean drawBack;
    private boolean inInventory;
+   private ImageIcon icon;
 
    //Constructor
    public DrawCard(float width, float height)
@@ -37,6 +40,8 @@ import java.awt.Font;
    public void setToDraw(Card toDraw){this.toDraw = toDraw;}
    public void setDrawBack(boolean drawBack){this.drawBack = drawBack;}
    public void setInInventory(boolean inInventory){this.inInventory = inInventory;}
+
+   /***************************************************/
 
    @Override
    public void fill(Graphics g)
@@ -233,11 +238,96 @@ import java.awt.Font;
        getDirection().down(2);
        setScale(this.cardWidth, this.cardHeight/2);
 
-       if(this.toDraw instanceof CardCertificates) g.setColor(Colors.getCardThemeColors()[0]);
-       else if(this.toDraw instanceof CardAssociations) g.setColor(Colors.getCardThemeColors()[1]);
-       else if(this.toDraw instanceof CardTeachers) g.setColor(Colors.getCardThemeColors()[2]);
-       else if(this.toDraw instanceof CardMaterials) g.setColor(Colors.getCardThemeColors()[3]);
-       super.fill(g);
+       if(this.toDraw instanceof CardCertificates)
+       {
+         g.setColor(Colors.getCardThemeColors()[0]);
+         super.fill(g);
+         int instances = this.toDraw.getElement();
+         this.icon = new ImageIcon("assets/certificates.png");
+       }
+       else if(this.toDraw instanceof CardAssociations)
+       {
+         g.setColor(Colors.getCardThemeColors()[1]);
+         super.fill(g);
+         switch(Associations.values()[this.toDraw.getElement()])
+         {
+           case AE:
+            this.icon = new ImageIcon("assets/ae.png");
+           break;
+           case BDS:
+            this.icon = new ImageIcon("assets/bds.png");
+           break;
+           case BDF:
+            this.icon = new ImageIcon("assets/bdf.png");
+           break;
+           case CLUBS:
+            this.icon = new ImageIcon("assets/clubs.png");
+           break;
+           case NULL:
+            this.icon = null;
+           break;
+         }
+
+       }
+       else if(this.toDraw instanceof CardTeachers)
+       {
+        g.setColor(Colors.getCardThemeColors()[2]);
+        super.fill(g);
+        switch(Teachers.values()[this.toDraw.getElement()])
+        {
+          case GECHTER:
+           this.icon = new ImageIcon("assets/gechter.png");
+          break;
+          case PAIRE:
+           this.icon = new ImageIcon("assets/paire.png");
+          break;
+          case BAUME:
+           this.icon = new ImageIcon("assets/baume.png");
+          break;
+          case ROTH:
+           this.icon = new ImageIcon("assets/roth.png");
+          break;
+          case NULL:
+           this.icon = null;
+          break;
+        }
+
+       }
+       else if(this.toDraw instanceof CardMaterials)
+       {
+          g.setColor(Colors.getCardThemeColors()[3]);
+          super.fill(g);
+          switch(Materials.values()[this.toDraw.getElement()])
+          {
+            case SERVER:
+             this.icon = new ImageIcon("assets/server.png");
+            break;
+            case HYDROGEN:
+             this.icon = new ImageIcon("assets/hydrogen.png");
+            break;
+            case WORKSHOP:
+             this.icon = new ImageIcon("assets/workshop.png");
+            break;
+            case MECANICAL_PIECES:
+             this.icon = new ImageIcon("assets/mecanical.png");
+            break;
+            case LATHE:
+             this.icon = new ImageIcon("assets/lathe.png");
+            break;
+            case VR_HEADSET:
+             this.icon = new ImageIcon("assets/vr.png");
+            break;
+            case NULL:
+             this.icon = null;
+            break;
+          }
+        }
+        else if(this.toDraw instanceof CardStarter)
+        {
+          g.setColor(Color.BLACK);
+          super.fill(g);
+        }
+
 
        getDirection().up(1);
        getDirection().left(0.3f);
@@ -257,6 +347,24 @@ import java.awt.Font;
 
        getDirection().down(1);
        getDirection().right(0.3f);
+
+
+       DrawImage theme = new DrawImage();
+       theme.setDirection(getDirection());
+       theme.setScale(this.cardWidth, this.cardHeight/3);
+       theme.setSide(1.0f);
+
+       if(this.toDraw instanceof CardCertificates)
+       {
+        for(int i=0;i<this.toDraw.getElement();++i)
+        {
+          theme.draw(g, this.icon);
+          getDirection().right(0.15f);
+        }
+        for(int i=0;i<this.toDraw.getElement();++i) getDirection().left(0.15f);
+       }
+       else if(this.icon != null) theme.draw(g, this.icon);
+
 
        //Project skill category part
        getDirection().down(2);

@@ -21,6 +21,8 @@ import java.awt.event.MouseEvent;
 import java.awt.Color;
 import java.awt.Cursor;
 
+import java.awt.dnd.DropTargetListener;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -71,7 +73,6 @@ public class Game implements ActionListener{
     this.newTurn = true;
     this.pickedCards = 0;
     this.mentions = new ArrayList<Mention>(19);
-    this.availableMentions = new HashSet<Integer>(19);
   }
 
   //Methods
@@ -219,6 +220,7 @@ public class Game implements ActionListener{
 
   public void initializeMentions()
   {
+    this.availableMentions = new HashSet<Integer>(19);
     for(int i=0;i<19;++i) this.availableMentions.add(i);
     int i = 0;
     //Certificates
@@ -266,7 +268,7 @@ public class Game implements ActionListener{
     //Hours
     MentionHours hours = new MentionHours(++i, 2, 3, Bonus.NULL, "Hours mention");
     this.mentions.add(hours);
-    hours = new MentionHours(++i, 4, 3, Bonus.NULL, "Hours mention");
+    hours = new MentionHours(++i, 4, 4, Bonus.NULL, "Hours mention");
     this.mentions.add(hours);
 
     //Materials
@@ -309,6 +311,9 @@ public class Game implements ActionListener{
 
     this.window.getTreatCardsPane().getKeepCardLabel().addMouseListener(new TreatCardsPanelKeepMouseListener(this));
     this.window.getTreatCardsPane().getKeepCardLabel().addMouseListener(new PointingCursorListener(this.window));
+
+    //this.window.getInventory().getInventoryItemsTab().addMouseListener(new InventoryItemsTabMouseListener(this));
+    //this.window.getInventory().getInventoryItemsTab().addMouseMotionListener(new InventoryItemsTabMouseListener(this));
 
     //Adding listeners for menu interactions
     this.menu.getNewGame().addActionListener(this);
@@ -353,6 +358,8 @@ public class Game implements ActionListener{
     this.firstPlayer = 0;
     this.isPickingUpColumn = false;
     this.newTurn = true;
+    this.availableMentions = null;
+    this.initializeMentions();
   }
 
   /***************************************************/
@@ -397,6 +404,10 @@ public class Game implements ActionListener{
     this.checkMention();
     this.players.get(this.playerIndex).resetHours();
     this.players.get(this.playerIndex).resetKeepInHand();
+    this.players.get(this.playerIndex).resetHoursUsedInTurn();
+    this.players.get(this.playerIndex).resetBlockedImages();
+    this.window.getInventory().getInventoryItemsTab().getFinishedMovingButton().setEnabled(true);
+    this.window.getInventory().getInventoryItemsTab().setFinishedMovingHours(false);
 
     setCurrentPlayer((playerIndex+1)%numberOfPlayers); /*skipp players that picked up*/
     window.getRightPanel().updateInfos(players.get(playerIndex).getName());
@@ -425,6 +436,7 @@ public class Game implements ActionListener{
     if(!checkGameProgress() && this.window.getBoard().areAllColumnsEmpty())
     {
       System.out.println("stopping game");
+      /*Manage imsi token there*/
       countPlayersPoints();
 
     }

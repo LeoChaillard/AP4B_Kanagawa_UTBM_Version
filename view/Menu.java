@@ -42,7 +42,7 @@ public class Menu extends JFrame{
   //Constructor
   public Menu()
   {
-    this.icon = new ImageIcon("view/icon.jpg");
+    this.icon = new ImageIcon("assets/icon.jpg");
     this.background = new ImagePanel(icon.getImage() );
     this.resume = new JButton("Resume");
     this.newGame = new JButton("New game");
