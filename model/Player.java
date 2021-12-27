@@ -18,7 +18,7 @@ import java.awt.Point;
 
 public class Player {
   //Attributes
-  private static final int MAX_PROJECT_ELEMENTS = 13; //à revoir !!!!!!!
+  private static final int MAX_PROJECT_ELEMENTS = 13;
 
   private List<Card> hand;
   private List<Card> project;
@@ -39,7 +39,6 @@ public class Player {
   private List<Point> imgPoint;
   private Set<Integer> blockedImages;
 
-<<<<<<< Updated upstream
   //Constructors
   public Player()
   {
@@ -79,8 +78,6 @@ public class Player {
     this.initializeHoursOnCategories();
   }
 
-=======
->>>>>>> Stashed changes
   /***************************************************/
 
   public Player(String name)
