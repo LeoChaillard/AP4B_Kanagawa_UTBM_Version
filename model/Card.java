@@ -111,5 +111,4 @@ public abstract class Card {
 
   public abstract boolean isUsed();
 
-
 }

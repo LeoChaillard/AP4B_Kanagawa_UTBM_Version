@@ -43,7 +43,7 @@ public class Game implements ActionListener{
   private Window window;
   private Menu menu;
   private Random nominatePlayer;
-  private List<Mention> mentions;
+  public static List<Mention> mentions;
   private Set<Integer> availableMentions;
   public static int numberOfPlayers;
   public static int firstPlayer;
@@ -72,7 +72,7 @@ public class Game implements ActionListener{
     this.isPickingUpColumn = false;
     this.newTurn = true;
     this.pickedCards = 0;
-    this.mentions = new ArrayList<Mention>(19);
+    mentions = new ArrayList<Mention>(19);
   }
 
   //Methods
@@ -225,67 +225,67 @@ public class Game implements ActionListener{
     int i = 0;
     //Certificates
     MentionCertificates certificates = new MentionCertificates(i, 3, 3, Bonus.NULL, "Certificates mention");
-    this.mentions.add(certificates);
+    mentions.add(certificates);
     certificates = new MentionCertificates(++i, 4, 4, Bonus.IMSI_TOKEN, "Certificates mention");
-    this.mentions.add(certificates);
+    mentions.add(certificates);
     certificates = new MentionCertificates(++i, 9, 5, Bonus.NULL, "Certificates mention");
-    this.mentions.add(certificates);
+    mentions.add(certificates);
 
     //Associations
     List<Associations> associationsList = new ArrayList<Associations>(3);
     associationsList.add(Associations.AE);
     associationsList.add(Associations.BDS);
     MentionAssociations association = new MentionAssociations(++i, 3, 2, Bonus.EARN_HOURS, associationsList, "Associations mention");
-    this.mentions.add(association);
+    mentions.add(association);
 
     associationsList.clear();
     associationsList.add(Associations.BDF);
     associationsList.add(Associations.CLUBS);
     association = new MentionAssociations(++i, 4, 2, Bonus.EARN_HOURS, associationsList, "Associations mention");
-    this.mentions.add(association);
+    mentions.add(association);
 
     associationsList.clear();
     associationsList.add(Associations.CLUBS);
     associationsList.add(Associations.AE);
     associationsList.add(Associations.BDS);
     association = new MentionAssociations(++i, 9, 3, Bonus.NULL, associationsList, "Associations mention");
-    this.mentions.add(association);
+    mentions.add(association);
 
     //Teachers
     MentionTeachers teachers = new MentionTeachers(++i, 3, 2, Bonus.NULL, false, "Teachers mention");
-    this.mentions.add(teachers);
+    mentions.add(teachers);
     teachers = new MentionTeachers(++i, 4, 3, Bonus.IMSI_TOKEN, false, "Teachers mention");
-    this.mentions.add(teachers);
+    mentions.add(teachers);
     teachers = new MentionTeachers(++i, 9, 3, Bonus.NULL, true, "Teachers mention");
-    this.mentions.add(teachers);
+    mentions.add(teachers);
 
     //Arrow
     MentionArrow arrows = new MentionArrow(++i, 1, 2, Bonus.EARN_HOURS, "Arrow mention");
-    this.mentions.add(arrows);
+    mentions.add(arrows);
     arrows = new MentionArrow(++i, 3, 3, Bonus.EARN_HOURS, "Arrow mention");
-    this.mentions.add(arrows);
+    mentions.add(arrows);
 
     //Hours
     MentionHours hours = new MentionHours(++i, 2, 3, Bonus.NULL, "Hours mention");
-    this.mentions.add(hours);
+    mentions.add(hours);
     hours = new MentionHours(++i, 4, 4, Bonus.NULL, "Hours mention");
-    this.mentions.add(hours);
+    mentions.add(hours);
 
     //Materials
     MentionMaterials materials = new MentionMaterials(++i, 3, 2, Bonus.NULL, "Materials mention");
-    this.mentions.add(materials);
+    mentions.add(materials);
     materials = new MentionMaterials(++i, 4, 3, Bonus.IMSI_TOKEN, "Materials mention");
-    this.mentions.add(materials);
+    mentions.add(materials);
     materials = new MentionMaterials(++i, 9, 4, Bonus.NULL, "Materials mention");
-    this.mentions.add(materials);
+    mentions.add(materials);
 
     //Skills
     MentionSkills skills = new MentionSkills(++i, 2, 2, Bonus.NULL, "Skills mention");
-    this.mentions.add(skills);
+    mentions.add(skills);
     skills = new MentionSkills(++i, 3, 3, Bonus.EARN_HOURS, "Skills mention");
-    this.mentions.add(skills);
+    mentions.add(skills);
     skills = new MentionSkills(++i, 7, 4, Bonus.NULL, "Skills mention");
-    this.mentions.add(skills);
+    mentions.add(skills);
   }
 
   /***************************************************/
@@ -401,6 +401,8 @@ public class Game implements ActionListener{
 
   public void nextTurn()
   {
+    int winner;
+
     this.checkMention();
     this.players.get(this.playerIndex).resetHours();
     this.players.get(this.playerIndex).resetKeepInHand();
@@ -437,7 +439,10 @@ public class Game implements ActionListener{
     {
       System.out.println("stopping game");
       /*Manage imsi token there*/
-      countPlayersPoints();
+      winner = countPlayersPoints();
+
+      //TODO: display the winner
+      System.out.println("winner is : " + winner);
 
     }
   }
@@ -539,7 +544,21 @@ public class Game implements ActionListener{
 
   public int countPlayersPoints()
   {
-    return 0;
+    int max = 0;
+    int temp;
+    int toReturn;
+
+    for(int i=0; i<this.numberOfPlayers; ++i)
+    {
+      temp = players.get(i).countPoints();
+      if (temp>max)
+      {
+        max = temp;
+        toReturn = i;
+      }
+    }
+
+    return toReturn;
   }
 
   /***************************************************/

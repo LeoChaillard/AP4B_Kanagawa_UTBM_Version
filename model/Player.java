@@ -5,6 +5,8 @@
  ************************************************************************/
 
 package model;
+import manager.*;
+
 import java.util.*;
 
 import java.io.File;
@@ -31,6 +33,7 @@ public class Player {
   private Set<Integer> deniedMentions;
   private String name;
   private int inHand;
+  private int finalPoints;
 
   private List<BufferedImage> img;
   private List<Point> imgPoint;
@@ -49,6 +52,7 @@ public class Player {
     this.usedHours = 0;
     this.movedHours = 0;
     this.inHand = 0;
+    this.finalPoints = 0;
     this.acceptedMentions = new HashSet<Integer>(19);
     this.deniedMentions = new HashSet<Integer>(19);
 
@@ -296,6 +300,7 @@ public class Player {
   {
     this.addSkill(this.temporaryHand.get(this.temporaryHand.size()-1).getCategorySkills());
     this.addBonus(this.temporaryHand.get(this.temporaryHand.size()-1).getBonus());
+    this.finalPoints += this.temporaryHand.get(this.temporaryHand.size()-1).getScoringPointsSkills();
     this.removeCardTemporaryHand();
   }
 
@@ -403,5 +408,49 @@ public class Player {
   {
     for(Hour h : this.hours) h.setUsedInTurn(false);
   }
+
+  /************************************************************************/
+  public int countPoints()
+  {
+    int temp = 0;
+    int max = 1;
+    Branch lastBranch = null;
+
+    //count the number of cards in the project:
+    this.finalPoints += this.project.size();
+
+    //count the longest branch streak:
+    for(Card c: this.project)
+    {
+      if (c.getBranch() == lastBranch)
+      {
+        ++temp;
+        if (temp>max) {max = temp;}
+      }
+      else
+      {
+        lastBranch = c.getBranch();
+        temp = 1;
+      }
+    }
+
+    this.finalPoints += max;
+
+    //count the victory points bonuses and maluses:
+    for(Card c: this.project)
+    {
+      this.finalPoints += c.getScoringPointsProjects();
+    }
+    //points from the Skills were already added during the game before deleting the Card instances
+
+    //count the mention points:
+    for(int i: this.acceptedMentions)
+    {
+      this.finalPoints += Game.mentions.get(i).getPoints();
+    }
+
+    return this.finalPoints;
+  }
+
 
 }
