@@ -77,24 +77,30 @@ import java.awt.Dimension;
      //From biggest score to lowest
      int [] scores = new int[Game.numberOfPlayers];
      String [] names = new String[Game.numberOfPlayers];
-     int tmp=0,max=0;
+     int tmp=0,max=0,swap=-1;
      String tmpName;
      for(int i=0;i<Game.numberOfPlayers;++i)
      {
        scores[i] = Game.players.get(i).getFinalPoints();
        names[i] = Game.players.get(i).getName();
      }
-     for(int i=1; i<Game.numberOfPlayers;++i)
-     {
-       if(scores[i] > scores[i-1])
-       {
-         tmp = scores[i];
-         scores[i] = scores[i-1];
-         scores[i-1] = tmp;
 
-         tmpName = names[i];
-         names[i] = names[i-1];
-         names[i-1] = tmpName;
+     while(swap != 0)
+     {
+       swap = 0;
+       for(int i=1; i<Game.numberOfPlayers;++i)
+       {
+         if(scores[i] > scores[i-1])
+         {
+           ++swap;
+           tmp = scores[i];
+           scores[i] = scores[i-1];
+           scores[i-1] = tmp;
+
+           tmpName = names[i];
+           names[i] = names[i-1];
+           names[i-1] = tmpName;
+         }
        }
      }
 

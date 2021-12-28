@@ -18,7 +18,7 @@ import java.awt.Point;
 
 public class Player {
   //Attributes
-  private static final int MAX_PROJECT_ELEMENTS = 13;
+  private static final int MAX_PROJECT_ELEMENTS = 17;
 
   private List<Card> hand;
   private List<Card> project;
@@ -415,6 +415,7 @@ public class Player {
   {
     int temp = 0;
     int max = 1;
+    int imsi = 0;
     Branch lastBranch = null;
 
     //count the number of cards in the project:
@@ -425,8 +426,14 @@ public class Player {
     {
       if (c.getBranch() == Branch.IMSI || c.getBranch() == lastBranch)
       {
+        if(c.getBranch() == Branch.IMSI) ++imsi;
         ++temp;
         if (temp>max) {max = temp;}
+      }
+      else if(imsi > 0)
+      {
+        temp = imsi+1;
+        imsi = 0;
       }
       else
       {
@@ -434,7 +441,7 @@ public class Player {
         temp = 1;
       }
     }
-
+    System.out.println("biggest combo : " + max);
     this.finalPoints += max;
 
     //count the victory points bonuses and maluses:

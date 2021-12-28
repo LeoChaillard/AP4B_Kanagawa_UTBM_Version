@@ -35,7 +35,7 @@ import java.util.*;
 public class InventoryCardsTab extends JPanel{
   //Attributes
   private static final int X_ELEMENTS = 8;
-  private static final int Y_ELEMENTS = 4;
+  private static final int Y_ELEMENTS = 5;
   private static final float ELEMENT_SIZE = 0.95f;
   private static final float CARD_SIZE = 0.80f;
   private static final int LINE_ELEMENTS = X_ELEMENTS - 2;
@@ -107,7 +107,7 @@ public class InventoryCardsTab extends JPanel{
     Graphics2D g2 = (Graphics2D) g;
     g2.setStroke(new BasicStroke(2));
 
-    for(int j=0;j<2;++j)
+    for(int j=0;j<3;++j)
     {
       d.right(1);
       for(int i=0;i<LINE_ELEMENTS;++i)
@@ -117,7 +117,7 @@ public class InventoryCardsTab extends JPanel{
         d.right(1);
       }
       d.resetMove();
-      d.down(1);
+      d.down(1+j);
     }
 
     //Drawing project cards
@@ -133,6 +133,13 @@ public class InventoryCardsTab extends JPanel{
         cardDir.resetMove();
         cardDir.down(5.0f + 2.5f);
         cardDir.right(1.0f + 0.24f);
+      }
+
+      if(projectCards == 12)
+      {
+        cardDir.resetMove();
+        cardDir.down( (5.0f + 2.5f)*2.0f );
+        cardDir.right( (1.0f + 0.24f)*2.0f );
       }
 
       if(c != null)
@@ -159,7 +166,7 @@ public class InventoryCardsTab extends JPanel{
 
     //Drawing hand slots
     d.resetMove();
-    d.down(2.50f);
+    d.down(3.50f);
     d.right(1);
 
     for(int i=0;i<LINE_ELEMENTS;++i)
@@ -197,7 +204,7 @@ public class InventoryCardsTab extends JPanel{
     string.draw(g,"Project");
 
     g.setColor(new Color(0x605A4D));
-    d.down(2.50f);
+    d.down(3.50f);
     string.draw(g,"Hand");
   }
 }
