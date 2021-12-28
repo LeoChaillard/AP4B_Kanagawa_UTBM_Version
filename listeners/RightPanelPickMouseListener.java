@@ -29,16 +29,19 @@ public class RightPanelPickMouseListener implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent evt)
     {
-      if(!this.game.isPickingUpColumn())
+      if(!this.game.isEndOfGame())
       {
-        JOptionPane msg = new JOptionPane();
-        msg.showMessageDialog( this.game.getWindow(), "Please click on one available column that you wish", "Pick one column!", JOptionPane.INFORMATION_MESSAGE);
-        this.game.setPickingUpColumn(true);
-      }
-      else
-      {
-        JOptionPane msg = new JOptionPane();
-        msg.showMessageDialog( this.game.getWindow(), "Can't pick another column during same turn!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+        if(!this.game.isPickingUpColumn())
+        {
+          JOptionPane msg = new JOptionPane();
+          msg.showMessageDialog( this.game.getWindow(), "Please click on one available column that you wish", "Pick one column!", JOptionPane.INFORMATION_MESSAGE);
+          this.game.setPickingUpColumn(true);
+        }
+        else
+        {
+          JOptionPane msg = new JOptionPane();
+          msg.showMessageDialog( this.game.getWindow(), "Can't pick another column during same turn!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+        }
       }
     }
 

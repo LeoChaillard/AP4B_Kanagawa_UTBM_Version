@@ -9,33 +9,21 @@ import java.awt.Color;
 
 public class Colors{
   //Attributes
-  public static final Color[] boardDarkColors = {
-      new Color(0x9acd00),
-      new Color(0xffcd00),
-      new Color(0x2fcdcd),
-      new Color(0xff3000)
+  public static final Color[] backgroundColors = {
+      new Color(0xFFFFFF), //Board background
+      new Color(0xF2E1C1) //RightPanel background
   };
 
-  public static final Color[] boardLightColors = {
-      new Color(0x9acd00),
-      new Color(0xffcd00),
-      new Color(0x2fcdcd),
-      new Color(0xff3000)
+  public static final Color[] boardColors = {
+      new Color(0xc4342d), //Visible slots
+      new Color(0xc4342d), //Not Visible slots
+      new Color(0xfdf1b8), //Columns background
+      new Color(153,153,153,50) //Highlighted columns
   };
 
-  public static final Color[] cardLightColors = {
-      new Color(0xcfff39),
-      new Color(0xffe783),
-      new Color(0x95e5e5),
-      new Color(0xff896a)
+  public static final Color[] cardColors = {
+      new Color(0x8C5C10) //Learn skills part
 };
-
-  public static final Color[] cardDarkColors = {
-          new Color(0x208000),
-          new Color(0xCC7A00),
-          new Color(0x001133),
-          new Color(0x990000)
-  };
 
   public static final Color[] skillColors = {
           Color.BLUE, //T2S
@@ -53,20 +41,18 @@ public class Colors{
   };
 
   public static final Color[] branchColors = {
-          new Color(0x208000), //INFO
+          new Color(0x36D800), //INFO
           new Color(0x95e5e5), //GMC
           new Color(0xff896a), //EDIM
           new Color(0xffe783), //ENERGIE
           new Color(0x800080) //IMSI
   };
 
-
   //Methods
+  public final static Color[] getBackgroundColors(){return backgroundColors;}
   public static final Color[] getSkillColors(){return skillColors;}
-  public static final Color[] getBoardLightColors(){return boardLightColors;}
-  public static final Color[] getBoardDarkColors(){return boardDarkColors;}
-  public static final Color[] getCardLightColors(){return cardLightColors;}
-  public static final Color[] getCardDarkColors(){return cardDarkColors;}
+  public static final Color[] getBoardColors(){return boardColors;}
+  public static final Color[] getCardColors(){return cardColors;}
   public static final Color[] getCardThemeColors(){return cardThemeColors;}
   public static final Color[] getBranchColors(){return branchColors;}
 

@@ -28,21 +28,24 @@ public class RightPanelMouseListener implements MouseListener{
   @Override
   public void mouseClicked(MouseEvent evt)
   {
-    //Treating cards in temporary hand
-    if(this.game.isPickingUpColumn() && !Game.players.get(this.game.getPlayerIndex()).getTemporaryHand().isEmpty())
+    if(!this.game.isEndOfGame())
     {
-      int x = evt.getX();
-      int y = evt.getY();
-
-      //Player has to click on his cards to treat them
-      if( (RightPanel.temporaryCardXCoordinate - RightPanel.temporaryCardWidth/2 <= x) && (RightPanel.temporaryCardXCoordinate + RightPanel.temporaryCardWidth/2 >= x) && (RightPanel.temporaryCardYCoordinate - RightPanel.temporaryCardHeight/2 <= y) && (RightPanel.temporaryCardYCoordinate + RightPanel.temporaryCardHeight/2 >= y))
+      //Treating cards in temporary hand
+      if(this.game.isPickingUpColumn() && !Game.players.get(this.game.getPlayerIndex()).getTemporaryHand().isEmpty())
       {
-        System.out.println("click temporary card");
-        this.game.getWindow().getTreatCardsPane().setVisible(true);
-        this.game.getWindow().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        this.game.getWindow().repaint();
-      }
+        int x = evt.getX();
+        int y = evt.getY();
 
+        //Player has to click on his cards to treat them
+        if( (RightPanel.temporaryCardXCoordinate - RightPanel.temporaryCardWidth/2 <= x) && (RightPanel.temporaryCardXCoordinate + RightPanel.temporaryCardWidth/2 >= x) && (RightPanel.temporaryCardYCoordinate - RightPanel.temporaryCardHeight/2 <= y) && (RightPanel.temporaryCardYCoordinate + RightPanel.temporaryCardHeight/2 >= y))
+        {
+          System.out.println("click temporary card");
+          this.game.getWindow().getTreatCardsPane().setVisible(true);
+          this.game.getWindow().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+          this.game.getWindow().repaint();
+        }
+
+      }
     }
   }
 }

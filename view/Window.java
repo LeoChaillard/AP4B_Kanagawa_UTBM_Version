@@ -40,6 +40,7 @@ public class Window extends JFrame{
   private RightPanel rightPanel;
   private TreatCardsPane treatCardsPanel;
   private JLayeredPane layeredPane;
+  private DisplayWinnerPane winnerPane;
   private JButton menuButton;
   private JButton inventoryButton;
   private Inventory inventory;
@@ -51,6 +52,7 @@ public class Window extends JFrame{
     this.rightPanel = new RightPanel(RIGHT_SIDE);
     this.treatCardsPanel = new TreatCardsPane();
     this.layeredPane = new JLayeredPane();
+    this.winnerPane = new DisplayWinnerPane();
     this.inventory = new Inventory();
   }
 
@@ -65,7 +67,7 @@ public class Window extends JFrame{
     this.setLayout(new BorderLayout());
 
     //Menu Button
-    ImageIcon gear = new ImageIcon("view/menu_gear.png");
+    ImageIcon gear = new ImageIcon("assets/menu_gear.png");
     this.menuButton = new JButton(gear);
     this.menuButton.setBorder(BorderFactory.createEmptyBorder());
     this.menuButton.setBorderPainted(false);
@@ -113,6 +115,10 @@ public class Window extends JFrame{
     this.boardPanel.setLocation(0,0);
     this.layeredPane.add(this.boardPanel, 1);
 
+    this.winnerPane.setSize(this.layeredPane.getPreferredSize());
+    this.winnerPane.setLocation(0,0);
+    this.layeredPane.add(this.winnerPane, 1);
+
     this.treatCardsPanel.setSize(this.layeredPane.getPreferredSize());
     this.treatCardsPanel.setLocation(0,0);
     this.layeredPane.add(this.treatCardsPanel, 0);
@@ -125,6 +131,10 @@ public class Window extends JFrame{
     if(!this.inventory.isVisible()) this.inventory.setVisible(true);
     else this.inventory.setVisible(false);
   }
+
+  /***************************************************/
+
+  public DisplayWinnerPane getWinnerPane(){return winnerPane;}
 
   /***************************************************/
 
@@ -145,6 +155,23 @@ public class Window extends JFrame{
   /***************************************************/
 
   public Inventory getInventory(){return this.inventory;}
+
+  /***************************************************/
+
+  public void disableInventory()
+  {
+    this.inventoryButton.getInputMap(this.inventoryButton.WHEN_IN_FOCUSED_WINDOW).remove(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0));
+    this.inventoryButton.setEnabled(false);
+    this.inventory.setVisible(false);
+  }
+
+  /***************************************************/
+
+  public void enableInventory()
+  {
+    this.inventoryButton.getInputMap(this.inventoryButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "Inventory");
+    this.inventoryButton.setEnabled(true);
+  }
 
   /***************************************************/
 

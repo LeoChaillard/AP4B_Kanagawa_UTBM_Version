@@ -153,6 +153,18 @@ public class InventoryItemsTab extends JPanel{
       return bounds;
   }
 
+  /***************************************************/
+  @Override
+  public void paintComponent(Graphics g)
+  {
+    super.paintComponent(g);
+    int h= this.getHeight();
+    int w = this.getWidth();
+    g.drawImage(icon.getImage(),(this.getWidth()-w)/2,(this.getHeight()-h)/2,w,h,this);
+  }
+
+  /***************************************************/
+
   @Override
   public void paint(Graphics g)
   {
@@ -237,7 +249,7 @@ public class InventoryItemsTab extends JPanel{
             {
               if(!pT2S.getBlockedImages().contains(j) && this.skillsContains(cirCoords[0][0], cirCoords[0][1], cir.getWidth(), cir.getHeight(), (pT2S.getPoints().get(j).x + hour.getWidth()/2),  (pT2S.getPoints().get(j).y + hour.getHeight()/2)) )
               {
-                if(pT2S.getAvailableSkills().get(skill) != 0 && (pT2S.getHours().get(j).isFirstTimeUsed() || pT2S.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
+                if(pT2S.getAvailableSkills().get(skill) >= (pT2S.getHoursOnCategories(skill).size()+1) && (pT2S.getHours().get(j).isFirstTimeUsed() || pT2S.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
                 {
                   System.out.println("T2S");
                   pT2S.getBlockedImages().add(j);
@@ -261,6 +273,7 @@ public class InventoryItemsTab extends JPanel{
                 {
                   pT2S.getPoints().set(j, new Point(0,0));
                   pT2S.getHours().get(j).setLasTurnPosition(Category.NULL);
+                  this.repaint();
                 }
               }
 
@@ -291,7 +304,7 @@ public class InventoryItemsTab extends JPanel{
             {
               if(!pEC.getBlockedImages().contains(j) && this.skillsContains(cirCoords[1][0], cirCoords[1][1], cir.getWidth(), cir.getHeight(), (pEC.getPoints().get(j).x + hour.getWidth()/2),  (pEC.getPoints().get(j).y + hour.getHeight()/2)) )
               {
-                if(pEC.getAvailableSkills().get(skill) != 0 && (pEC.getHours().get(j).isFirstTimeUsed() || pEC.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
+                if(pEC.getAvailableSkills().get(skill) >= (pEC.getHoursOnCategories(skill).size()+1) && (pEC.getHours().get(j).isFirstTimeUsed() || pEC.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
                 {
                   System.out.println("EC");
                   pEC.getBlockedImages().add(j);
@@ -313,6 +326,7 @@ public class InventoryItemsTab extends JPanel{
                 {
                    pEC.getPoints().set(j, new Point(0,0));
                    pEC.getHours().get(j).setLasTurnPosition(Category.NULL);
+                   this.repaint();
                  }
               }
 
@@ -344,7 +358,7 @@ public class InventoryItemsTab extends JPanel{
             {
               if(!pTM.getBlockedImages().contains(j) && this.skillsContains(cirCoords[2][0], cirCoords[2][1], cir.getWidth(), cir.getHeight(), (pTM.getPoints().get(j).x + hour.getWidth()/2),  (pTM.getPoints().get(j).y + hour.getHeight()/2)))
               {
-                if(pTM.getAvailableSkills().get(skill) != 0 && (pTM.getHours().get(j).isFirstTimeUsed() || pTM.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
+                if(pTM.getAvailableSkills().get(skill) >= (pTM.getHoursOnCategories(skill).size()+1) && (pTM.getHours().get(j).isFirstTimeUsed() || pTM.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
                 {
                   System.out.println("TM");
                   pTM.getBlockedImages().add(j);
@@ -366,6 +380,7 @@ public class InventoryItemsTab extends JPanel{
                 {
                   pTM.getPoints().set(j, new Point(0,0));
                   pTM.getHours().get(j).setLasTurnPosition(Category.NULL);
+                  this.repaint();
                 }
               }
 
@@ -397,7 +412,7 @@ public class InventoryItemsTab extends JPanel{
             {
               if(!pCS.getBlockedImages().contains(j) && this.skillsContains(cirCoords[3][0], cirCoords[3][1], cir.getWidth(), cir.getHeight(), (pCS.getPoints().get(j).x + hour.getWidth()/2),  (pCS.getPoints().get(j).y + hour.getHeight()/2)))
               {
-                if(pCS.getAvailableSkills().get(skill) != 0 && (pCS.getHours().get(j).isFirstTimeUsed() || pCS.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
+                if(pCS.getAvailableSkills().get(skill) >= (pCS.getHoursOnCategories(skill).size()+1) && (pCS.getHours().get(j).isFirstTimeUsed() || pCS.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
                 {
                   System.out.println("CS");
                   pCS.getBlockedImages().add(j);
@@ -419,6 +434,7 @@ public class InventoryItemsTab extends JPanel{
                 {
                   pCS.getPoints().set(j, new Point(0,0));
                   pCS.getHours().get(j).setLasTurnPosition(Category.NULL);
+                  this.repaint();
                 }
               }
 
@@ -451,7 +467,7 @@ public class InventoryItemsTab extends JPanel{
             {
               if(!pJOKER.getBlockedImages().contains(j) && this.skillsContains(cirCoords[4][0], cirCoords[4][1], cir.getWidth(), cir.getHeight(), (pJOKER.getPoints().get(j).x + hour.getWidth()/2),  (pJOKER.getPoints().get(j).y + hour.getHeight()/2)))
               {
-                if(pJOKER.getAvailableSkills().get(skill) != 0 && (pJOKER.getHours().get(j).isFirstTimeUsed() || pJOKER.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
+                if(pJOKER.getAvailableSkills().get(skill) >= (pJOKER.getHoursOnCategories(skill).size()+1) && (pJOKER.getHours().get(j).isFirstTimeUsed() || pJOKER.getAvailableBonus().get(Bonus.MOVE_HOURS) != 0))
                 {
                   System.out.println("JOKER");
                   pJOKER.getBlockedImages().add(j);
@@ -473,6 +489,7 @@ public class InventoryItemsTab extends JPanel{
                 {
                   pJOKER.getPoints().set(j, new Point(0,0));
                   pJOKER.getHours().get(j).setLasTurnPosition(Category.NULL);
+                  this.repaint();
                 }
               }
 

@@ -32,6 +32,7 @@ public class TreatCardsPanelSkillsMouseListener implements MouseListener{
     System.out.println("click on skills");
     Game.players.get(this.game.getPlayerIndex()).learnNewSkills();
     this.game.getWindow().repaint();
+    this.game.getWindow().getInventory().getInventoryItemsTab().repaint();
     this.game.getWindow().getTreatCardsPane().setVisible(false);
 
     //When temporary hand is empty, going to next turn

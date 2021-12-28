@@ -25,6 +25,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Point;
 
 import java.util.*;
 
@@ -38,14 +41,26 @@ public class InventoryCardsTab extends JPanel{
   private static final int LINE_ELEMENTS = X_ELEMENTS - 2;
 
   private ImageIcon icon;
+  private int cardWidth;
+  private int cardHeight;
+  private int [][] cardCoords;
 
   //Constructor
   public InventoryCardsTab()
   {
     this.icon = new ImageIcon("assets/icon.jpg");
+    this.cardWidth = 0;
+    this.cardHeight = 0;
+    this.cardCoords = new int[12][2];
   }
 
   //Methods
+  public boolean cardContains(int cardIndex, Point p)
+  {
+      return (cardCoords[cardIndex][0] - cardWidth/2 <= p.getX())  && (cardCoords[cardIndex][0] + cardWidth/2 >= p.getX())  && (cardCoords[cardIndex][1] - cardHeight/2 <= p.getY()) && (cardCoords[cardIndex][1] + cardHeight/2 >= p.getY());
+  }
+
+  /***************************************************/
   @Override
   public void paintComponent(Graphics g)
   {
@@ -130,6 +145,13 @@ public class InventoryCardsTab extends JPanel{
         card.setToDraw(c);
         card.setInInventory(true);
         card.fill(g);
+
+        cardDir.down(2.5f);
+        this.cardCoords[projectCards-1][0] = card.getX();
+        this.cardCoords[projectCards-1][1] = card.getY();
+        this.cardWidth = card.getWidth();
+        this.cardHeight = card.getHeight();
+        cardDir.up(2.5f);
 
         cardDir.right(1.0f + 0.24f);
       }
