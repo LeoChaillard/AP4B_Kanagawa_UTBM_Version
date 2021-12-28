@@ -415,8 +415,6 @@ public class Game implements ActionListener{
 
   public void nextTurn()
   {
-    int winner = 0;
-
     this.checkMention();
     this.players.get(this.playerIndex).resetHours();
     this.players.get(this.playerIndex).resetKeepInHand();
@@ -456,13 +454,36 @@ public class Game implements ActionListener{
     if(!checkGameProgress() && this.window.getBoard().areAllColumnsEmpty())
     {
       System.out.println("stopping game");
-      winner = countPlayersPoints();
-
-      //Displaying the winner
-      System.out.println("winner is : " + this.players.get(winner).getName());
+      int winner=0,tmp=0, highest=0;
       Color color = Colors.getBoardColors()[0];
       String hex = "#"+Integer.toHexString(color.getRGB()).substring(2);
-      this.window.getWinnerPane().setWinner("<html><font color='" + hex + "'>" + this.players.get(winner).getName() + " has won !</font></html>");
+      String winnerNames = this.players.get(winner).getName();
+      boolean draw = false;
+
+      winner = countPlayersPoints();
+      highest = players.get(winner).getFinalPoints();
+
+      for(int i=0;i<this.numberOfPlayers;++i)
+      {
+        if(i != winner)
+        {
+          tmp = players.get(i).getFinalPoints();
+          if(highest == tmp)
+          {
+            if(i == this.numberOfPlayers-1) winnerNames = winnerNames + " and " + players.get(i).getName();
+            else winnerNames = winnerNames + ", " + players.get(i).getName();
+            draw = true;
+          }
+        }
+      }
+
+      //Displaying the winner
+      if(draw) System.out.println("Draw between : " + winnerNames);
+      else System.out.println("winner is : " + this.players.get(winner).getName());
+
+      if(!draw) this.window.getWinnerPane().setWinner("<html><font color='" + hex + "'>" + this.players.get(winner).getName() + " has won!</font></html>");
+      else this.window.getWinnerPane().setWinner("<html><font color='" + hex + "'>Draw between " + winnerNames + "!</font></html>");
+
       this.window.getWinnerPane().displayLadder();
       this.window.getWinnerPane().setVisible(true);
       this.window.disableInventory();
