@@ -145,7 +145,7 @@ public class Board extends JPanel{
   public void paint(Graphics g)
   {
     super.paint(g);
-    this.setBackground(Color.WHITE);
+    this.setBackground(Colors.getBackgroundColors()[0]);
 
     //Getting size of the window
     float width = getWidth();
@@ -165,7 +165,7 @@ public class Board extends JPanel{
     col.setDirection(colDir);
     col.setScale(width/X_ELEMENTS, height);
     col.setSide(1.0f);
-    g.setColor(new Color(253,241,184,100));
+    g.setColor(Colors.getBoardColors()[2]);
     this.columnWidth = col.getWidth();
     this.columnHeight = col.getHeight();
 
@@ -187,8 +187,8 @@ public class Board extends JPanel{
     //Drawing Columns
     for(int i =0;i<X_ELEMENTS;++i)
     {
-      if(this.highlightColumns[i]) g.setColor(new Color(153,153,153,50));
-      else g.setColor(new Color(0xfdf1b8));
+      if(this.highlightColumns[i]) g.setColor(Colors.getBoardColors()[3]);
+      else g.setColor(Colors.getBoardColors()[2]);
 
       col.fill(g);
       this.columnsXCoordinate[i] = col.getX();
@@ -204,7 +204,7 @@ public class Board extends JPanel{
     	{
     		if(hiddenCards[k][j])
         {
-    			g.setColor(new Color(0xc4342d));
+    			g.setColor(Colors.getBoardColors()[1]);
     			rec.fill(g);
           Graphics2D g2 = (Graphics2D) g;
           g2.setStroke(new BasicStroke(2));
@@ -222,7 +222,7 @@ public class Board extends JPanel{
         }
     		else
         {
-    			g.setColor(new Color(0xc4342d));
+    			g.setColor(Colors.getBoardColors()[0]);
 
           //Drawing thicker borders
           Graphics2D g2 = (Graphics2D) g;

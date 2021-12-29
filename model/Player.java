@@ -18,7 +18,7 @@ import java.awt.Point;
 
 public class Player {
   //Attributes
-  private static final int MAX_PROJECT_ELEMENTS = 13;
+  private static final int MAX_PROJECT_ELEMENTS = 17;
 
   private List<Card> hand;
   private List<Card> project;
@@ -62,7 +62,7 @@ public class Player {
 
     for(int i=0;i<10;++i)
     {
-      this.imgPoint.add(new Point());
+      this.imgPoint.add(new Point(190, 120));
       BufferedImage b;
       try {
           b = ImageIO.read(new File("assets/hour.png"));
@@ -102,7 +102,7 @@ public class Player {
 
     for(int i=0;i<10;++i)
     {
-      this.imgPoint.add(new Point(0, 0));
+      this.imgPoint.add(new Point(190, 120));
       BufferedImage b;
       try {
           b = ImageIO.read(new File("assets/hour.png"));
@@ -396,14 +396,15 @@ public class Player {
   public List<Point> getPoints(){return this.imgPoint;}
   public Set<Integer> getBlockedImages(){return this.blockedImages;}
   public List<Hour> getHours(){return this.hours;}
-/*  public void resetHoursOnCategories()
+  public int getFinalPoints(){return this.finalPoints;}
+  public void resetHoursOnCategories()
   {
-    this.hoursOnCategories.replace(Category.CS,0);
-    this.hoursOnCategories.replace(Category.TM,0);
-    this.hoursOnCategories.replace(Category.EC,0);
-    this.hoursOnCategories.replace(Category.T2S,0);
-    this.hoursOnCategories.replace(Category.JOKER,0);
-  }*/
+    this.hoursOnCategories.replace(Category.CS,new ArrayList<Hour>());
+    this.hoursOnCategories.replace(Category.TM,new ArrayList<Hour>());
+    this.hoursOnCategories.replace(Category.EC,new ArrayList<Hour>());
+    this.hoursOnCategories.replace(Category.T2S,new ArrayList<Hour>());
+    this.hoursOnCategories.replace(Category.JOKER,new ArrayList<Hour>());
+  }
   public void resetHoursUsedInTurn()
   {
     for(Hour h : this.hours) h.setUsedInTurn(false);
@@ -414,6 +415,7 @@ public class Player {
   {
     int temp = 0;
     int max = 1;
+    int imsi = 0;
     Branch lastBranch = null;
 
     //count the number of cards in the project:
@@ -422,10 +424,16 @@ public class Player {
     //count the longest branch streak:
     for(Card c: this.project)
     {
-      if (c.getBranch() == lastBranch)
+      if (c.getBranch() == Branch.IMSI || c.getBranch() == lastBranch)
       {
+        if(c.getBranch() == Branch.IMSI) ++imsi;
         ++temp;
         if (temp>max) {max = temp;}
+      }
+      else if(imsi > 0)
+      {
+        temp = imsi+1;
+        imsi = 0;
       }
       else
       {
@@ -433,7 +441,7 @@ public class Player {
         temp = 1;
       }
     }
-
+    System.out.println("biggest combo : " + max);
     this.finalPoints += max;
 
     //count the victory points bonuses and maluses:

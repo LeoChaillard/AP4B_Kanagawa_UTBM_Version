@@ -29,25 +29,28 @@ public class RightPanelPassMouseListener implements MouseListener{
   @Override
   public void mouseClicked(MouseEvent evt)
   {
-    if(this.game.getWindow().getBoard().getRemainingColumns() == 1)
+    if(!this.game.isEndOfGame())
     {
-      JOptionPane msg = new JOptionPane();
-      msg.showMessageDialog( this.game.getWindow(), "You're the last player!", "Can't do that", JOptionPane.WARNING_MESSAGE);
-    }
-    else if(Board.addedRows == 3)
-    {
-      JOptionPane msg = new JOptionPane();
-      msg.showMessageDialog( this.game.getWindow(), "All rows are already filled up!", "Can't do that", JOptionPane.WARNING_MESSAGE);
-    }
-    else if(!this.game.isPickingUpColumn() && Game.players.get(this.game.getPlayerIndex()).getTemporaryHand().isEmpty())
-    {
-      this.game.passTurn();
-      this.game.nextTurn();
-    }
-    else
-    {
-      JOptionPane msg = new JOptionPane();
-      msg.showMessageDialog( this.game.getWindow(), "Can't pass while picking up a column!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+      if(this.game.getWindow().getBoard().getRemainingColumns() == 1)
+      {
+        JOptionPane msg = new JOptionPane();
+        msg.showMessageDialog( this.game.getWindow(), "You're the last player!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+      }
+      else if(Board.addedRows == 3)
+      {
+        JOptionPane msg = new JOptionPane();
+        msg.showMessageDialog( this.game.getWindow(), "All rows are already filled up!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+      }
+      else if(!this.game.isPickingUpColumn() && Game.players.get(this.game.getPlayerIndex()).getTemporaryHand().isEmpty())
+      {
+        this.game.passTurn();
+        this.game.nextTurn();
+      }
+      else
+      {
+        JOptionPane msg = new JOptionPane();
+        msg.showMessageDialog( this.game.getWindow(), "Can't pass while picking up a column!", "Can't do that", JOptionPane.WARNING_MESSAGE);
+      }
     }
   }
 

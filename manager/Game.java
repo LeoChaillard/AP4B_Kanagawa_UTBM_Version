@@ -32,7 +32,7 @@ public class Game implements ActionListener{
   //Attributes
   private static final int MAX_PLAYERS = 4;
   public static final int TOTAL_NUMBER_CARDS = 72;
-  private static final int CARDS_FOR_WIN = 11; //Should be 11
+  private static final int CARDS_FOR_WIN = 2; //Should be 11
   private static final int X_ELEMENTS = 4;
   private static final int Y_ELEMENTS = 3;
 
@@ -53,6 +53,7 @@ public class Game implements ActionListener{
   private boolean isPickingUpColumn;
   public static boolean newTurn;
   public static int pickedCards;
+  private boolean endOfGame;
 
   private enum Actions
   {
@@ -72,7 +73,8 @@ public class Game implements ActionListener{
     this.isPickingUpColumn = false;
     this.newTurn = true;
     this.pickedCards = 0;
-    mentions = new ArrayList<Mention>(19);
+    this.mentions = new ArrayList<Mention>(19);
+    this.endOfGame = false;
   }
 
   //Methods
@@ -312,6 +314,7 @@ public class Game implements ActionListener{
     this.window.getTreatCardsPane().getKeepCardLabel().addMouseListener(new TreatCardsPanelKeepMouseListener(this));
     this.window.getTreatCardsPane().getKeepCardLabel().addMouseListener(new PointingCursorListener(this.window));
 
+    this.window.getInventory().getInventoryCardsTab().addMouseListener(new InventoryCardsTabTokensListener(this));
     //this.window.getInventory().getInventoryItemsTab().addMouseListener(new InventoryItemsTabMouseListener(this));
     //this.window.getInventory().getInventoryItemsTab().addMouseMotionListener(new InventoryItemsTabMouseListener(this));
 
@@ -335,6 +338,9 @@ public class Game implements ActionListener{
     this.window.getRightPanel().getPickColumnLabel().addMouseListener(new PointingCursorListener(this.window));
     this.window.getRightPanel().getPickColumnLabel().addMouseListener(new RightPanelPickMouseListener(this));
 
+    this.window.getRightPanel().getArrowButton().addMouseListener(new PointingCursorListener(this.window));
+    this.window.getRightPanel().getArrowButton().addMouseListener(new RightPanelArrowMouseListener(this));
+
     this.menu.getResume().setEnabled(false);
     this.menu.draw();
   }
@@ -350,6 +356,8 @@ public class Game implements ActionListener{
 
     this.window.getBoard().removeAll();
     this.window.getTreatCardsPane().setVisible(false);
+    this.window.getWinnerPane().setVisible(false);
+    this.window.enableInventory();
     this.menu.getResume().setEnabled(true);
     this.pickedUpCards.clear();
     this.starterCards.clear();
@@ -359,6 +367,7 @@ public class Game implements ActionListener{
     this.isPickingUpColumn = false;
     this.newTurn = true;
     this.availableMentions = null;
+    this.setEndOfGame(false);
     this.initializeMentions();
   }
 
@@ -399,20 +408,27 @@ public class Game implements ActionListener{
 
   /***************************************************/
 
+  public void setEndOfGame(boolean end)
+  {
+    this.endOfGame = end;
+  }
+
   public void nextTurn()
   {
-    int winner;
-
     this.checkMention();
     this.players.get(this.playerIndex).resetHours();
     this.players.get(this.playerIndex).resetKeepInHand();
     this.players.get(this.playerIndex).resetHoursUsedInTurn();
     this.players.get(this.playerIndex).resetBlockedImages();
+    this.players.get(this.playerIndex).resetHoursOnCategories();
     this.window.getInventory().getInventoryItemsTab().getFinishedMovingButton().setEnabled(true);
     this.window.getInventory().getInventoryItemsTab().setFinishedMovingHours(false);
 
     setCurrentPlayer((playerIndex+1)%numberOfPlayers); /*skipp players that picked up*/
     window.getRightPanel().updateInfos(players.get(playerIndex).getName());
+
+    this.window.getInventory().getInventoryCardsTab().repaint();
+    this.window.getInventory().getInventoryItemsTab().repaint();
 
     //New turn mid game
     if(this.passedTurns > 0 && this.playerIndex == this.firstPlayer)
@@ -438,12 +454,40 @@ public class Game implements ActionListener{
     if(!checkGameProgress() && this.window.getBoard().areAllColumnsEmpty())
     {
       System.out.println("stopping game");
-      /*Manage imsi token there*/
+      int winner=0,tmp=0, highest=0;
+      Color color = Colors.getBoardColors()[0];
+      String hex = "#"+Integer.toHexString(color.getRGB()).substring(2);
+      String winnerNames = this.players.get(winner).getName();
+      boolean draw = false;
+
       winner = countPlayersPoints();
+      highest = players.get(winner).getFinalPoints();
 
-      //TODO: display the winner
-      System.out.println("winner is : " + winner);
+      for(int i=0;i<this.numberOfPlayers;++i)
+      {
+        if(i != winner)
+        {
+          tmp = players.get(i).getFinalPoints();
+          if(highest == tmp)
+          {
+            if(i == this.numberOfPlayers-1) winnerNames = winnerNames + " and " + players.get(i).getName();
+            else winnerNames = winnerNames + ", " + players.get(i).getName();
+            draw = true;
+          }
+        }
+      }
 
+      //Displaying the winner
+      if(draw) System.out.println("Draw between : " + winnerNames);
+      else System.out.println("winner is : " + this.players.get(winner).getName());
+
+      if(!draw) this.window.getWinnerPane().setWinner("<html><font color='" + hex + "'>" + this.players.get(winner).getName() + " has won!</font></html>");
+      else this.window.getWinnerPane().setWinner("<html><font color='" + hex + "'>Draw between " + winnerNames + "!</font></html>");
+
+      this.window.getWinnerPane().displayLadder();
+      this.window.getWinnerPane().setVisible(true);
+      this.window.disableInventory();
+      this.setEndOfGame(true);
     }
   }
 
@@ -545,12 +589,13 @@ public class Game implements ActionListener{
   public int countPlayersPoints()
   {
     int max = 0;
-    int temp =0;
+    int temp = 0;
     int toReturn = 0;
 
     for(int i=0; i<this.numberOfPlayers; ++i)
     {
       temp = players.get(i).countPoints();
+      System.out.println("" + (i+1) + " : " + temp);
       if (temp>max)
       {
         max = temp;
@@ -569,4 +614,6 @@ public class Game implements ActionListener{
   public int getPlayerIndex(){return this.playerIndex;}
   public void setPickingUpColumn(boolean col){this.isPickingUpColumn = col;}
   public int getNumberPlayers(){return this.numberOfPlayers;}
+  public boolean isEndOfGame(){return this.endOfGame;}
+
 }

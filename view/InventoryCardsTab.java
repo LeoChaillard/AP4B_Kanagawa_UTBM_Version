@@ -25,6 +25,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Point;
 
 import java.util.*;
 
@@ -32,20 +35,32 @@ import java.util.*;
 public class InventoryCardsTab extends JPanel{
   //Attributes
   private static final int X_ELEMENTS = 8;
-  private static final int Y_ELEMENTS = 4;
+  private static final int Y_ELEMENTS = 5;
   private static final float ELEMENT_SIZE = 0.95f;
   private static final float CARD_SIZE = 0.80f;
   private static final int LINE_ELEMENTS = X_ELEMENTS - 2;
 
   private ImageIcon icon;
+  private int cardWidth;
+  private int cardHeight;
+  private int [][] cardCoords;
 
   //Constructor
   public InventoryCardsTab()
   {
     this.icon = new ImageIcon("assets/icon.jpg");
+    this.cardWidth = 0;
+    this.cardHeight = 0;
+    this.cardCoords = new int[12][2];
   }
 
   //Methods
+  public boolean cardContains(int cardIndex, Point p)
+  {
+      return (cardCoords[cardIndex][0] - cardWidth/2 <= p.getX())  && (cardCoords[cardIndex][0] + cardWidth/2 >= p.getX())  && (cardCoords[cardIndex][1] - cardHeight/2 <= p.getY()) && (cardCoords[cardIndex][1] + cardHeight/2 >= p.getY());
+  }
+
+  /***************************************************/
   @Override
   public void paintComponent(Graphics g)
   {
@@ -92,7 +107,7 @@ public class InventoryCardsTab extends JPanel{
     Graphics2D g2 = (Graphics2D) g;
     g2.setStroke(new BasicStroke(2));
 
-    for(int j=0;j<2;++j)
+    for(int j=0;j<3;++j)
     {
       d.right(1);
       for(int i=0;i<LINE_ELEMENTS;++i)
@@ -102,7 +117,7 @@ public class InventoryCardsTab extends JPanel{
         d.right(1);
       }
       d.resetMove();
-      d.down(1);
+      d.down(1+j);
     }
 
     //Drawing project cards
@@ -120,6 +135,13 @@ public class InventoryCardsTab extends JPanel{
         cardDir.right(1.0f + 0.24f);
       }
 
+      if(projectCards == 12)
+      {
+        cardDir.resetMove();
+        cardDir.down( (5.0f + 2.5f)*2.0f );
+        cardDir.right( (1.0f + 0.24f)*2.0f );
+      }
+
       if(c != null)
       {
         ++projectCards;
@@ -131,13 +153,20 @@ public class InventoryCardsTab extends JPanel{
         card.setInInventory(true);
         card.fill(g);
 
+        cardDir.down(2.5f);
+        this.cardCoords[projectCards-1][0] = card.getX();
+        this.cardCoords[projectCards-1][1] = card.getY();
+        this.cardWidth = card.getWidth();
+        this.cardHeight = card.getHeight();
+        cardDir.up(2.5f);
+
         cardDir.right(1.0f + 0.24f);
       }
     }
 
     //Drawing hand slots
     d.resetMove();
-    d.down(2.50f);
+    d.down(3.50f);
     d.right(1);
 
     for(int i=0;i<LINE_ELEMENTS;++i)
@@ -175,7 +204,7 @@ public class InventoryCardsTab extends JPanel{
     string.draw(g,"Project");
 
     g.setColor(new Color(0x605A4D));
-    d.down(2.50f);
+    d.down(3.50f);
     string.draw(g,"Hand");
   }
 }

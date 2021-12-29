@@ -47,18 +47,19 @@ public class RightPanel extends JPanel{
   private JLabel gameInfos;
   private JLabel passTurn;
   private JLabel pickUpColumn;
+  private JButton arrow;
 
   //Constructor
   public RightPanel(int size)
   {
     //Set up of the panel
-    this.setBackground(new Color(0xF2E1C1));
+    this.setBackground(Colors.getBackgroundColors()[1]);
     this.setLayout(new GridBagLayout());
     this.setMinimumSize(new Dimension(size,0));
     this.setPreferredSize(new Dimension(size,0));
 
     //JLabel for the current player
-    this.gameInfos = new JLabel();
+    this.gameInfos = new JLabel("<html><br>Player</html>");
     Font font1 = new Font("Arial", Font.BOLD,20);
     this.gameInfos.setFont(font1);
 
@@ -70,6 +71,14 @@ public class RightPanel extends JPanel{
     Font font3 = new Font("Arial", Font.BOLD,20);
     this.pickUpColumn = new JLabel("PICK UP COLUMN");
     this.pickUpColumn.setFont(font3);
+
+    //JLabel arrow for swapping temporary hand cards
+    ImageIcon gear = new ImageIcon("assets/arrow.png");
+    this.arrow = new JButton(gear);
+    this.arrow.setBorder(BorderFactory.createEmptyBorder());
+    this.arrow.setBorderPainted(false);
+    this.arrow.setOpaque(false);
+    this.arrow.setContentAreaFilled(false);
 
     //GridBagConstraints and adding components
     GridBagConstraints c = new GridBagConstraints();
@@ -86,6 +95,14 @@ public class RightPanel extends JPanel{
     c.gridx = 0;
     c.gridy = 1;
     c.weighty = 0.5;
+    c.insets = new Insets(40,0,0,0);
+    this.add(this.arrow,c);
+
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.anchor = GridBagConstraints.PAGE_END;
+    c.gridx = 0;
+    c.gridy = 2;
+    c.weighty = 0.5;
     c.insets = new Insets(0,0,5,0);
     this.add(this.passTurn,c);
 
@@ -93,7 +110,7 @@ public class RightPanel extends JPanel{
     c.fill = GridBagConstraints.HORIZONTAL;
     c.anchor = GridBagConstraints.PAGE_START;
     c.gridx = 0;
-    c.gridy = 2;
+    c.gridy = 3;
     c.weighty = 0.5;
     c.insets = new Insets(0,0,0,0);
     this.add(this.pickUpColumn,c);
@@ -108,11 +125,15 @@ public class RightPanel extends JPanel{
 
   /***************************************************/
 
+  public JButton getArrowButton(){return this.arrow;}
+
+  /***************************************************/
+
   public void updateInfos(String name)
   {
     //Currently Playing
     String hex = "#"+Integer.toHexString(Color.BLACK.getRGB()).substring(2);
-    this.gameInfos.setText("<html><br/><br/><font color='" + hex + "'>" + name + "</font></html>");
+    this.gameInfos.setText("<html><br><font color='" + hex + "'>" + name + "</font></html>");
   }
 
   /***************************************************/

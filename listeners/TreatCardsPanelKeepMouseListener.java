@@ -33,6 +33,7 @@ public class TreatCardsPanelKeepMouseListener implements MouseListener{
     if(Game.players.get(this.game.getPlayerIndex()).keepCardInHand())
     {
       this.game.getWindow().repaint();
+      this.game.getWindow().getInventory().getInventoryCardsTab().repaint();
       this.game.getWindow().getTreatCardsPane().setVisible(false);
 
       //When temporary hand is empty, going to next turn

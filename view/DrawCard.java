@@ -117,7 +117,7 @@ import javax.swing.ImageIcon;
        getDirection().setScale(this.cardWidth, this.cardHeight/6);
        setScale(this.cardWidth, this.cardHeight/6);
        setSide(1);
-       g.setColor(new Color(0x8C5C10));
+       g.setColor(Colors.getCardColors()[0]);
        super.fill(g);
 
        if(!(this.toDraw instanceof CardStarter))
