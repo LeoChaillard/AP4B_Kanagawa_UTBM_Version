@@ -545,8 +545,8 @@ public class Game implements ActionListener{
   public int countPlayersPoints()
   {
     int max = 0;
-    int temp;
-    int toReturn;
+    int temp =0;
+    int toReturn = 0;
 
     for(int i=0; i<this.numberOfPlayers; ++i)
     {
@@ -560,6 +560,7 @@ public class Game implements ActionListener{
 
     return toReturn;
   }
+
 
   /***************************************************/
 
