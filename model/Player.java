@@ -18,7 +18,7 @@ import java.awt.Point;
 
 public class Player {
   //Attributes
-  private static final int MAX_PROJECT_ELEMENTS = 17;
+  private static final int MAX_PROJECT_ELEMENTS = 1;
 
   private List<Card> hand;
   private List<Card> project;
@@ -62,7 +62,7 @@ public class Player {
 
     for(int i=0;i<10;++i)
     {
-      this.imgPoint.add(new Point(190, 120));
+      this.imgPoint.add(new Point(200, 160));
       BufferedImage b;
       try {
           b = ImageIO.read(new File("assets/hour.png"));
@@ -102,7 +102,7 @@ public class Player {
 
     for(int i=0;i<10;++i)
     {
-      this.imgPoint.add(new Point(190, 120));
+      this.imgPoint.add(new Point(200, 160));
       BufferedImage b;
       try {
           b = ImageIO.read(new File("assets/hour.png"));

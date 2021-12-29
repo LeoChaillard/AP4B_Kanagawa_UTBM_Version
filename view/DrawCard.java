@@ -59,8 +59,11 @@ import javax.swing.ImageIcon;
          super.fill(g);
 
          setSide(0.3f);
-         g.setColor(Color.WHITE);
-         super.fill(g);
+         g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+         g.setColor(Color.BLACK);
+         getDirection().left(0.25f);
+         this.cardString.draw(g,"Certificates");
+         getDirection().right(0.25f);
        }
        else if(this.toDraw instanceof CardAssociations)
        {
@@ -69,7 +72,7 @@ import javax.swing.ImageIcon;
          super.fill(g);
 
          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
-         g.setColor(Color.WHITE);
+         g.setColor(Color.BLACK);
          getDirection().left(0.25f);
          this.cardString.draw(g,"Association");
          getDirection().right(0.25f);
@@ -93,8 +96,11 @@ import javax.swing.ImageIcon;
          super.fill(g);
 
          setSide(0.3f);
+         g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
          g.setColor(Color.BLACK);
-         this.draw(g);
+         getDirection().left(0.2f);
+         this.cardString.draw(g,"Materials");
+         getDirection().right(0.2f);
        }
        setSide(CARD_SIZE);
      }
@@ -235,11 +241,16 @@ import javax.swing.ImageIcon;
        }
 
        //Theme part
+       DrawImage theme = new DrawImage();
+       theme.setDirection(getDirection());
+       theme.setSide(1.0f);
+
        getDirection().down(2);
        setScale(this.cardWidth, this.cardHeight/2);
 
        if(this.toDraw instanceof CardCertificates)
        {
+         theme.setScale(this.cardWidth/2, this.cardHeight/4);
          g.setColor(Colors.getCardThemeColors()[0]);
          super.fill(g);
          int instances = this.toDraw.getElement();
@@ -247,6 +258,7 @@ import javax.swing.ImageIcon;
        }
        else if(this.toDraw instanceof CardAssociations)
        {
+         theme.setScale(this.cardWidth/1.5f, this.cardHeight/3.5f);
          g.setColor(Colors.getCardThemeColors()[1]);
          super.fill(g);
          switch(Associations.values()[this.toDraw.getElement()])
@@ -271,6 +283,7 @@ import javax.swing.ImageIcon;
        }
        else if(this.toDraw instanceof CardTeachers)
        {
+        theme.setScale(this.cardWidth/2, this.cardHeight/3);
         g.setColor(Colors.getCardThemeColors()[2]);
         super.fill(g);
         switch(Teachers.values()[this.toDraw.getElement()])
@@ -295,6 +308,7 @@ import javax.swing.ImageIcon;
        }
        else if(this.toDraw instanceof CardMaterials)
        {
+          theme.setScale(this.cardWidth, this.cardHeight/2);
           g.setColor(Colors.getCardThemeColors()[3]);
           super.fill(g);
           switch(Materials.values()[this.toDraw.getElement()])
@@ -349,19 +363,33 @@ import javax.swing.ImageIcon;
        getDirection().right(0.3f);
 
 
-       DrawImage theme = new DrawImage();
-       theme.setDirection(getDirection());
-       theme.setScale(this.cardWidth, this.cardHeight/3);
-       theme.setSide(1.0f);
+
+
 
        if(this.toDraw instanceof CardCertificates)
        {
+        if(this.toDraw.getElement() == 3 ) getDirection().left(0.2f);
+        if(this.toDraw.getElement() == 2 ) getDirection().left(0.1f);
         for(int i=0;i<this.toDraw.getElement();++i)
         {
           theme.draw(g, this.icon);
-          getDirection().right(0.15f);
+          getDirection().right(0.22f);
         }
-        for(int i=0;i<this.toDraw.getElement();++i) getDirection().left(0.15f);
+        for(int i=0;i<this.toDraw.getElement();++i) getDirection().left(0.22f);
+        if(this.toDraw.getElement() == 3 ) getDirection().right(0.2f);
+        if(this.toDraw.getElement() == 2 ) getDirection().right(0.1f);
+       }
+       else if( (this.toDraw instanceof CardMaterials) || (this.toDraw instanceof CardTeachers))
+       {
+         getDirection().right(0.1f);
+         if(this.icon != null) theme.draw(g, this.icon);
+         getDirection().left(0.1f);
+       }
+       else if(this.toDraw instanceof CardAssociations)
+       {
+         getDirection().down(0.25f);
+         if(this.icon != null) theme.draw(g, this.icon);
+         getDirection().up(0.25f);
        }
        else if(this.icon != null) theme.draw(g, this.icon);
 

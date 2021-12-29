@@ -37,7 +37,7 @@ public class Menu extends JFrame{
 
   private static final int WINDOW_HEIGHT = 600;
   private static final int WINDOW_LENGTH = 500;
-  private static String MUSIC_PATH = "music/POL-ocean-floor-short.wav";
+  private static String MUSIC_PATH = "music/naruto.wav";
 
   //Constructor
   public Menu()

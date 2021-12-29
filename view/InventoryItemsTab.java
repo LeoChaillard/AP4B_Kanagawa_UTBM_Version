@@ -520,6 +520,7 @@ public class InventoryItemsTab extends JPanel{
     d.right(2);
 
     g.setColor(Color.BLACK);
+    hour.setScale(width/(X_ELEMENTS+3),height/(Y_ELEMENTS+3));
 
     for(int i=0;i<Game.players.get(Game.playerIndex).getHours().size();++i)
     {
@@ -533,6 +534,7 @@ public class InventoryItemsTab extends JPanel{
     d.down(2);
     g.setFont(new Font("Baskerville Old Face", Font.BOLD, 30));
     g.setColor(new Color(0x605A4D));
+    hour.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
     string.draw(g, "Bonus");
 
     d.right(2);

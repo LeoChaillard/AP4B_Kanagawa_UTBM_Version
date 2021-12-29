@@ -34,7 +34,7 @@ public class SoundPlayer
     this.clip = AudioSystem.getClip();
     clip.open(this.audioStream);
     clip.loop(Clip.LOOP_CONTINUOUSLY);
-    setVolume(0);
+    setVolume(0.1f);
   }
 
   //Methods

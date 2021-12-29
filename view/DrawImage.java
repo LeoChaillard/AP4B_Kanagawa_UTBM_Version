@@ -15,7 +15,7 @@ import java.awt.Graphics;
 
    public DrawImage()
    {
-     
+
    }
    //Methods
    @Override
