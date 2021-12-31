@@ -18,7 +18,9 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 
-
+/**
+ * Class defining a music player.
+ */
 public class SoundPlayer
 {
   //Attributes
@@ -84,5 +86,4 @@ public class SoundPlayer
     gainControl.setValue(20f * (float) Math.log10(volume));
 
   }
-
 }

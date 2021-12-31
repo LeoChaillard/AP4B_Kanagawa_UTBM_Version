@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Enumeration defining the card categories.
+ */
 public enum Category{
   //Attributs
   CS, TM, EC, T2S, JOKER, NULL;

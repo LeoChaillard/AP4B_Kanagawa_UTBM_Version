@@ -8,6 +8,10 @@ package view;
 
 import java.awt.Graphics;
 
+/**
+ * Class derivated from Shape.
+ * Can draw a string following Shape's Direction.
+ */
  public class DrawString extends Shape{
 
    //Methods

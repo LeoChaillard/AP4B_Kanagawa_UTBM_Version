@@ -5,22 +5,20 @@
  ************************************************************************/
 package view;
 
+import java.io.*;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.LineUnavailableException;
+
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Color;
+import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
-
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.EventQueue;
-
-import java.io.*;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.sound.sampled.LineUnavailableException;
-
 
 /**
  * Class defining the game's menu.
@@ -128,5 +126,4 @@ public class Menu extends JFrame{
     setVisible(true);
     });
   }
-
 }

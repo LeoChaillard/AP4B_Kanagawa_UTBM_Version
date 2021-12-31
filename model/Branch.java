@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Enumeration defining the card branches.
+ */
 public enum Branch{
   //Attributs
   INFO, GMC, EDIM, ENERGIE, IMSI;

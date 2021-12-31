@@ -5,17 +5,20 @@
  ************************************************************************/
 package model;
 
+/**
+ * Enumeration defining the card teachers.
+ */
 public enum Teachers{
   //Attributes
   GECHTER(0), PAIRE(1), BAUME(2), ROTH(3), NULL(4);
+  private int pos;
 
+  //Constructor
   Teachers(int pos)
   {
     this.pos = pos;
   }
 
-  private int pos;
-
+  //Methods
   public int getPos(){return this.pos;}
-
 }

@@ -7,6 +7,9 @@
 package model;
 import java.util.*;
 
+/**
+ * Class defining a association type mention.
+ */
 public class MentionAssociations extends Mention {
   //Attributs
   private List<Associations> associations;
@@ -21,18 +24,15 @@ public class MentionAssociations extends Mention {
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //for each element, check if element is in associations list
+    //for each element, checking if element is in associations list
     for(Associations a : this.associations)
     {
       int value = a.getPos();
       boolean isIn = false;
 
-      for(Card c : p.getProject())
-        if( (c instanceof CardAssociations) &&  c.getElement() == value) isIn = true;
-
+      for(Card c : p.getProject()) if( (c instanceof CardAssociations) &&  c.getElement() == value) isIn = true;
       if(!isIn) return false;
     }
-
     return true;
   }
 }

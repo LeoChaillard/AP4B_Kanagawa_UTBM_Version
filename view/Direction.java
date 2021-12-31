@@ -6,8 +6,11 @@
 
 package view;
 
+/**
+ * Class defining x and y movements on the screen
+ * relatively to the chosen origin position and scale.
+ */
 public class Direction{
-  
   //Attributes
   private final float originX;
   private final float originY;

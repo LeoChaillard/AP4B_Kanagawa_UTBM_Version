@@ -10,25 +10,14 @@ import manager.*;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JInternalFrame;
-import javax.swing.KeyStroke;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.BasicStroke;
-import java.awt.RenderingHints;
 
 import java.util.*;
 
-
+/**
+ * Class Defining the player's inventory.
+ * It contains two tabs for cards and items.
+ */
 public class Inventory extends JInternalFrame{
   //Attributes
   private static final int INVENTORY_HEIGHT = 503;
@@ -43,7 +32,7 @@ public class Inventory extends JInternalFrame{
   //Constructor
   public Inventory()
   {
-    ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
+    ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null); //Erasing the frame top bar
     setTitle("Inventory");
     setSize(INVENTORY_LENGTH,INVENTORY_HEIGHT);
     setResizable(false);
@@ -65,5 +54,4 @@ public class Inventory extends JInternalFrame{
   //Methods
   public InventoryItemsTab getInventoryItemsTab(){return this.secondTab;}
   public InventoryCardsTab getInventoryCardsTab(){return this.firstTab;}
-
 }

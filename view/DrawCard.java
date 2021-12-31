@@ -8,16 +8,17 @@ package view;
 import model.*;
 import java.awt.Graphics;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.Polygon;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 
-
+/**
+ * Class defining how cards are drawn (back and front),
+ * on board or in inventory.
+ */
  public class DrawCard extends Rectangle{
    //Attributes
    private static final float CARD_SIZE = 0.80f;
+
    private float cardWidth;
    private float cardHeight;
    private DrawString cardString;
@@ -46,7 +47,7 @@ import javax.swing.ImageIcon;
    @Override
    public void fill(Graphics g)
    {
-     //Draw back card
+     /*****Draw back card*****/
      if(this.drawBack)
      {
        this.cardString.setDirection(getDirection());
@@ -105,7 +106,7 @@ import javax.swing.ImageIcon;
        setSide(CARD_SIZE);
      }
 
-     //Draw card visible face
+     /*****Draw card visible face*****/
      if(!this.drawBack)
      {
        this.cardString.setDirection(getDirection());
@@ -118,7 +119,6 @@ import javax.swing.ImageIcon;
        category.setScale(this.cardWidth/3, this.cardHeight/6);
        category.setSide(0.8f);
 
-
        //Learn skills part
        getDirection().setScale(this.cardWidth, this.cardHeight/6);
        setScale(this.cardWidth, this.cardHeight/6);
@@ -128,11 +128,12 @@ import javax.swing.ImageIcon;
 
        if(!(this.toDraw instanceof CardStarter))
        {
-         //Scoring points
+         //Scoring points container
          getDirection().left(0.30f);
          g.setColor(Color.BLACK);
          points.draw(g);
 
+         //Scoring points
          getDirection().left(0.03f);
          getDirection().down(0.17f);
          if(inInventory) g.setFont(new Font("Baskerville Old Face", Font.BOLD, 10));
@@ -342,13 +343,14 @@ import javax.swing.ImageIcon;
           super.fill(g);
         }
 
-
+       //Scoring points container
        getDirection().up(1);
        getDirection().left(0.3f);
 
        g.setColor(Color.BLACK);
        points.draw(g);
 
+       //Scoring Points
        getDirection().left(0.03f);
        getDirection().down(0.17f);
 
@@ -361,10 +363,6 @@ import javax.swing.ImageIcon;
 
        getDirection().down(1);
        getDirection().right(0.3f);
-
-
-
-
 
        if(this.toDraw instanceof CardCertificates)
        {
@@ -445,11 +443,10 @@ import javax.swing.ImageIcon;
 
    }
 
+   /***************************************************/
+
    public void draw(Graphics g)
    {
      super.draw(g);
    }
-
-
-
  }

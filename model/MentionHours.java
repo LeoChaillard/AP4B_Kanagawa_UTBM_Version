@@ -6,8 +6,10 @@
 
 package model;
 
+/**
+ * Class defining a hour type mention.
+ */
 public class MentionHours extends Mention {
-
   //Constructor
   public MentionHours(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
@@ -17,7 +19,7 @@ public class MentionHours extends Mention {
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //checking number of bonus that player has (+ used bonus)
+    //suming up number of used and non-used EARN_HOURS bonus
     return (getNumberOfElements() <= (p.getAvailableBonus().get(Bonus.EARN_HOURS) + p.getNumberUsedHours()));
   }
 }

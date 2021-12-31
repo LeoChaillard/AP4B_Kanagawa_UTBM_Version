@@ -7,18 +7,11 @@
 package view;
 import model.*;
 import manager.*;
-
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-import javax.swing.BorderFactory;
+import java.util.*;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -26,9 +19,14 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
-import java.awt.RenderingHints;
+import java.awt.Point;
 
-import java.util.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 
 /**
  * Right panel of our JFrame, containing
@@ -39,10 +37,11 @@ public class RightPanel extends JPanel{
   private static final float CARD_SIZE = 0.8f;
   private static final float X_ELEMENTS = 4;
   private static final float Y_ELEMENTS = 3;
-  public static float temporaryCardXCoordinate; //At the middle
-  public static float temporaryCardYCoordinate; //At the middle
-  public static float temporaryCardWidth;
-  public static float temporaryCardHeight;
+
+  private float temporaryCardXCoordinate; //At the middle
+  private float temporaryCardYCoordinate; //At the middle
+  private float temporaryCardWidth;
+  private float temporaryCardHeight;
 
   private JLabel gameInfos;
   private JLabel passTurn;
@@ -117,6 +116,11 @@ public class RightPanel extends JPanel{
   }
 
   //Methods
+  public boolean temporaryHandContains(Point pos)
+  {
+    return (this.temporaryCardXCoordinate - this.temporaryCardWidth/2 <= pos.getX()) && (this.temporaryCardXCoordinate + this.temporaryCardWidth/2 >= pos.getX()) && (this.temporaryCardYCoordinate - this.temporaryCardHeight <= pos.getY()) && (this.temporaryCardYCoordinate + this.temporaryCardHeight >= pos.getY());
+  }
+
   public JLabel getPassLabel(){return this.passTurn;}
 
   /***************************************************/
@@ -145,7 +149,6 @@ public class RightPanel extends JPanel{
     //Getting size of the panel
     float width = getWidth();
     float height = getHeight();
-
 
     //Direction
     Direction d = new Direction(CARD_SIZE/2 + 0.09f, CARD_SIZE/2 + 0.1f);
@@ -200,13 +203,10 @@ public class RightPanel extends JPanel{
       {
         if(c != null)
         {
-
-
           card.setToDraw(c);
           card.fill(g);
         }
       }
     }
-
   }
 }

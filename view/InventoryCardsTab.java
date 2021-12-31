@@ -8,36 +8,31 @@ package view;
 import model.*;
 import manager.*;
 
-import javax.swing.JTabbedPane;
-import javax.swing.JInternalFrame;
-import javax.swing.KeyStroke;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
 
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+
 import java.util.*;
 
-
+/**
+ * Class Defining the inventory cards tab.
+ * It draws the player project and hand cards.
+ */
 public class InventoryCardsTab extends JPanel{
   //Attributes
   private static final int X_ELEMENTS = 8;
   private static final int Y_ELEMENTS = 5;
   private static final float ELEMENT_SIZE = 0.95f;
   private static final float CARD_SIZE = 0.80f;
+  private static final float CARD_SIZE_TO_REAL_SIZE = 1.0f/CARD_SIZE;
   private static final int LINE_ELEMENTS = X_ELEMENTS - 2;
 
   private ImageIcon icon;
@@ -57,7 +52,7 @@ public class InventoryCardsTab extends JPanel{
   //Methods
   public boolean cardContains(int cardIndex, Point p)
   {
-      return (cardCoords[cardIndex][0] - cardWidth/2 <= p.getX())  && (cardCoords[cardIndex][0] + cardWidth/2 >= p.getX())  && (cardCoords[cardIndex][1] - cardHeight/2 <= p.getY()) && (cardCoords[cardIndex][1] + cardHeight/2 >= p.getY());
+    return (cardCoords[cardIndex][0] - cardWidth/2 <= p.getX())  && (cardCoords[cardIndex][0] + cardWidth/2 >= p.getX())  && (cardCoords[cardIndex][1] - cardHeight/2 <= p.getY()) && (cardCoords[cardIndex][1] + cardHeight/2 >= p.getY());
   }
 
   /***************************************************/
@@ -76,7 +71,6 @@ public class InventoryCardsTab extends JPanel{
   public void paint(Graphics g)
   {
     super.paint(g);
-
     //Getting size of the window
     float width = getWidth();
     float height = getHeight();
@@ -85,17 +79,15 @@ public class InventoryCardsTab extends JPanel{
     Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 0.25f);
     d.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
 
-    //Drawing card direction
+    //Cards
     Direction cardDir = new Direction( 0.10f + 0.5f, 0.5f + 2.5f);
+    DrawCard card = new DrawCard(CARD_SIZE * (width/X_ELEMENTS), CARD_SIZE * (height/Y_ELEMENTS));
 
     //Rectangles
     Rectangle rec = new Rectangle();
     rec.setDirection(d);
     rec.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
     rec.setSide(ELEMENT_SIZE);
-
-    //Cards
-    DrawCard card = new DrawCard(CARD_SIZE * (width/X_ELEMENTS), CARD_SIZE * (height/Y_ELEMENTS));
 
     //Strings
     DrawString string = new DrawString();
@@ -124,7 +116,7 @@ public class InventoryCardsTab extends JPanel{
     d.resetMove();
     d.right(1);
     cardDir.resetMove();
-    cardDir.right(1.0f + 0.24f);
+    cardDir.right(CARD_SIZE_TO_REAL_SIZE);
     int projectCards = 0;
     for( Card c : Game.players.get(Game.playerIndex).getProject())
     {
@@ -132,14 +124,14 @@ public class InventoryCardsTab extends JPanel{
       {
         cardDir.resetMove();
         cardDir.down(5.0f + 2.5f);
-        cardDir.right(1.0f + 0.24f);
+        cardDir.right(CARD_SIZE_TO_REAL_SIZE);
       }
 
       if(projectCards == 12)
       {
         cardDir.resetMove();
-        cardDir.down( (5.0f + 2.5f)*2.0f );
-        cardDir.right( (1.0f + 0.24f)*2.0f );
+        cardDir.down((5.0f + 2.5f)*2.0f);
+        cardDir.right(CARD_SIZE_TO_REAL_SIZE*2.0f);
       }
 
       if(c != null)
@@ -160,7 +152,7 @@ public class InventoryCardsTab extends JPanel{
         this.cardHeight = card.getHeight();
         cardDir.up(2.5f);
 
-        cardDir.right(1.0f + 0.24f);
+        cardDir.right(CARD_SIZE_TO_REAL_SIZE);
       }
     }
 
@@ -178,7 +170,7 @@ public class InventoryCardsTab extends JPanel{
 
     //Drawing hand cards
     cardDir.resetMove();
-    cardDir.right(1.0f + 0.24f);
+    cardDir.right(CARD_SIZE_TO_REAL_SIZE);
     cardDir.down(18.75f);
     for(Card c : Game.players.get(Game.playerIndex).getHand())
     {
@@ -190,7 +182,7 @@ public class InventoryCardsTab extends JPanel{
        card.setToDraw(c);
        card.fill(g);
 
-       cardDir.right(1.0f + 0.24f);
+       cardDir.right(CARD_SIZE_TO_REAL_SIZE);
       }
     }
 

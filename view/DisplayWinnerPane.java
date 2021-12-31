@@ -7,21 +7,22 @@
 package view;
 import manager.*;
 
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-
+/**
+ * Class defining the panel
+ * displaying the game winner and the ladder.
+ */
  public class DisplayWinnerPane extends JPanel{
    //Attributes
    private JLabel winner;
@@ -93,10 +94,12 @@ import java.awt.Dimension;
          if(scores[i] > scores[i-1])
          {
            ++swap;
+           //Swapping scores
            tmp = scores[i];
            scores[i] = scores[i-1];
            scores[i-1] = tmp;
 
+           //Swapping names
            tmpName = names[i];
            names[i] = names[i-1];
            names[i-1] = tmpName;
@@ -104,7 +107,7 @@ import java.awt.Dimension;
        }
      }
 
-     //Creating string to display
+     //Creating string that will contains the ladder
      String toDisplay = "<html>";
      for(int i=0;i<Game.numberOfPlayers;++i)
      {
@@ -124,6 +127,4 @@ import java.awt.Dimension;
      g.fillRect(0,0,getWidth(),getHeight());
      super.paintComponent(g);
    }
-
-
  }

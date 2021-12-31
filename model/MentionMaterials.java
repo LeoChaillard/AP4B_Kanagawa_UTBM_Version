@@ -7,8 +7,10 @@
 package model;
 import java.util.*;
 
+/**
+ * Class defining a material type mention.
+ */
 public class MentionMaterials extends Mention {
-
   //Constructor
   public MentionMaterials(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
@@ -18,14 +20,13 @@ public class MentionMaterials extends Mention {
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //only different elements => different from teachers
+    //counting the number of different elements
     Set<Materials> materialsSet = new HashSet<Materials>();
     for(Card c : p.getProject())
       if( (c instanceof CardMaterials) &&  Materials.values()[c.getElement()] != Materials.NULL && !materialsSet.contains(Materials.values()[c.getElement()]))
         materialsSet.add(Materials.values()[c.getElement()]);
 
       if(materialsSet.size() >= this.getNumberOfElements()) return true;
-
     return false;
   }
 }

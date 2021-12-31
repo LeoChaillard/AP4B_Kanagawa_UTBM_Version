@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Class defining a starter type card.
+ */
 public class CardStarter extends Card{
   //Attributes
   private Bonus secondBonus;
@@ -27,12 +30,6 @@ public class CardStarter extends Card{
   }
 
   //Methods
-  public boolean isUsed()
-  {
-    return false;
-  }
-
   public Bonus getSecondBonus(){return this.secondBonus;}
-
   public int getSecondBonusQuantity(){return this.secondBonusQuantity;}
  }

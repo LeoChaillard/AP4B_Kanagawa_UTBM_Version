@@ -6,6 +6,11 @@
 
 package model;
 
+/**
+ * Class defining a mention.
+ * This is an abstract class from which
+ * different types of mentions are derivated.
+ */
 public abstract class Mention {
   //Attributes
   private int id;
@@ -26,17 +31,9 @@ public abstract class Mention {
 
   //Methods
   public abstract boolean checkCriteria(Player p);
-
   public Bonus getBonus(){return this.bonus;}
-
   public int getId(){return this.id;}
-
   public int getNumberOfElements(){return this.numberOfElements;}
-
   public int getPoints(){return this.points;}
-
   public String getName(){return this.name;}
-
-
-
 }

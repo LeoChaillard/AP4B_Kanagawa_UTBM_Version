@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Class defining a certificate type card.
+ */
 public class CardCertificates extends Card{
   //Attributs
   private int certificate;
@@ -25,13 +28,5 @@ public class CardCertificates extends Card{
   }
 
   //Methods
-
-  //redéfinir isUsed()
-  public boolean isUsed()
-  {
-    //code
-    return false;
-  }
-
-  public int getElement(){return certificate;}
+  public int getElement(){return this.certificate;}
 }

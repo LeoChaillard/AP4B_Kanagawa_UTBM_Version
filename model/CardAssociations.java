@@ -6,7 +6,9 @@
 
 package model;
 
-
+/**
+ * Class defining a association type card.
+ */
 public class CardAssociations extends Card{
   //Attributes
   private Associations association;
@@ -26,13 +28,5 @@ public class CardAssociations extends Card{
   }
 
   //Methods
-
-  //redéfinir isUsed()
-  public boolean isUsed()
-  {
-    //code
-    return false;
-  }
-
   public int getElement(){return this.association.getPos();}
  }

@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Class defining a teacher type card.
+ */
 public class CardTeachers extends Card{
   //Attributes
   private Teachers teacher;
@@ -25,13 +28,5 @@ public class CardTeachers extends Card{
   }
 
   //Methods
-
-  //redéfinir isUsed()
-  public boolean isUsed()
-  {
-    //code
-    return false;
-  }
-
   public int getElement(){return this.teacher.getPos();}
  }

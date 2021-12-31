@@ -7,6 +7,10 @@
 package view;
 import java.awt.Graphics;
 
+/**
+ * Class derivated from Shape.
+ * Can fill or draw a circle following Shape's Direction.
+ */
  public class Circle extends Shape{
    //Methods
    @Override
@@ -22,7 +26,7 @@ import java.awt.Graphics;
    }
 
    /***************************************************/
-   
+
    public void draw(Graphics g)
    {
      int width = getWidth();

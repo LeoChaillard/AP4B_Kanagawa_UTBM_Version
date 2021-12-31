@@ -5,24 +5,30 @@
  ************************************************************************/
 
 package view;
-import javax.swing.ImageIcon;
-
 
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
+
+/**
+ * Class derivated from Shape.
+ * Can draw an image following Shape's Direction.
+ */
  public class DrawImage extends Shape{
-
-
+   //Constructor
    public DrawImage()
    {
 
    }
+
    //Methods
    @Override
    public void fill(Graphics g)
    {
 
    }
+
+   /***************************************************/
 
    public void draw(Graphics g, ImageIcon icon)
    {
@@ -34,5 +40,4 @@ import java.awt.Graphics;
 
      g.drawImage(icon.getImage(),x-width/2, y-height/2,width,height,null);
    }
-
  }

@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Class defining a material type card.
+ */
 public class CardMaterials extends Card{
   //Attributs
   private Materials material;
@@ -25,13 +28,5 @@ public class CardMaterials extends Card{
   }
 
   //Methods
-
-  //redéfinir isUsed()
-  public boolean isUsed()
-  {
-    //code
-    return false;
-  }
-
   public int getElement(){return this.material.getPos();}
  }

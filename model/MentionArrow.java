@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Class defining a arrow type mention.
+ */
 public class MentionArrow extends Mention {
 
   //Constructor

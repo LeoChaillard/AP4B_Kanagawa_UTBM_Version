@@ -7,6 +7,10 @@
 package view;
 import java.awt.Color;
 
+/**
+ * Class defining the different groups of colors
+ * used to draw the game elements.
+ */
 public class Colors{
   //Attributes
   public static final Color[] backgroundColors = {
@@ -55,8 +59,4 @@ public class Colors{
   public static final Color[] getCardColors(){return cardColors;}
   public static final Color[] getCardThemeColors(){return cardThemeColors;}
   public static final Color[] getBranchColors(){return branchColors;}
-
-
-
-
 }

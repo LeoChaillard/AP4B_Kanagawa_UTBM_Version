@@ -6,6 +6,9 @@
 
 package model;
 
+/**
+ * Enumeration defining the card bonus.
+ */
 public enum Bonus{
   //Attributes
   KEEP_IN_HAND, MOVE_HOURS, EARN_HOURS, IMSI_TOKEN, NULL;

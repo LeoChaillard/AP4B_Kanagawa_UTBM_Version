@@ -8,8 +8,11 @@ package view;
 
 import java.awt.Graphics;
 
+/**
+ * Class derivated from Shape.
+ * Can fill or draw a rectangle following Shape's Direction.
+ */
  public class Rectangle extends Shape{
-
    //Methods
    @Override
    public void fill(Graphics g)
@@ -22,6 +25,8 @@ import java.awt.Graphics;
 
      g.fillRect(x-width/2,y-height/2,width,height);
    }
+
+   /***************************************************/
 
    public void draw(Graphics g)
    {

@@ -6,8 +6,10 @@
 
 package model;
 
+/**
+ * Class defining a certificate type mention.
+ */
 public class MentionCertificates extends Mention {
-
   //Constructor
   public MentionCertificates(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
@@ -17,11 +19,9 @@ public class MentionCertificates extends Mention {
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //check number of certificates overall in project
-    //sum
+    //checking number of certificates overall in project
     int sum = 0;
     for(Card c : p.getProject()) if(c instanceof CardCertificates) sum += c.getElement();
-
     return getNumberOfElements() <= sum;
   }
 }

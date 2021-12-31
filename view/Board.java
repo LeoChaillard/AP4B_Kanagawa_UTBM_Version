@@ -12,17 +12,17 @@ import java.util.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.Polygon;
-import java.awt.Font;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 
 
-
-
+/**
+ * Class defining the board and
+ * drawing its graphical representation.
+ */
 public class Board extends JPanel{
   //Attributes
   private static final long serialVersionUID = 1L;
@@ -30,15 +30,16 @@ public class Board extends JPanel{
   private static final int Y_ELEMENTS = 3;
   private static final float ELEMENT_SIZE = 0.95f;
   private static final float CARD_SIZE = 0.80f;
+  private static final float CARD_SIZE_TO_FULL_SIZE = 1.0f/CARD_SIZE;
   private static final Card [][] slots = new Card[X_ELEMENTS][Y_ELEMENTS]; //Origin (0,0) at the bottom left corner
   private static final boolean [][] hiddenCards = {{true,false,false}, {false,true,false}, {false,false,true}, {true,false,false}}; //Origin (0,0) at the bottom left corner
-  public static final float [] columnsXCoordinate = new float[X_ELEMENTS]; //At the middle
-  public static final float [] columnsYCoordinate = new float[X_ELEMENTS]; //At the middle
-  public static float columnWidth;
-  public static float columnHeight;
+  private static final float [] columnsXCoordinate = new float[X_ELEMENTS]; //At the middle
+  private static final float [] columnsYCoordinate = new float[X_ELEMENTS]; //At the middle
+  private static float columnWidth;
+  private static float columnHeight;
 
   private boolean [] highlightColumns;
-  public static int addedRows;
+  private int addedRows;
 
   //Constructor
   public Board()
@@ -53,8 +54,15 @@ public class Board extends JPanel{
   public void removeAll()
   {
     for(int i=1;i<=4;++i) removeColumn(i);
-    addedRows = 0;
+    this.addedRows = 0;
     resetHighlight();
+  }
+
+  /***************************************************/
+
+  public boolean columnContains(int col, Point pos)
+  {
+    return (this.columnsXCoordinate[col] - this.columnWidth/2 <= pos.getX()) && (this.columnsXCoordinate[col] + this.columnWidth/2 >= pos.getX()) && (this.columnsYCoordinate[col] - this.columnHeight <= pos.getY()) && (this.columnsYCoordinate[col] + this.columnHeight >= pos.getY());
   }
 
   /***************************************************/
@@ -63,14 +71,6 @@ public class Board extends JPanel{
   {
       for(int i=0;i<X_ELEMENTS;++i) this.highlightColumns[i] = false;
   }
-
-  /***************************************************/
-
-  public void setHighlight(int col, boolean h){this.highlightColumns[col] = h;}
-
-  /***************************************************/
-
-  public boolean isHighlighted(int col){return this.highlightColumns[col];}
 
   /***************************************************/
 
@@ -89,10 +89,6 @@ public class Board extends JPanel{
     }
     return true;
   }
-
-  /***************************************************/
-
-  public static Card [][] getSlots(){return slots;}
 
   /***************************************************/
 
@@ -119,24 +115,23 @@ public class Board extends JPanel{
 
   /***************************************************/
 
-  public void addRow(int players)
+  public void addRow(int numberOfPlayers, int pickedCards, int totalCards, boolean newTurn)
   {
-    if(Game.pickedCards < Game.TOTAL_NUMBER_CARDS)
+    if(pickedCards < totalCards)
     {
       ++addedRows;
       try
       {
-        for(int i=0;i<players;++i)
+        for(int i=0;i<numberOfPlayers;++i)
         {
-          if(!isColumnEmpty(i) || Game.newTurn )
+          if(!isColumnEmpty(i) || newTurn ) //if column has been picked up or new big turn
           {
             slots[i][Y_ELEMENTS-addedRows] = Game.cardFromDeck();
           }
         }
       } catch(Exception e) {}
     }
-    Game.newTurn = false;
-
+    newTurn = false;
   }
 
   /***************************************************/
@@ -152,15 +147,16 @@ public class Board extends JPanel{
     float height = getHeight();
 
   	//Direction
-    Direction d = new Direction( ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 2*ELEMENT_SIZE + 0.05f); //Origin position at the middle of the bottom left square, adding 0.1 because of the window top bar
+    Direction d = new Direction(ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 2*ELEMENT_SIZE + 0.05f); //Origin position at the middle of the bottom left square, adding 0.05 because of the window top bar
     d.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
 
-    //Drawing card direction
-    Direction cardDir = new Direction( 0.10f + 0.5f, (5.0f + 2.5f) * 2.0f + 0.5f + 0.15f);
+    //Cards
+    Direction cardDir = new Direction(0.10f + 0.5f, 0.5f + 0.15f + (5.0f + 2.5f) * 2.0f); //Origin position for drawing card elements
+    DrawCard card = new DrawCard(CARD_SIZE * (width/X_ELEMENTS), CARD_SIZE * (height/Y_ELEMENTS)); //Giving card width and height as parameter
 
     //Columns
     Rectangle col = new Rectangle();
-    Direction colDir = new Direction(ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 0.025f);
+    Direction colDir = new Direction(ELEMENT_SIZE/2, ELEMENT_SIZE/2 + 0.025f); //Origin position at the middle of the first left column
     colDir.setScale(width/X_ELEMENTS, height);
     col.setDirection(colDir);
     col.setScale(width/X_ELEMENTS, height);
@@ -175,9 +171,6 @@ public class Board extends JPanel{
     rec.setScale(width/X_ELEMENTS,height/Y_ELEMENTS);
     rec.setSide(ELEMENT_SIZE);
 
-    //Cards
-    DrawCard card = new DrawCard(CARD_SIZE * (width/X_ELEMENTS), CARD_SIZE * (height/Y_ELEMENTS));
-
     //Strings
     DrawString string = new DrawString();
     string.setDirection(d);
@@ -189,20 +182,19 @@ public class Board extends JPanel{
     {
       if(this.highlightColumns[i]) g.setColor(Colors.getBoardColors()[3]);
       else g.setColor(Colors.getBoardColors()[2]);
-
       col.fill(g);
+
       this.columnsXCoordinate[i] = col.getX();
       this.columnsYCoordinate[i] = col.getY();
       colDir.right(1);
     }
-
 
     //Drawing board and cards
     for(int k=0;k<X_ELEMENTS;++k)
     {
       for(int j=0;j<Y_ELEMENTS;++j)
     	{
-    		if(hiddenCards[k][j])
+    		if(this.isHidden(k, j))
         {
     			g.setColor(Colors.getBoardColors()[1]);
     			rec.fill(g);
@@ -244,10 +236,19 @@ public class Board extends JPanel{
       d.resetMove();
     	d.right(k+1); //Going to the right next column
       cardDir.resetMove();
-      cardDir.right(k + 1 + (k+1) * 0.24f );
+      cardDir.right(k + CARD_SIZE_TO_FULL_SIZE); //Going to the right next column
     }
-
     Toolkit.getDefaultToolkit().sync();
   }
 
+  /***************************************************/
+
+  public float [] getColumnsXCoordinate(){return this.columnsXCoordinate;}
+  public float [] getColumnsYCoordinate(){return this.columnsYCoordinate;}
+  public float getColumnWidth(){return this.columnWidth;}
+  public float getColumnHeight(){return this.columnHeight;}
+  public int getAddedRows(){return addedRows;}
+  public void setHighlight(int col, boolean h){this.highlightColumns[col] = h;}
+  public boolean isHighlighted(int col){return this.highlightColumns[col];}
+  public static Card [][] getSlots(){return slots;}
 }

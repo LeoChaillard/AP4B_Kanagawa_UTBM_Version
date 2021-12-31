@@ -6,17 +6,21 @@
 
 package model;
 
+/**
+ * Enumeration defining the card associations.
+ */
 public enum Associations{
   //Attributes
   AE(0), BDS(1), BDF(2), CLUBS(3), NULL(4);
 
+  private int pos; //position of the current element
+
+  //Constructor
   Associations(int pos)
   {
     this.pos = pos;
   }
 
-
-  private int pos;
-
+  //Methods
   public int getPos(){return this.pos;}
 }

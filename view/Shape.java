@@ -9,6 +9,11 @@ package view;
 import java.awt.Graphics;
 import java.util.*;
 
+/**
+ * Abstract class definining shapes that will be drawn.
+ * It has a Direction object in its attributes, in order
+ * to move precisely on the screen.
+ */
  public abstract class Shape{
    //Attributes
    private float width;
@@ -27,7 +32,7 @@ import java.util.*;
    /***************************************************/
 
    public Direction getDirection(){return this.dir;}
-   
+
    /***************************************************/
 
    public void setSize(float w,float h)

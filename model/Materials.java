@@ -6,17 +6,20 @@
 
 package model;
 
+/**
+ * Enumeration defining the card materials.
+ */
 public enum Materials{
   //Attributs
   SERVER(0), HYDROGEN(1), WORKSHOP(2), MECANICAL_PIECES(3), LATHE(4), VR_HEADSET(5), NULL(6);
+  private int pos;
 
+  //Constructor
   Materials(int pos)
   {
     this.pos = pos;
   }
 
-
-  private int pos;
-
+  //Methods
   public int getPos(){return this.pos;}
 }

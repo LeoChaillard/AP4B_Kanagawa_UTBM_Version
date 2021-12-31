@@ -7,29 +7,28 @@
 package view;
 import listeners.PointingCursorListener;
 
-import javax.swing.JTabbedPane;
-import javax.swing.JInternalFrame;
 import javax.swing.KeyStroke;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JLayeredPane;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.AbstractAction;
 
-import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * Class defining the main window of the game.
+ * It contains Board, RigthPanel and TreatCardsPane panels.
+ * And also an Inventory JInternalFrame.
+ */
 public class Window extends JFrame{
   //Attributes
   private static final int WINDOW_HEIGHT = 800;
@@ -56,6 +55,7 @@ public class Window extends JFrame{
     this.inventory = new Inventory();
   }
 
+  //Methods
   public void initWindow()
   {
     //Setting windows' parameters
@@ -134,30 +134,6 @@ public class Window extends JFrame{
 
   /***************************************************/
 
-  public DisplayWinnerPane getWinnerPane(){return winnerPane;}
-
-  /***************************************************/
-
-  public TreatCardsPane getTreatCardsPane(){return this.treatCardsPanel;}
-
-  /***************************************************/
-
-  public Board getBoard(){return this.boardPanel;}
-
-  /***************************************************/
-
-  public JButton getMenuButton(){return this.menuButton;}
-
-  /***************************************************/
-
-  public RightPanel getRightPanel(){return this.rightPanel;}
-
-  /***************************************************/
-
-  public Inventory getInventory(){return this.inventory;}
-
-  /***************************************************/
-
   public void disableInventory()
   {
     this.inventoryButton.getInputMap(this.inventoryButton.WHEN_IN_FOCUSED_WINDOW).remove(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0));
@@ -172,6 +148,15 @@ public class Window extends JFrame{
     this.inventoryButton.getInputMap(this.inventoryButton.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "Inventory");
     this.inventoryButton.setEnabled(true);
   }
+
+  /***************************************************/
+
+  public DisplayWinnerPane getWinnerPane(){return winnerPane;}
+  public TreatCardsPane getTreatCardsPane(){return this.treatCardsPanel;}
+  public Board getBoard(){return this.boardPanel;}
+  public JButton getMenuButton(){return this.menuButton;}
+  public RightPanel getRightPanel(){return this.rightPanel;}
+  public Inventory getInventory(){return this.inventory;}
 
   /***************************************************/
 

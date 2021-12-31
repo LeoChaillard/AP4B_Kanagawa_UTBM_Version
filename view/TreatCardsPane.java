@@ -13,14 +13,16 @@ import javax.swing.SwingConstants;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-
+/**
+ * Class defining the panel that will show
+ * the player its available choies to treat
+ * its temporary hand cards.
+ */
  public class TreatCardsPane extends JPanel{
    //Attributes
    private JLabel workProject;
@@ -92,6 +94,5 @@ import java.awt.Dimension;
      g.fillRect(0,0,getWidth(),getHeight());
      super.paintComponent(g);
    }
-
 
  }

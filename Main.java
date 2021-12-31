@@ -6,6 +6,9 @@
 
 import manager.*;
 
+/**
+ * Main class from which the game is launched.
+ */
 public class Main {
 
   public static void main(String [] args)

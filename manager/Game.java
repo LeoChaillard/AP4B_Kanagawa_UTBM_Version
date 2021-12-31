@@ -10,10 +10,9 @@ import model.*;
 import view.*;
 import java.util.*;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -21,38 +20,41 @@ import java.awt.event.MouseEvent;
 import java.awt.Color;
 import java.awt.Cursor;
 
-import java.awt.dnd.DropTargetListener;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-
+/**
+ * Class acting as the master of the game.
+ * It contains a list of Player objects,
+ * but also Menu and Window objects.
+ */
 public class Game implements ActionListener{
   //Attributes
   private static final int MAX_PLAYERS = 4;
-  public static final int TOTAL_NUMBER_CARDS = 72;
-  private static final int CARDS_FOR_WIN = 2; //Should be 11
+  private static final int TOTAL_NUMBER_CARDS = 72;
+  private static final int CARDS_FOR_WIN = 11;
   private static final int X_ELEMENTS = 4;
   private static final int Y_ELEMENTS = 3;
 
+  public static List<Player> players = new ArrayList<Player>(MAX_PLAYERS); //public static because used in graphical classes
+  public static int playerIndex;
+  public static int numberOfPlayers;
+  public static List<Mention> mentions;
 
-  public static List<Player> players = new ArrayList<Player>(MAX_PLAYERS);
+  private static int pickedCards; //used in static methods
   private static Set pickedUpCards;
+
   private Set starterCards;
   private Window window;
   private Menu menu;
-  private Random nominatePlayer;
-  public static List<Mention> mentions;
   private Set<Integer> availableMentions;
-  public static int numberOfPlayers;
-  public static int firstPlayer;
-  public static int lastPlayer;
-  public static int passedTurns;
-  public static int playerIndex;
+  private int firstPlayer;
+  private int lastPlayer;
+  private int passedTurns;
   private boolean isPickingUpColumn;
-  public static boolean newTurn;
-  public static int pickedCards;
+  private boolean newTurn;
   private boolean endOfGame;
 
   private enum Actions
@@ -69,7 +71,6 @@ public class Game implements ActionListener{
     this.starterCards = new HashSet();
     this.window = new Window();
     this.menu = new Menu();
-    this.nominatePlayer = new Random();
     this.isPickingUpColumn = false;
     this.newTurn = true;
     this.pickedCards = 0;
@@ -91,19 +92,17 @@ public class Game implements ActionListener{
 
         createPlayers();
         distributeStarterCards();
-        this.window.getBoard().addRow(this.numberOfPlayers);
+        this.window.getBoard().addRow(this.numberOfPlayers, this.pickedCards, TOTAL_NUMBER_CARDS, this.newTurn);
         this.window.getRightPanel().updateInfos(this.players.get(this.playerIndex).getName());
 
         this.window.repaint();
     }
-
     if (evt.getActionCommand() == Actions.RESUME.name())
     {
         this.window.setVisible(true);
         this.menu.setVisible(false);
         this.menu.pauseMusic();
     }
-
     if (evt.getActionCommand() == Actions.MENU.name())
     {
         this.window.setVisible(false);
@@ -189,6 +188,7 @@ public class Game implements ActionListener{
 
   private void createPlayers()
   {
+    Random nominatePlayer = new Random();
     //Asking for number of players
     while(this.numberOfPlayers < 2 || this.numberOfPlayers > 4)
     {
@@ -215,7 +215,6 @@ public class Game implements ActionListener{
   public void start()
   {
     initialize();
-    initializeMentions();
   }
 
   /***************************************************/
@@ -315,8 +314,6 @@ public class Game implements ActionListener{
     this.window.getTreatCardsPane().getKeepCardLabel().addMouseListener(new PointingCursorListener(this.window));
 
     this.window.getInventory().getInventoryCardsTab().addMouseListener(new InventoryCardsTabTokensListener(this));
-    //this.window.getInventory().getInventoryItemsTab().addMouseListener(new InventoryItemsTabMouseListener(this));
-    //this.window.getInventory().getInventoryItemsTab().addMouseMotionListener(new InventoryItemsTabMouseListener(this));
 
     //Adding listeners for menu interactions
     this.menu.getNewGame().addActionListener(this);
@@ -345,15 +342,12 @@ public class Game implements ActionListener{
     this.menu.draw();
   }
 
-
   /***************************************************/
 
   public void resetGame()
   {
-    //for(int i=0;i<this.numberOfPlayers;++i) this.players.get(i).reset();
     this.players = null;
     this.players = new ArrayList<Player>(4);
-
     this.window.getBoard().removeAll();
     this.window.getTreatCardsPane().setVisible(false);
     this.window.getWinnerPane().setVisible(false);
@@ -372,46 +366,6 @@ public class Game implements ActionListener{
   }
 
   /***************************************************/
-
-  public void setNumberPlayers(int players)
-  {
-    this.numberOfPlayers = players;
-  }
-
-  /***************************************************/
-
-  public void setCurrentPlayer(int index)
-  {
-    this.playerIndex = index;
-  }
-
-  /***************************************************/
-
-  public void setFirstPlayer(int index)
-  {
-    this.firstPlayer = index;
-  }
-
-  /***************************************************/
-
-  public void setLastPlayer(int index)
-  {
-    this.lastPlayer = index;
-  }
-
-  /***************************************************/
-
-  public void passTurn()
-  {
-    ++this.passedTurns;
-  }
-
-  /***************************************************/
-
-  public void setEndOfGame(boolean end)
-  {
-    this.endOfGame = end;
-  }
 
   public void nextTurn()
   {
@@ -435,7 +389,7 @@ public class Game implements ActionListener{
     {
       System.out.println("new turn");
       this.passedTurns = 0;
-      this.window.getBoard().addRow(this.numberOfPlayers);
+      this.window.getBoard().addRow(this.numberOfPlayers, this.pickedCards, TOTAL_NUMBER_CARDS, this.newTurn);
       this.window.repaint();
     }
 
@@ -446,11 +400,12 @@ public class Game implements ActionListener{
       this.window.getBoard().removeAll();
       this.passedTurns = 0;
       this.newTurn = true;
-      this.window.getBoard().addRow(this.numberOfPlayers);
+      this.window.getBoard().addRow(this.numberOfPlayers, this.pickedCards, TOTAL_NUMBER_CARDS, this.newTurn);
       this.newTurn = false;
       this.window.repaint();
     }
 
+    //Checking if game has to be stopped
     if(!checkGameProgress() && this.window.getBoard().areAllColumnsEmpty())
     {
       System.out.println("stopping game");
@@ -606,14 +561,20 @@ public class Game implements ActionListener{
     return toReturn;
   }
 
-
   /***************************************************/
 
+  public void setNumberPlayers(int players){this.numberOfPlayers = players;}
+  public void setCurrentPlayer(int index){this.playerIndex = index;}
+  public void setFirstPlayer(int index){this.firstPlayer = index;}
+  public void setLastPlayer(int index){this.lastPlayer = index;}
+  public void passTurn(){++this.passedTurns;}
+  public void setEndOfGame(boolean end){this.endOfGame = end;}
   public boolean isPickingUpColumn(){return this.isPickingUpColumn;}
   public Window getWindow(){return this.window;}
   public int getPlayerIndex(){return this.playerIndex;}
   public void setPickingUpColumn(boolean col){this.isPickingUpColumn = col;}
   public int getNumberPlayers(){return this.numberOfPlayers;}
   public boolean isEndOfGame(){return this.endOfGame;}
+  public List<Player> getPlayers(){return this.players;}
 
 }

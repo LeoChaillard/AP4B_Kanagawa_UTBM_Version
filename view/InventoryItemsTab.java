@@ -9,42 +9,29 @@ import model.*;
 import manager.*;
 import listeners.*;
 
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-
-import javax.swing.JTabbedPane;
-import javax.swing.JInternalFrame;
-import javax.swing.KeyStroke;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-
-import java.awt.dnd.DropTargetListener;
-import java.awt.dnd.DropTarget;
-
 import java.awt.BorderLayout;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
-import java.awt.RenderingHints;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Ellipse2D;
+
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 import java.util.*;
 
-
+/**
+ * Class Defining the inventory items tab.
+ * It draws the player skills, bonus and hours.
+ */
 public class InventoryItemsTab extends JPanel{
   //Attributes
   private static final int X_ELEMENTS = 8;
@@ -73,69 +60,81 @@ public class InventoryItemsTab extends JPanel{
         finishedMoving.setEnabled(false);
       }
     });
+    this.finishedMoving.setBackground(Color.WHITE);
     this.add(finishedMoving, BorderLayout.CENTER);
     this.finishedMovingHours = false;
     this.icon = new ImageIcon("assets/icon.jpg");
 
+    /*****Listener for the dragging of hours icons*****/
      MouseAdapter ma = new MouseAdapter() {
+       //Attributes
+       private Point offset;
+       private int index;
 
-          private Point offset;
-          private int index;
-
-          @Override
-          public void mousePressed(MouseEvent e) {
-            if(!finishedMovingHours)
+       //Methods
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+          if(!finishedMovingHours)
+          {
+            Player p = Game.players.get(Game.playerIndex);
+            for(int j=0;j<5;++j)
             {
-              Player p = Game.players.get(Game.playerIndex);
-              for(int j=0;j<5;++j)
+              for(int i=0;i<p.getImages().size();++i)
               {
-                for(int i=0;i<p.getImages().size();++i)
+                if(!p.getBlockedImages().contains(i))
                 {
-                    if(!p.getBlockedImages().contains(i))
-                    {
-                      Rectangle bounds = getImageBounds(p.getImages().get(i), p.getPoints().get(i));
-                      Point mp = e.getPoint();
-                      if (bounds.contains(mp))
-                      {
-                          offset = new Point();
-                          offset.x = mp.x - bounds.x;
-                          offset.y = mp.y - bounds.y;
-                          index = i;
-                          break;
-                      }
-                    }
+                  Rectangle bounds = getImageBounds(p.getImages().get(i), p.getPoints().get(i));
+                  Point mp = e.getPoint();
+                  if (bounds.contains(mp))
+                  {
+                    offset = new Point();
+                    offset.x = mp.x - bounds.x;
+                    offset.y = mp.y - bounds.y;
+                    index = i;
+                    break;
+                  }
                 }
               }
             }
           }
+        }
 
-          @Override
-          public void mouseReleased(MouseEvent e) {
-              offset = null;
-              index = -1;
+        /***************************************************/
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+          offset = null;
+          index = -1;
+        }
+
+        /***************************************************/
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+          if (offset != null && index != -1)
+          {
+            Player p = Game.players.get(Game.playerIndex);
+            Point mp = e.getPoint();
+            p.getPoints().get(index).x = mp.x - offset.x;
+            p.getPoints().get(index).y = mp.y - offset.y;
+            repaint();
           }
-
-          @Override
-          public void mouseDragged(MouseEvent e) {
-              if (offset != null && index != -1) {
-                  Player p = Game.players.get(Game.playerIndex);
-                  Point mp = e.getPoint();
-                  p.getPoints().get(index).x = mp.x - offset.x;
-                  p.getPoints().get(index).y = mp.y - offset.y;
-                  repaint();
-              }
-          }
-
+        }
       };
-      addMouseListener(ma);
-      addMouseMotionListener(ma);
-
+      this.addMouseListener(ma);
+      this.addMouseMotionListener(ma);
 }
 
   //Methods
   public ImageIcon getHourImage(){return this.icon;}
   public void setFinishedMovingHours(boolean b){this.finishedMovingHours = b;}
   public JButton getFinishedMovingButton(){return this.finishedMoving;}
+
+  /***************************************************/
+
   public boolean skillsContains(float cirX, float cirY, float width, float height, float x, float y)
   {
     return (cirX - width/2 <= x)  && (cirX + width/2 >= x)  && (cirY - height/2 <= y) && (cirY + height/2 >= y);
@@ -143,17 +142,20 @@ public class InventoryItemsTab extends JPanel{
 
   /***************************************************/
 
-  public Rectangle getImageBounds(BufferedImage b, Point p) {
-      Rectangle bounds = new Rectangle(0, 0, 0, 0);
-      Player player = Game.players.get(Game.playerIndex);
-      if (player.getImages() != null) {
-          bounds.setLocation(p);
-          bounds.setSize(b.getWidth(), b.getHeight());
-      }
-      return bounds;
+  public Rectangle getImageBounds(BufferedImage b, Point p)
+  {
+    Rectangle bounds = new Rectangle(0, 0, 0, 0);
+    Player player = Game.players.get(Game.playerIndex);
+    if (player.getImages() != null)
+    {
+      bounds.setLocation(p);
+      bounds.setSize(b.getWidth(), b.getHeight());
+    }
+    return bounds;
   }
 
   /***************************************************/
+
   @Override
   public void paintComponent(Graphics g)
   {
@@ -169,8 +171,6 @@ public class InventoryItemsTab extends JPanel{
   public void paint(Graphics g)
   {
     super.paint(g);
-
-
     //Getting size of the window
     float width = getWidth();
     float height = getHeight();
@@ -232,7 +232,7 @@ public class InventoryItemsTab extends JPanel{
     {
       int quantity = Game.players.get(Game.playerIndex).getAvailableSkills().get(skill);
 
-      //Drawing its each skill at its correct place
+      //Drawing each skill at its correct place
       int offset = 0;
       switch(skill)
       {
@@ -242,7 +242,8 @@ public class InventoryItemsTab extends JPanel{
           string.draw(g, "T2S");
 
           Player pT2S = Game.players.get(Game.playerIndex);
-          //Hours on each skill category
+
+          //Checking hours that were moved on each skill
           if(finishedMovingHours)
           {
             for(int j=0;j<pT2S.getImages().size();++j)
@@ -254,7 +255,6 @@ public class InventoryItemsTab extends JPanel{
                   System.out.println("T2S");
                   pT2S.getBlockedImages().add(j);
                   pT2S.getHoursOnCategories(skill).add(pT2S.getHours().get(j));
-
                   System.out.println(pT2S.getHours().get(j).getLasTurnPosition());
                   if(pT2S.getHours().get(j).isFirstTimeUsed() || pT2S.getHours().get(j).wasUsedInTurn() || pT2S.getHours().get(j).getLasTurnPosition() == Category.T2S)
                   {
@@ -276,7 +276,6 @@ public class InventoryItemsTab extends JPanel{
                   this.repaint();
                 }
               }
-
             }
           }
 
@@ -329,7 +328,6 @@ public class InventoryItemsTab extends JPanel{
                    this.repaint();
                  }
               }
-
             }
           }
 
@@ -441,7 +439,6 @@ public class InventoryItemsTab extends JPanel{
             }
           }
 
-
           d.down(0.5f);
 
           d.right(0.2f);
@@ -492,7 +489,6 @@ public class InventoryItemsTab extends JPanel{
                   this.repaint();
                 }
               }
-
             }
           }
 
@@ -576,11 +572,6 @@ public class InventoryItemsTab extends JPanel{
           d.left(3);
         break;
       }
-
     }
-
-
-
   }
-
 }

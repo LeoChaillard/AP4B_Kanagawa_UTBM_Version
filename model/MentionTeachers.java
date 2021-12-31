@@ -7,6 +7,9 @@
 package model;
 import java.util.*;
 
+/**
+ * Class defining a teacher type mention.
+ */
 public class MentionTeachers extends Mention {
   //Attributs
   private boolean sameElement;
@@ -22,7 +25,7 @@ public class MentionTeachers extends Mention {
   public boolean checkCriteria(Player p)
   {
     int teachers = 0;
-    if(this.sameElement)
+    if(this.sameElement) //suming up the number of same teacher elements
     {
       Map<Teachers, Integer> teachersMap = new HashMap<Teachers, Integer>();
       teachersMap.put(Teachers.GECHTER, 0);
@@ -37,16 +40,15 @@ public class MentionTeachers extends Mention {
       for(Teachers t : teachersMap.keySet())
         if(teachersMap.get(t) >= this.getNumberOfElements()) return true;
     }
-    else
+    else //counting the number of different teacher elements
     {
-        Set<Teachers> teachersSet = new HashSet<Teachers>();
-        for(Card c : p.getProject())
-          if( (c instanceof CardTeachers) &&  Teachers.values()[c.getElement()] != Teachers.NULL && !teachersSet.contains(Teachers.values()[c.getElement()]))
-            teachersSet.add(Teachers.values()[c.getElement()]);
+      Set<Teachers> teachersSet = new HashSet<Teachers>();
+      for(Card c : p.getProject())
+        if( (c instanceof CardTeachers) &&  Teachers.values()[c.getElement()] != Teachers.NULL && !teachersSet.contains(Teachers.values()[c.getElement()]))
+          teachersSet.add(Teachers.values()[c.getElement()]);
 
-          if(teachersSet.size() >= this.getNumberOfElements()) return true;
+      if(teachersSet.size() >= this.getNumberOfElements()) return true;
     }
-
     return false;
   }
 }

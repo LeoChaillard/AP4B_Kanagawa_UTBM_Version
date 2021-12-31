@@ -6,13 +6,17 @@
 
  package model;
 
+ /**
+  * Class defining an Hour.
+  * It contains an EARN_HOURS bonus and infos
+  * about the hour usage.
+  */
  public class Hour{
    //Attributes
    private Bonus hour;
    private boolean firstTimeUsed;
    private boolean usedInTurn;
    private Category lastTurnPosition;
-
 
    //Constructor
    public Hour()
@@ -23,7 +27,6 @@
      this.lastTurnPosition = Category.NULL;
    }
 
-
    //Methods
    public boolean isFirstTimeUsed(){return this.firstTimeUsed;}
    public void setFirstTimeUsed(boolean firstTimeUsed){this.firstTimeUsed = firstTimeUsed;}
@@ -31,5 +34,4 @@
    public void setUsedInTurn(boolean used){this.usedInTurn = used;}
    public Category getLasTurnPosition(){return this.lastTurnPosition;}
    public void setLasTurnPosition(Category position){this.lastTurnPosition = position;}
-
  }

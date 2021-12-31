@@ -6,8 +6,10 @@
 
 package model;
 
+/**
+ * Class defining a skill type mention.
+ */
 public class MentionSkills extends Mention {
-
   //Constructor
   public MentionSkills(int id, int points, int numberOfElements, Bonus bonus, String name)
   {
@@ -17,7 +19,7 @@ public class MentionSkills extends Mention {
   //Methods
   public boolean checkCriteria(Player p)
   {
-    //Nombre identique => code identique de Teacher
+    //Counting the number of identical skill
     return (getNumberOfElements() <= p.getAvailableSkills().get(Category.CS) || getNumberOfElements() <= p.getAvailableSkills().get(Category.TM) || getNumberOfElements() <= p.getAvailableSkills().get(Category.EC) || getNumberOfElements() <= p.getAvailableSkills().get(Category.T2S));
   }
 }

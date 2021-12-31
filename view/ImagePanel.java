@@ -6,12 +6,13 @@
 
 package view;
 
-import javax.swing.JComponent;
 import java.awt.Image;
 import java.awt.Graphics;
 
+import javax.swing.JComponent;
+
 /**
- * This class enables us to paint on a JPcomponent.
+ * This class enables us to paint an image on a JPcomponent.
  */
 public class ImagePanel extends JComponent{
   //Attributes
