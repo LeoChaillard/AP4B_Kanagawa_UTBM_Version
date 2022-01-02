@@ -236,7 +236,7 @@ public class Board extends JPanel{
       d.resetMove();
     	d.right(k+1); //Going to the right next column
       cardDir.resetMove();
-      cardDir.right(k + CARD_SIZE_TO_FULL_SIZE); //Going to the right next column
+      cardDir.right(CARD_SIZE_TO_FULL_SIZE * (1+k)); //Going to the right next column
     }
     Toolkit.getDefaultToolkit().sync();
   }
