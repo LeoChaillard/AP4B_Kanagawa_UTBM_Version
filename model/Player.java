@@ -130,7 +130,7 @@ public class Player {
 
   public void initializeBonus()
   {
-    this.availableBonus.put(Bonus.KEEP_IN_HAND,0);
+    this.availableBonus.put(Bonus.KEEP_IN_HAND,2);
     this.availableBonus.put(Bonus.MOVE_HOURS,0);
     this.availableBonus.put(Bonus.EARN_HOURS,0);
     this.availableBonus.put(Bonus.IMSI_TOKEN,0);

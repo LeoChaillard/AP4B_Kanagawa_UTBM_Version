@@ -171,7 +171,7 @@ public class InventoryCardsTab extends JPanel{
     //Drawing hand cards
     cardDir.resetMove();
     cardDir.right(CARD_SIZE_TO_REAL_SIZE);
-    cardDir.down(18.75f);
+    cardDir.down(26.25f);
     for(Card c : Game.players.get(Game.playerIndex).getHand())
     {
       if(c != null)
