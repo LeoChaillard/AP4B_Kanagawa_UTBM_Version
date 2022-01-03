@@ -542,9 +542,8 @@ public class InventoryItemsTab extends JPanel{
       d.right(1);
     }
 
-    d.resetMove();
-    d.down(2.5f);
-    d.right(2);
+
+
 
     for(Bonus bonus : Game.players.get(Game.playerIndex).getAvailableBonus().keySet() )
     {
@@ -554,22 +553,69 @@ public class InventoryItemsTab extends JPanel{
       switch(bonus)
       {
         case KEEP_IN_HAND:
+          d.resetMove();
+          d.down(2);
+          d.right(2);
+
+          d.left(0.25f);
+          g.setColor(Color.BLACK);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+          string.draw(g, "KEEP");
+          d.right(0.25f);
+
+          d.down(0.5f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 30));
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
         break;
         case MOVE_HOURS:
-          d.right(1);
+          d.resetMove();
+          d.down(2);
+          d.right(3);
+
+          d.left(0.25f);
+          g.setColor(Color.BLACK);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+          string.draw(g, "MOVE");
+          d.right(0.25f);
+
+          d.down(0.5f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 30));
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
-          d.left(1);
         break;
         case EARN_HOURS:
-          d.right(2);
+        System.out.println("earn");
+          d.resetMove();
+          d.down(2);
+          d.right(4);
+
+          d.left(0.25f);
+          g.setColor(Color.BLACK);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+          string.draw(g, "EARN");
+          d.right(0.25f);
+
+          d.down(0.5f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 30));
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
-          d.left(2);
         break;
         case IMSI_TOKEN:
-          d.right(3);
+          d.resetMove();
+          d.down(2);
+          d.right(5);
+
+          d.left(0.2f);
+          g.setColor(Color.BLACK);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+          string.draw(g, "IMSI");
+          d.right(0.2f);
+
+          d.down(0.5f);
+          g.setFont(new Font("Baskerville Old Face", Font.BOLD, 30));
+          g.setColor(new Color(0x484339));
           string.draw(g, "x" + quantity);
-          d.left(3);
         break;
       }
     }
