@@ -1,6 +1,6 @@
 # AP4B - Kanagawa UTBM version
-Java project carried during the AP4B course. We've revisited the Kanagawa game based on our school's (UTBM) majors and courses structure.
-
+Java project carried during the AP4B course. We've revisited the Kanagawa game based on our school's (UTBM) majors and courses structure. <br>
+Authors : Malak FADILI, Alan GAUTHIER, Jules RAMOS and Léo CHAILLARD
 
 ## How to play ?
 
@@ -8,7 +8,7 @@ Java project carried during the AP4B course. We've revisited the Kanagawa game b
   - By passing, you'll be able to see a new row of cards for each remaining column. You can't pass if there is only one reamining column on the board, or if the 3 rows are already filled up.
   - By picking up a column, you'll be able to take the column of cards you wish.
   - Once cards have been added to your temporary hand, you can click them to see your choices.
-  - If you decide to work on your project, you have to make sure that you've placed your hours one the required skills in your inventory.
+  - If you decide to work on your project, you have to make sure that you've placed your hours on the required skills in your inventory.
   - If you decide to keep a card in your hand, you have to make sure that you possess at least one KEEP_IN_HAND bonus in you inventory.
   - If you possess an imsi token bonus, you'll be able to change the branch (INFO, GMC, EDIM, ENERGIE) by clicking on of one your project cards from your inventory 'cards' tab.
   - You may be able to get mentions offers by earning enough skills, bonus or cards elements.
@@ -35,5 +35,8 @@ Java project carried during the AP4B course. We've revisited the Kanagawa game b
  - You can access your inventory at any time by either cliking on the "inventory" button, or by pressing the 'E' key.
  - From your 'cards' inventory tab, you're able to see each card you've added to either your project or to your hand.
  - From you 'items' inventory tab, you're able to see your available skills and bonus. One time per turn, you can drag and drop your hours on the different skills you wish to use.
+
+### Demo
+  Please see this demo video (in french) showing the previously described features : https://www.youtube.com/watch?v=6zQi_9jUJrg&feature=youtu.be
 
 
