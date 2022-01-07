@@ -44,9 +44,9 @@ public class Game implements ActionListener{
   public static List<Mention> mentions;
 
   private static int pickedCards; //used in static methods
-  private static Set pickedUpCards;
+  private static Set<Integer> pickedUpCards;
 
-  private Set starterCards;
+  private Set<Integer> starterCards;
   private Window window;
   private Menu menu;
   private Set<Integer> availableMentions;
@@ -67,8 +67,8 @@ public class Game implements ActionListener{
   //Constructor
   public Game()
   {
-    this.pickedUpCards = new HashSet();
-    this.starterCards = new HashSet();
+    this.pickedUpCards = new HashSet<Integer>();
+    this.starterCards = new HashSet<Integer>();
     this.window = new Window();
     this.menu = new Menu();
     this.isPickingUpColumn = false;
